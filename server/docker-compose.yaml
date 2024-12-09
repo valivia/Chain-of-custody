@@ -21,6 +21,7 @@ services:
 
   # Server
   server:
+    container_name: coc_server
     build:
       context: ./
       dockerfile: Dockerfile
@@ -37,6 +38,10 @@ services:
       - postgres
     networks:
       - bridge
+      - nginx
 
 networks:
   bridge:
+  nginx:
+    external: true
+    name: nginx

@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node dist/app.js"
+    "start": "node dist/app.js",
+    "compile": "tsc"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",

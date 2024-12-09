@@ -10,7 +10,7 @@ const start = async () => {
   app.register(prismaPlugin);
   app.register(routes);
 
-  await app.listen({ port: 3000 });
+  await app.listen({ port: 3000, host: "0.0.0.0" });
 };
 
 start()
