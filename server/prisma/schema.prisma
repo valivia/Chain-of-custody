@@ -20,6 +20,7 @@ model Case {
   users                CaseUser[]
   CaseToTaggedEvidence CaseToTaggedEvidence[]
   CaseToMediaEvidence  CaseToMediaEvidence[]
+  AuditLog             AuditLog[]
 }
 
 model CaseToTaggedEvidence {
@@ -73,7 +74,8 @@ model MediaEvidence {
   userId    String
   createdBy User   @relation(fields: [userId], references: [id])
 
-  cases CaseToMediaEvidence[]
+  cases    CaseToMediaEvidence[]
+  AuditLog AuditLog[]
 }
 
 model TaggedEvidence {
@@ -89,7 +91,11 @@ model TaggedEvidence {
   itemType    String
   description String
 
-  cases CaseToTaggedEvidence[]
+  userId String
+
+  cases    CaseToTaggedEvidence[]
+  User     User                   @relation(fields: [userId], references: [id])
+  AuditLog AuditLog[]
 }
 
 model User {
@@ -105,9 +111,10 @@ model User {
   lastName  String
   rank      Int    @default(0)
 
-  cases         CaseUser[]
-  AuditLog      AuditLog[]
-  MediaEvidence MediaEvidence[]
+  cases          CaseUser[]
+  AuditLog       AuditLog[]
+  MediaEvidence  MediaEvidence[]
+  taggedEvidence TaggedEvidence[]
 }
 
 model AuditLog {
@@ -116,13 +123,28 @@ model AuditLog {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId    String
-  action    String
+  userId           String
+  caseId           String?
+  mediaEvidenceId  String?
+  taggedEvidenceId String?
+
+  action    Action
   ip        String
   userAgent String
+  location  String
 
   oldData String
   newData String
 
-  user User @relation(fields: [userId], references: [id])
+  user           User            @relation(fields: [userId], references: [id])
+  case           Case?           @relation(fields: [caseId], references: [id])
+  MediaEvidence  MediaEvidence?  @relation(fields: [mediaEvidenceId], references: [id])
+  TaggedEvidence TaggedEvidence? @relation(fields: [taggedEvidenceId], references: [id])
+}
+
+enum Action {
+  CREATE
+  UPDATE
+  DELETE
+  TRANSFER
 }
