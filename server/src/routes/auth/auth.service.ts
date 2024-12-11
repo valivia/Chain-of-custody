@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from "@nestjs/jwt";
 import { PrismaService } from "src/services/prisma.service";
 import * as bcrypt from "bcrypt";
@@ -28,10 +28,11 @@ export class AuthService {
       data: {
         ...user,
         password: hashedPassword,
-        firstName: "John",
-        lastName: "Doe",
       }
-    });
+    }).catch(() => null);
+
+    if (!newUser)
+      throw new InternalServerErrorException("User could not be created");
 
     return this.signIn(newUser.email, user.password);
   }

@@ -8,11 +8,12 @@ COPY prisma/schema.prisma prisma/schema.prisma
 RUN npx prisma generate
 # Copy and compile source code
 COPY . .
-RUN npm run compile
+RUN npm run build
 
 FROM node:20-alpine AS prod
 WORKDIR /app/
 COPY --from=build /build/package.json /build/package-lock.json ./
 COPY --from=build /build/ ./
 EXPOSE 3000
-ENTRYPOINT ["sh", "-c", "npx prisma db push && npm start"]
+ENV NODE_ENV=production
+ENTRYPOINT ["sh", "-c", "npx prisma db push && npm start:prod"]

@@ -16,6 +16,7 @@ export default () => {
 };
 
 export const validationSchema = Joi.object({
+  NODE_ENV: Joi.string().valid('development', 'production').required(),
   DATABASE_URL: Joi.string().required(),
   PORT: Joi.number().default(3000),
   JWT_SECRET: Joi.string().required(),

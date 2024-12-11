@@ -8,6 +8,7 @@ import { CaseController } from "./routes/case/case.controller";
 import { TagController } from "./routes/evidence/tag/tag.controller";
 import { ConfigModule } from "@nestjs/config";
 import { validationSchema } from "./util/config";
+import { DevmodeProvider } from "./guards/dev.guard";
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { validationSchema } from "./util/config";
   providers: [
     PrismaService,
     AuthProvider,
+    DevmodeProvider,
   ],
 })
 export class AppModule { }
