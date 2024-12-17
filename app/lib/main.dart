@@ -1,6 +1,8 @@
-import 'package:coc/scanner.dart';
 import 'package:flutter/material.dart';
-import 'pages/pictures.dart'; // Import the new pictures.dart file
+import 'package:coc/pages/scanner.dart';
+import 'package:coc/pages/pictures.dart';
+import 'package:coc/pages/nfc.dart'; // Import the new nfc.dart file
+import 'package:coc/pages/nfc.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -39,6 +41,16 @@ class FirstRoute extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const PictureTakingPage()),
+                );
+              },
+            ),
+            const SizedBox(height: 20), // Add some space between the buttons
+            ElevatedButton(
+              child: const Text('Scan NFC Tag'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NfcScanPage()),
                 );
               },
             ),
