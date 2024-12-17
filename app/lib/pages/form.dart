@@ -20,6 +20,8 @@ class _FormPageState extends State<FormPage> {
   late TextEditingController _descriptionController;
   late TextEditingController _originCoordinatesController;
   late TextEditingController _originLocationDescriptionController;
+  String? _selectedContainerType;
+  final _containerTypes = ['Box', 'Crate', 'Pallet', 'Other', 'dsjn'];
   bool _isFetchingLocation = false;
 
   @override
@@ -91,17 +93,12 @@ class _FormPageState extends State<FormPage> {
     };
     final body = jsonEncode({
       'id': _idController.text,
-      'containerType': int.tryParse(_containerTypeController.text) ?? 0,
+      'containerType': _selectedContainerType,
       'itemType': _itemTypeController.text,
       'description': _descriptionController.text,
       'originCoordinates': _originCoordinatesController.text,
       'originLocationDescription': _originLocationDescriptionController.text,
     });
-
-    print('POST $url');
-    print('Headers: $headers');
-    print('Body: $body');
-
     return http.post(
       url,
       headers: headers,
@@ -143,12 +140,24 @@ class _FormPageState extends State<FormPage> {
                     return null;
                   },
                 ),
-                TextFormField(
-                  controller: _containerTypeController,
+                DropdownButtonFormField<String>(
+                  value: _selectedContainerType,
                   decoration: InputDecoration(labelText: 'Container Type'),
+                  items: _containerTypes.map((String type) {
+                    return DropdownMenuItem<String>(
+                      value: type,
+                      child: Text(type),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedContainerType = newValue;
+                      _containerTypeController.text = newValue!;
+                    });
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the container type';
+                      return 'Please select a container type';
                     }
                     return null;
                   },
@@ -211,8 +220,7 @@ class _FormPageState extends State<FormPage> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           final response = await submitEvidenceData();
-                          print('Response status: ${response.statusCode}');
-                          print('Response body: ${response.body}');
+                          Navigator.pop(context);
                         }
                       },
                       child: Text('Submit'),
