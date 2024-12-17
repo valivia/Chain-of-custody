@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -84,12 +85,12 @@ model TaggedEvidence {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  containerType             String
+  containerType             Int
   originCoordinates         String
   originLocationDescription String
 
   itemType    String
-  description String
+  description String?
 
   userId String
 

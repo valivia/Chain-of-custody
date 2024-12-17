@@ -1,6 +1,6 @@
 import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Public } from "./auth.guard";
+import { Public } from "../../guards/auth.guard";
 import { User } from "@prisma/client";
 import { IsEmail, IsString } from "class-validator";
 import { DevOnly } from "src/guards/dev.guard";
@@ -35,7 +35,6 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
   createUser(@Body() user: RegisterDTO) {
-    console.log(user);
     return this.authService.createUser(user as User);
   }
 
