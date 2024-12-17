@@ -9,6 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  mobile_scanner: ^6.0.2
+  camera: ^0.11.0+2
+  nfc_manager: ^3.5.0
 
 dev_dependencies:
   flutter_test:
