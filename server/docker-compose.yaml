@@ -32,6 +32,7 @@ services:
     env_file:
       - .env
     environment:
+      - NODE_ENV=production
       - DATABASE_URL=postgresql://postgres:password@postgres:5432/postgres
       - ORIGIN=https://coc.hootsifer.com
     depends_on:
