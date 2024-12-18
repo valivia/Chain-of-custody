@@ -4,11 +4,16 @@ import { Public } from "../../guards/auth.guard";
 import { User } from "@prisma/client";
 import { IsEmail, IsString } from "class-validator";
 import { DevOnly } from "src/guards/dev.guard";
+import { Transform } from "class-transformer";
 
 class SignInDTO {
+
   @IsEmail()
+  @Transform(({ value }) => value.trim())
   email: string;
+
   @IsString()
+  @Transform(({ value }) => value.trim())
   password: string;
 }
 
@@ -26,16 +31,16 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.email, signInDto.password);
+  signIn(@Body() body: SignInDTO) {
+    return this.authService.signIn(body.email, body.password);
   }
 
   @Public()
   @DevOnly()
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
-  createUser(@Body() user: RegisterDTO) {
-    return this.authService.createUser(user as User);
+  createUser(@Body() body: RegisterDTO) {
+    return this.authService.createUser(body as User);
   }
 
 }
