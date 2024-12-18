@@ -14,24 +14,26 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(23, 23, 23, 1),
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            Icon(icon, color: Colors.white),
-          ],
-        ),
+    final ButtonStyle style = ElevatedButton.styleFrom(
+      minimumSize: const Size.fromHeight(1),
+      backgroundColor: const Color.fromRGBO(23, 23, 23, 1),
+      foregroundColor: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),
+    );
+
+    return ElevatedButton(
+      style: style,
+      onPressed: () {},
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title),
+          Icon(icon, color: Theme.of(context).iconTheme.color),
+        ],
       ),
     );
   }

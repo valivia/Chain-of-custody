@@ -8,7 +8,8 @@ import 'package:get_it/get_it.dart';
 final globalState = GetIt.instance;
 
 void main() {
-  globalState.registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
+  globalState
+      .registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
 
   runApp(const App());
 }
@@ -44,6 +45,9 @@ class HomePage extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(23, 23, 23, 1),
         leading: const Icon(Icons.home, color: Colors.white),
         title: const Text('Home'),
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+        ],
       ),
       body: Center(
         child: Padding(
