@@ -1,5 +1,6 @@
 import {
   CanActivate,
+  createParamDecorator,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
@@ -12,6 +13,20 @@ import { ConfigService } from "@nestjs/config";
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
+
+export type UserEntity = {
+  id: string;
+  email: string;
+  name: string;
+};
+
+
+export const User = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    return request.user;
+  },
+);
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -35,6 +50,7 @@ export class AuthGuard implements CanActivate {
     // Extract the request object
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
+
     if (!token) {
       throw new UnauthorizedException();
     }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'form.dart';
 
 class QRScannerPage extends StatefulWidget {
-  const QRScannerPage({super.key});
-
   @override
   _QRScannerPageState createState() => _QRScannerPageState();
 }
@@ -30,22 +29,15 @@ class _QRScannerPageState extends State<QRScannerPage> {
           if (barcode.rawValue != null) {
             final String code = barcode.rawValue!;
             _scannerController.stop();
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('QR Code Detected'),
-                content: Text(code),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      _scannerController.start();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FormPage(scannedData: {'qrData': code}),
               ),
-            );
+            ).then((_) {
+              // Resume the camera when returning to the scanner page
+              _scannerController.start();
+            });
           }
         },
       ),
