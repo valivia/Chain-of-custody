@@ -1,6 +1,6 @@
+import 'package:coc/pages/register_evidence.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'form.dart';
 
 class QRScannerPage extends StatefulWidget {
   @override
@@ -32,7 +32,8 @@ class _QRScannerPageState extends State<QRScannerPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => FormPage(scannedData: {'qrData': code}),
+                builder: (context) =>
+                    RegisterEvidencePage(scannedData: {'qrData': code}),
               ),
             ).then((_) {
               // Resume the camera when returning to the scanner page

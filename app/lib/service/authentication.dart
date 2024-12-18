@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class Authentication {
-  Future<bool> login(String email, String password) async {
+  static Future<bool> login(String email, String password) async {
     final url = Uri.parse("https://coc.hootsifer.com/auth/login");
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -28,20 +28,25 @@ class Authentication {
     } else {
       final error = jsonDecode(response.body)['message'];
       log('Error: $error');
-      throw error;
+      return Future.error(error);
     }
   }
 
-  logout() {
+  static logout() {
     globalState<FlutterSecureStorage>().delete(key: "token");
     log('Logged out');
   }
 
-  Future<String> getToken() async {
+  static Future<String> getToken() async {
     final token = await globalState<FlutterSecureStorage>().read(key: "token");
     if (token == null) {
-      throw 'No token found';
+      return Future.error('No token found');
     }
     return token;
+  }
+
+  static Future<String> getBearerToken() async {
+    final token = await getToken();
+    return 'Bearer $token';
   }
 }
