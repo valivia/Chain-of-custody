@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:coc/pages/scanner.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/nfc.dart';
+import 'package:coc/pages/login.dart';
+
 
 class DebugPage extends StatelessWidget {
   const DebugPage({super.key});
@@ -48,6 +50,16 @@ class DebugPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => NfcScanPage()),
+                  );
+                },
+              ),
+              const SizedBox(height: 20), // Add spacing between buttons
+              ElevatedButton(
+                child: const Text('Login page'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
                   );
                 },
               ),
