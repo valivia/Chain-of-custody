@@ -21,7 +21,7 @@ class Authentication {
     );
 
     if (response.statusCode == 200) {
-      final token = jsonDecode(response.body)['token'];
+      final token = jsonDecode(response.body)['access_token'];
       globalState<FlutterSecureStorage>().write(key: "token", value: token);
       log('Logged in');
       return true;

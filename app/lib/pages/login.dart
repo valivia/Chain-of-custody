@@ -7,15 +7,17 @@ import 'package:get_it/get_it.dart';
 final getIt = GetIt.instance;
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-void setup(){
+void setup() {
   getIt.registerSingleton<Authentication>(Authentication());
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailInputController;
   late TextEditingController _passwordInputController;
@@ -30,10 +32,44 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _emailInputController.dispose();
     _passwordInputController.dispose();
     super.dispose();
+  }
+
+  void submit() async {
+    if (!_formKey.currentState!.validate()) {
+      log(" --- Form validation failed --- ");
+      const snackBar = SnackBar(content: Text('Please fill in all fields'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+    log(" --- Form Validation Succesfull ---");
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Logging in...")),
+    );
+
+    try {
+      bool loginResponse = await Authentication.login(
+        _emailInputController.text,
+        _passwordInputController.text,
+      );
+      if (loginResponse) {
+        const snackBar =
+            SnackBar(content: Text("Login Succesfull, redirecting..."));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const DebugPage()),
+        );
+      }
+    } catch (error) {
+      log(" --- Login failed: $error --- ");
+      final snackBar = SnackBar(content: Text("Login Failed: \n$error"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   @override
@@ -48,13 +84,14 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Email box
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _emailInputController,
                   decoration: const InputDecoration(
-                    labelText: "email", 
+                    labelText: "email",
                     hintText: "Enter your email",
-                    ),
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter your signin Email";
@@ -62,27 +99,28 @@ class _LoginPageState extends State<LoginPage> {
                     return null;
                   },
                 ),
+
+                // Password box
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordInputController,
-                  decoration:  InputDecoration(
-                    labelText: "password", 
-                    hintText: "Enter your password",
-                    // toggle button for password visibilty
-                    suffixIcon: IconButton( 
-                      icon: Icon(
-                        _passwordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
-                    )
-                    ),
+                  decoration: InputDecoration(
+                      labelText: "password",
+                      hintText: "Enter your password",
+                      // toggle button for password visibilty
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                      )),
                   // make text unreadable on toggle and disable autocorrect and suggestions
                   obscureText: _passwordVisible,
                   enableSuggestions: false,
@@ -100,49 +138,14 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          log(" --- Form Validation Succesfull ---");
-                          try{
-                            bool loginResponse = await Authentication.login(
-                              _emailInputController.text,
-                              _passwordInputController.text,
-                            );
-                            log("--- $loginResponse ---");
-                            if(loginResponse){
-                              log(" --- Logged in & token stored ---");
-                              final snackBar = SnackBar(content: Text("Login Succesfull, redirecting..."));
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const DebugPage()
-                                  ),
-                                );                          
-                              }
-                          } catch (error){
-                            log(" --- Login failed: $error --- ");
-                            final snackBar = SnackBar(content: Text("Login Failed: \n$error"));
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          }                          
-                        }
-                        else{
-                          log(" --- Form validation failed --- ");
-                          final snackBar = SnackBar(content: Text('Please fill in all fields'));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      },
-                      child: const Text('Login'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () async {
                         Authentication.logout();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const DebugPage()),
-                          );
+                        Navigator.pop(context);
                       },
                       child: const Text("Logout"),
+                    ),
+                    ElevatedButton(
+                      onPressed: submit,
+                      child: const Text('Login'),
                     ),
                   ],
                 ),
