@@ -19,12 +19,14 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailInputController;
   late TextEditingController _passwordInputController;
+  late bool _passwordVisible;
 
   @override
   void initState() {
     super.initState();
     _emailInputController = TextEditingController();
     _passwordInputController = TextEditingController();
+    _passwordVisible = false;
   }
 
   @override
@@ -49,7 +51,10 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _emailInputController,
-                  decoration: const InputDecoration(labelText: "email"),
+                  decoration: const InputDecoration(
+                    labelText: "email", 
+                    hintText: "Enter your email",
+                    ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter your signin Email";
@@ -60,7 +65,10 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordInputController,
-                  decoration: const InputDecoration(labelText: "password"),
+                  decoration: const InputDecoration(
+                    labelText: "password", 
+                    hintText: "Enter your password",
+                    ),
                   // make text unreadable and disable autocorrect and suggestions
                   obscureText: true,
                   enableSuggestions: false,
@@ -79,22 +87,33 @@ class _LoginPageState extends State<LoginPage> {
                     ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          log(" --- Validation Succesfull ---");
-                          // check for http auth
-                          dynamic loginResponse = await Authentication.login(_emailInputController.text, _passwordInputController.text);
-                          log("--- $loginResponse ---");
-                          if(loginResponse){
-                            log(" --- Logged in & token stored ---");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                 builder: (context) => const DebugPage()),
+                          log(" --- Form Validation Succesfull ---");
+                          try{
+                            bool loginResponse = await Authentication.login(
+                              _emailInputController.text,
+                              _passwordInputController.text,
                             );
-                          }// To do, error handling
+                            log("--- $loginResponse ---");
+                            if(loginResponse){
+                              log(" --- Logged in & token stored ---");
+                              final snackBar = SnackBar(content: Text("Login Succesfull, redirecting..."));
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const DebugPage()
+                                  ),
+                                );                          
+                              }
+                          } catch (error){
+                            log(" --- Login failed: $error --- ");
+                            final snackBar = SnackBar(content: Text("Login Failed: \n$error"));
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }                          
                         }
                         else{
                           log(" --- Form validation failed --- ");
-                          const snackBar = SnackBar(content: Text('Please fill in all fields'));
+                          final snackBar = SnackBar(content: Text('Please fill in all fields'));
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       },
