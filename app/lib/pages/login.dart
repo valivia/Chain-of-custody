@@ -1,8 +1,7 @@
-import 'dart:convert';
 import 'dart:developer';
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:coc/service/authentication.dart';
+import 'package:coc/pages/debug.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -82,6 +81,16 @@ class _LoginPageState extends State<LoginPage> {
                         if (_formKey.currentState!.validate()) {
                           log(" --- Validation Succesfull ---");
                           // check for http auth
+                          dynamic loginResponse = await Authentication.login(_emailInputController.text, _passwordInputController.text);
+                          log("--- $loginResponse ---");
+                          if(loginResponse){
+                            log(" --- Logged in & token stored ---");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                 builder: (context) => const DebugPage()),
+                            );
+                          }// To do, error handling
                         }
                         else{
                           log(" --- Form validation failed --- ");
@@ -90,6 +99,17 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       },
                       child: const Text('Login'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        Authentication.logout();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DebugPage()),
+                          );
+                      },
+                      child: const Text("Logout"),
                     ),
                   ],
                 ),
