@@ -19,8 +19,8 @@ class DebugPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Column(
-            spacing: 20,
             children: [
+              const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 child: const Text('Scan QR Code'),
                 onPressed: () {
@@ -30,6 +30,7 @@ class DebugPage extends StatelessWidget {
                   );
                 },
               ),
+              const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 child: const Text('Take Picture'),
                 onPressed: () {
@@ -40,6 +41,7 @@ class DebugPage extends StatelessWidget {
                   );
                 },
               ),
+              const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 child: const Text('Scan NFC Tag'),
                 onPressed: () {

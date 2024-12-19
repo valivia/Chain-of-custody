@@ -101,15 +101,16 @@ class HomePage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Column(
-            spacing: 20,
             children: [
+              const SizedBox(height: 20), // Add spacing between buttons
               // Create Case Button
               Button(
                 title: 'Create Case',
                 icon: Icons.open_in_new,
                 onTap: () {},
               ),
-
+              
+              const SizedBox(height: 20), // Add spacing between buttons
               // Join Case Button
               Button(
                 title: 'Join case',
@@ -117,6 +118,7 @@ class HomePage extends StatelessWidget {
                 onTap: () {},
               ),
 
+               const SizedBox(height: 20), // Add spacing between buttons
               // Transfer Evidence Button
               Button(
                 title: 'Transfer evidence',
@@ -126,6 +128,7 @@ class HomePage extends StatelessWidget {
 
               if (kDebugMode)
                 // Debug page Button
+                const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
                   child: const Text('Debug page'),
                   onPressed: () {
