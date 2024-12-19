@@ -65,12 +65,26 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordInputController,
-                  decoration: const InputDecoration(
+                  decoration:  InputDecoration(
                     labelText: "password", 
                     hintText: "Enter your password",
+                    // toggle button for password visibilty
+                    suffixIcon: IconButton( 
+                      icon: Icon(
+                        _passwordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    )
                     ),
-                  // make text unreadable and disable autocorrect and suggestions
-                  obscureText: true,
+                  // make text unreadable on toggle and disable autocorrect and suggestions
+                  obscureText: _passwordVisible,
                   enableSuggestions: false,
                   autocorrect: false,
                   validator: (value) {
