@@ -2,19 +2,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/pages/debug.dart';
-import 'package:get_it/get_it.dart';
-
-final getIt = GetIt.instance;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
   LoginPageState createState() => LoginPageState();
-}
-
-void setup() {
-  getIt.registerSingleton<Authentication>(Authentication());
 }
 
 class LoginPageState extends State<LoginPage> {
