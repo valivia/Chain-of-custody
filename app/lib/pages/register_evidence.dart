@@ -1,18 +1,21 @@
+import 'package:coc/main.dart';
+import 'package:coc/service/authentication.dart';
+import 'package:coc/service/location.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class FormPage extends StatefulWidget {
+class RegisterEvidencePage extends StatefulWidget {
   final Map<String, dynamic> scannedData;
 
-  FormPage({required this.scannedData});
+  const RegisterEvidencePage({super.key, required this.scannedData});
 
   @override
-  _FormPageState createState() => _FormPageState();
+  RegisterEvidencePageState createState() => RegisterEvidencePageState();
 }
 
-class _FormPageState extends State<FormPage> {
+class RegisterEvidencePageState extends State<RegisterEvidencePage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _idController;
   late TextEditingController _containerTypeController;
@@ -42,42 +45,9 @@ class _FormPageState extends State<FormPage> {
       _isFetchingLocation = true;
     });
 
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled, don't continue
-      setState(() {
-        _isFetchingLocation = false;
-      });
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, don't continue
-        setState(() {
-          _isFetchingLocation = false;
-        });
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, don't continue
-      setState(() {
-        _isFetchingLocation = false;
-      });
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
     // When we reach here, permissions are granted and we can continue
-    Position position = await Geolocator.getCurrentPosition();
+    Position position =
+        await globalState<LocationService>().getCurrentLocation();
     setState(() {
       _originCoordinatesController.text =
           '${position.latitude}, ${position.longitude}';
@@ -85,15 +55,15 @@ class _FormPageState extends State<FormPage> {
     });
   }
 
-  Future<http.Response> submitEvidenceData() {
+  Future<http.Response> submitEvidenceData() async {
     final url = Uri.parse('https://coc.hootsifer.com/evidence/tag');
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtNGsxYXlvcDAwMDB2ZDA4ZnliMXdsbjYiLCJmaXJzdE5hbWUiOiJUaGlqcyIsImxhc3ROYWlIjoiU3RvayIsImVtYWlsIjoidGhpanNAaG9vdHNpZmVyLmNvbSIsImlhdCI6MTczNDQ1Njg2NCwiZXhwIjoxNzM0NDYwNDY0fQ.Vt7yUkPnLoFClV8jMHk2fcbaSo0uW3sHM64Tp3elIMI',
+      'Authorization': await Authentication.getBearerToken(),
     };
     final body = jsonEncode({
       'id': _idController.text,
-      'containerType': _selectedContainerType,
+      'containerType': 1,
       'itemType': _itemTypeController.text,
       'description': _descriptionController.text,
       'originCoordinates': _originCoordinatesController.text,
@@ -120,7 +90,16 @@ class _FormPageState extends State<FormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Form Page')),
+      appBar: AppBar(
+        title: const Text('Form Page'),
+        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+        elevation: 10,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(16),
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -198,7 +177,8 @@ class _FormPageState extends State<FormPage> {
                   ),
                 TextFormField(
                   controller: _originLocationDescriptionController,
-                  decoration: InputDecoration(labelText: 'Origin Location Description'),
+                  decoration:
+                      InputDecoration(labelText: 'Origin Location Description'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the origin location description';
@@ -220,7 +200,9 @@ class _FormPageState extends State<FormPage> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           final response = await submitEvidenceData();
-                          Navigator.pop(context);
+                          // Log response
+                          print(response.body);
+                          // Navigator.pop(context);
                         }
                       },
                       child: Text('Submit'),
