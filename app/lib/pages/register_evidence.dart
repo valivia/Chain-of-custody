@@ -216,7 +216,6 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                             final response = await submitEvidenceData();
                             // Log response
                             print(response.body);
-
                             if (response.statusCode == 201) {
                               CoolAlert.show(
                                 context: context,
@@ -224,7 +223,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                                 title: 'Success',
                                 text: 'Submission complete',
                                 onConfirmBtnTap: () {
-                                  Navigator.pop(context); // Close the alert
+                                  Navigator.pop(context);
                                   // Navigate to scan more
                                 },
                                 confirmBtnText: 'Scan More',
