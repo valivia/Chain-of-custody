@@ -14,14 +14,16 @@ class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailInputController;
   late TextEditingController _passwordInputController;
-  late bool _passwordVisible;
+  late bool _passwordInvisible;
+  late bool _isButtonDisabled;
 
   @override
   void initState() {
     super.initState();
     _emailInputController = TextEditingController();
     _passwordInputController = TextEditingController();
-    _passwordVisible = false;
+    _passwordInvisible = true;
+    _isButtonDisabled = false;
   }
 
   @override
@@ -32,10 +34,20 @@ class LoginPageState extends State<LoginPage> {
   }
 
   void submit() async {
+    // disable login/submit button awaiting response
+    setState(() {
+        _isButtonDisabled = true;
+      });
+
     if (!_formKey.currentState!.validate()) {
       log(" --- Form validation failed --- ");
       const snackBar = SnackBar(content: Text('Please fill in all fields'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      // Enable login/submit button after response
+      setState(() {
+        _isButtonDisabled = false;
+      });
     }
 
     log(" --- Form Validation Succesfull ---");
@@ -62,8 +74,15 @@ class LoginPageState extends State<LoginPage> {
       log(" --- Login failed: $error --- ");
       final snackBar = SnackBar(content: Text("Login Failed: \n$error"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      // Enable login/submit button after response
+      setState(() {
+        _isButtonDisabled = false;
+      });
     }
   }
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +102,7 @@ class LoginPageState extends State<LoginPage> {
                   controller: _emailInputController,
                   decoration: const InputDecoration(
                     labelText: "email",
-                    hintText: "Enter your email",
+                    hintText: "Enter your email",                    
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -91,6 +110,10 @@ class LoginPageState extends State<LoginPage> {
                     }
                     return null;
                   },
+                  //suggestions enabled, autocorrect disabled
+                  enableSuggestions: true,
+                  autocorrect: false,
+
                 ),
 
                 // Password box
@@ -103,19 +126,19 @@ class LoginPageState extends State<LoginPage> {
                       // toggle button for password visibilty
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _passwordVisible
+                          _passwordInvisible
                               ? Icons.visibility
                               : Icons.visibility_off,
                           color: Theme.of(context).primaryColorDark,
                         ),
                         onPressed: () {
                           setState(() {
-                            _passwordVisible = !_passwordVisible;
+                            _passwordInvisible = !_passwordInvisible;
                           });
                         },
                       )),
                   // make text unreadable on toggle and disable autocorrect and suggestions
-                  obscureText: _passwordVisible,
+                  obscureText: _passwordInvisible,
                   enableSuggestions: false,
                   autocorrect: false,
                   validator: (value) {
@@ -137,7 +160,7 @@ class LoginPageState extends State<LoginPage> {
                       child: const Text("Logout"),
                     ),
                     ElevatedButton(
-                      onPressed: submit,
+                      onPressed: _isButtonDisabled ? null : submit,
                       child: const Text('Login'),
                     ),
                   ],
