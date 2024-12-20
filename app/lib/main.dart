@@ -76,6 +76,15 @@ class App extends StatelessWidget {
             ),
           ),
         ),
+        snackBarTheme: const SnackBarThemeData(
+          backgroundColor: Color.fromRGBO(23, 23, 23, 1),
+          contentTextStyle: TextStyle(color: Colors.white),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(16),
+            ),
+          ),
+        ),
       ),
       home: const HomePage(),
     );
@@ -109,7 +118,7 @@ class HomePage extends StatelessWidget {
                 icon: Icons.open_in_new,
                 onTap: () {},
               ),
-              
+
               const SizedBox(height: 20), // Add spacing between buttons
               // Join Case Button
               Button(
@@ -118,7 +127,7 @@ class HomePage extends StatelessWidget {
                 onTap: () {},
               ),
 
-               const SizedBox(height: 20), // Add spacing between buttons
+              const SizedBox(height: 20), // Add spacing between buttons
               // Transfer Evidence Button
               Button(
                 title: 'Transfer evidence',
@@ -129,16 +138,15 @@ class HomePage extends StatelessWidget {
               if (kDebugMode)
                 // Debug page Button
                 const SizedBox(height: 20), // Add spacing between buttons
-                ElevatedButton(
-                  child: const Text('Debug page'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DebugPage()),
-                    );
-                  },
-                ),
+              ElevatedButton(
+                child: const Text('Debug page'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const DebugPage()),
+                  );
+                },
+              ),
             ],
           ),
         ),

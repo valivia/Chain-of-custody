@@ -36,25 +36,15 @@ class LoginPageState extends State<LoginPage> {
   void submit() async {
     // disable login/submit button awaiting response
     setState(() {
-        _isButtonDisabled = true;
-      });
+      _isButtonDisabled = true;
+    });
 
     if (!_formKey.currentState!.validate()) {
-      log(" --- Form validation failed --- ");
-      const snackBar = SnackBar(content: Text('Please fill in all fields'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
       // Enable login/submit button after response
       setState(() {
         _isButtonDisabled = false;
       });
     }
-
-    log(" --- Form Validation Succesfull ---");
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Logging in...")),
-    );
 
     try {
       bool loginResponse = await Authentication.login(
@@ -62,13 +52,7 @@ class LoginPageState extends State<LoginPage> {
         _passwordInputController.text,
       );
       if (loginResponse) {
-        const snackBar =
-            SnackBar(content: Text("Login Succesfull, redirecting..."));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const DebugPage()),
-        );
+        Navigator.pop(context);
       }
     } catch (error) {
       log(" --- Login failed: $error --- ");
@@ -81,8 +65,6 @@ class LoginPageState extends State<LoginPage> {
       });
     }
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +84,7 @@ class LoginPageState extends State<LoginPage> {
                   controller: _emailInputController,
                   decoration: const InputDecoration(
                     labelText: "email",
-                    hintText: "Enter your email",                    
+                    hintText: "Enter your email",
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -113,7 +95,6 @@ class LoginPageState extends State<LoginPage> {
                   //suggestions enabled, autocorrect disabled
                   enableSuggestions: true,
                   autocorrect: false,
-
                 ),
 
                 // Password box
