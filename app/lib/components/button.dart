@@ -18,7 +18,7 @@ class Button extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         minimumSize: const Size.fromHeight(1),
       ),
-      onPressed: () {},
+      onPressed: onTap,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
