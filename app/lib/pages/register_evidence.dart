@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:cool_alert/cool_alert.dart';
 
 class RegisterEvidencePage extends StatefulWidget {
   final Map<String, dynamic> scannedData;
@@ -69,11 +70,20 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
       'originCoordinates': _originCoordinatesController.text,
       'originLocationDescription': _originLocationDescriptionController.text,
     });
-    return http.post(
-      url,
-      headers: headers,
-      body: body,
-    );
+
+    try {
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: body,
+      );
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Failed to submit evidence data');
+    }
   }
 
   @override
@@ -188,24 +198,58 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                 ),
                 SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('Back'),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Back'),
+                      ),
                     ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          final response = await submitEvidenceData();
-                          // Log response
-                          print(response.body);
-                          // Navigator.pop(context);
-                        }
-                      },
-                      child: Text('Submit'),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            final response = await submitEvidenceData();
+                            // Log response
+                            print(response.body);
+
+                            if (response.statusCode == 201) {
+                              CoolAlert.show(
+                                context: context,
+                                type: CoolAlertType.success,
+                                title: 'Success',
+                                text: 'Submission complete',
+                                onConfirmBtnTap: () {
+                                  Navigator.pop(context); // Close the alert
+                                  // Navigate to scan more
+                                },
+                                confirmBtnText: 'Scan More',
+                                onCancelBtnTap: () {
+                                  Navigator.push(context,
+                                    MaterialPageRoute(
+                                      builder: (context) => App(),
+                                    ),
+                                  );
+                                },
+                                cancelBtnText: 'Go to Main',
+                                showCancelBtn: true,
+                              );
+                            } else {
+                              CoolAlert.show(
+                                context: context,
+                                type: CoolAlertType.error,
+                                title: 'Error',
+                                text: 'Submission failed. Please try again.',
+                              );
+                            }
+                          }
+                        },
+                        child: Text('Submit'),
+                      ),
                     ),
                   ],
                 ),
