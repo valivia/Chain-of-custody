@@ -77,11 +77,8 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
         headers: headers,
         body: body,
       );
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
       return response;
     } catch (e) {
-      print('Error: $e');
       throw Exception('Failed to submit evidence data');
     }
   }
