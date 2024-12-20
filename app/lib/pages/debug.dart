@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:coc/pages/scanner.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/nfc.dart';
+import 'package:coc/pages/login.dart';
+
 
 class DebugPage extends StatelessWidget {
   const DebugPage({super.key});
@@ -19,8 +21,8 @@ class DebugPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Column(
-            spacing: 20,
             children: [
+              const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 child: const Text('Scan QR Code'),
                 onPressed: () {
@@ -30,6 +32,7 @@ class DebugPage extends StatelessWidget {
                   );
                 },
               ),
+              const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 child: const Text('Take Picture'),
                 onPressed: () {
@@ -40,12 +43,23 @@ class DebugPage extends StatelessWidget {
                   );
                 },
               ),
+              const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 child: const Text('Scan NFC Tag'),
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => NfcScanPage()),
+                  );
+                },
+              ),
+              const SizedBox(height: 20), // Add spacing between buttons
+              ElevatedButton(
+                child: const Text('Login page'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
                   );
                 },
               ),
