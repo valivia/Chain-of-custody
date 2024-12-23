@@ -66,21 +66,11 @@ class DebugPage extends StatelessWidget {
               ),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
-                child: const Text('Evidence list page'),
+                child: const Text('Evidence List'),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      // Dirty AF solution to quick test page with some content, do not let this stay
-                        builder: (context) => EvidenceScreen(
-                              evidenceItems: List.generate(5, (i) {
-                                final randomId = Random().nextInt(100).toString();
-                                return Evidence(
-                                  "Item ID $randomId",
-                                  "Description of evidence item $randomId",
-                                );
-                              }),
-                            )),
+                    MaterialPageRoute(builder: (context) => EvidenceListView()),
                   );
                 },
               ),
