@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+// TODO: expand class for further display
 class Evidence {
   final String evidenceID;
   final String evidenceType;
@@ -17,13 +18,14 @@ class Evidence {
 
   factory Evidence.fromJson(Map<String, dynamic> json) {
     return Evidence(
-      evidenceID: json['evidenceID'],
-      evidenceType: json['evidenceType'],
-      evidenceDescription: json['evidenceDescription'],
+      evidenceID: json['id'] as String,
+      evidenceType: json['itemType'] as String,
+      evidenceDescription: json['description'] as String,
     );
   }
 
   static Future<List<Evidence>> fetchEvidence() async {
+    // TODO: add token for auth
     final url = Uri.parse("https://coc.hootsifer.com/evidence/tag");
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -34,7 +36,6 @@ class Evidence {
       if (response.statusCode == 200) {
         log(" --- Request Successful --- ");
         final evidenceList = await compute(parseJson, response.body);
-        log(evidenceList.toString());
         return evidenceList;
       } else {
         final error = jsonDecode(response.body)["message"];
@@ -48,7 +49,8 @@ class Evidence {
   }
 
   static List<Evidence> parseJson(String responseBody) {
-    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-    return parsed.map<Evidence>((json) => Evidence.fromJson(json)).toList();
+    final parsed = jsonDecode(responseBody) as Map<String, dynamic>;
+    final evidenceList = parsed['data'] as List<dynamic>;
+    return evidenceList.map<Evidence>((json) => Evidence.fromJson(json as Map<String, dynamic>)).toList();
   }
 }

@@ -7,48 +7,40 @@ class EvidenceListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final evidenceItemListFuture = Evidence.fetchEvidence();
-    log('Type of evidenceItemListFuture: ${evidenceItemListFuture.runtimeType}');
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Evidence"),
+        title: const Text('Evidence List'),
       ),
       body: FutureBuilder<List<Evidence>>(
-        future: evidenceItemListFuture,
+        future: Evidence.fetchEvidence(),
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text('Error occurred'),
-            );
-          } else if (snapshot.hasData) {
-            return EvidenceList(evidenceItems: snapshot.data!);
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error occured: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No evidence data found'));
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
+            final evidenceList = snapshot.data!;
+            return ListView.builder(
+              itemCount: evidenceList.length,
+              itemBuilder: (context, index) {
+                final evidence = evidenceList[index];
+                return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(10),
+                  ),
+                  onPressed: () {
+                    // TODO: Handle item click
+                    log('Clicked on ${evidence.evidenceID}');
+                  },
+                  child: Text("ID: ${evidence.evidenceID}"),
+                );
+              },
             );
           }
         },
       ),
-    );
-  }
-}
-
-class EvidenceList extends StatelessWidget {
-  const EvidenceList({super.key, required this.evidenceItems});
-
-  final List<Evidence> evidenceItems;
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      itemCount: evidenceItems.length,
-      itemBuilder: (context, index) {
-        return Text(evidenceItems[index].evidenceID);
-      },
     );
   }
 }
