@@ -16,38 +16,18 @@ model Case {
 
   title       String
   description String
-  status      String
+  status      CaseStatus @default(OPEN)
 
-  users                CaseUser[]
-  CaseToTaggedEvidence CaseToTaggedEvidence[]
-  CaseToMediaEvidence  CaseToMediaEvidence[]
-  AuditLog             AuditLog[]
+  users          CaseUser[]
+  taggedEvidence TaggedEvidence[]
+  mediaEvidence  MediaEvidence[]
+  AuditLog       AuditLog[]
 }
 
-model CaseToTaggedEvidence {
-  id String @id @default(cuid())
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  caseId     String
-  evidenceId String
-
-  case     Case           @relation(fields: [caseId], references: [id])
-  evidence TaggedEvidence @relation(fields: [evidenceId], references: [id])
-}
-
-model CaseToMediaEvidence {
-  id String @id @default(cuid())
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  caseId     String
-  evidenceId String
-
-  case     Case           @relation(fields: [caseId], references: [id])
-  evidence MediaEvidence? @relation(fields: [evidenceId], references: [id])
+enum CaseStatus {
+  OPEN
+  CLOSED
+  ARCHIVED
 }
 
 model CaseUser {
@@ -60,8 +40,8 @@ model CaseUser {
   userId      String
   permissions String @default("0") @db.VarBit
 
-  case Case @relation(fields: [caseId], references: [id])
-  user User @relation(fields: [userId], references: [id])
+  case Case @relation(fields: [caseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model MediaEvidence {
@@ -72,11 +52,12 @@ model MediaEvidence {
 
   originCoordinates String
 
-  userId    String
-  createdBy User   @relation(fields: [userId], references: [id])
+  userId String
+  caseId String
 
-  cases    CaseToMediaEvidence[]
-  AuditLog AuditLog[]
+  case      Case       @relation(fields: [caseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdBy User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  auditLog  AuditLog[]
 }
 
 model TaggedEvidence {
@@ -93,10 +74,11 @@ model TaggedEvidence {
   description String?
 
   userId String
+  caseId String
 
-  cases    CaseToTaggedEvidence[]
-  User     User                   @relation(fields: [userId], references: [id])
-  AuditLog AuditLog[]
+  case      Case       @relation(fields: [caseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdBy User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  auditLog  AuditLog[]
 }
 
 model User {

@@ -13,7 +13,7 @@ export class EvidenceController {
     // Get evidence info
     const data = await this.prisma.mediaEvidence.findUnique({
       where: { id },
-      include: { cases: { include: { case: { include: { users: true } } } } },
+      include: { case: true }
     });
 
     if (!data) {
