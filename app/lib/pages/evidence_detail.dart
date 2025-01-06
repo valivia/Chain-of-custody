@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:coc/service/evidence.dart';
 import 'package:coc/service/edit_formats.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class EvidenceDetailView extends StatelessWidget {
   const EvidenceDetailView({super.key, required this.evidenceItem});
