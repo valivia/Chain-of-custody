@@ -1,6 +1,7 @@
 import { BadRequestException, Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { Action } from "@prisma/client";
-import { IsLatLong, IsNumber, IsOptional, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsDate, IsLatLong, IsNumber, IsOptional, IsString, MinDate } from "class-validator";
 import { Request } from "express";
 import { User, UserEntity } from "src/guards/auth.guard";
 import { getIp } from "src/lib/request";
@@ -8,6 +9,15 @@ import { PrismaService } from 'src/services/prisma.service';
 
 
 class TaggedEvidenceDto {
+  @IsString()
+  id: string;
+
+  @IsOptional()
+  @Type(() => Date)
+  @IsDate()
+  @MinDate(new Date())
+  madeOn: Date;
+
   @IsString()
   caseId: string;
 
@@ -64,6 +74,7 @@ export class TagController {
     const data = await this.prisma.taggedEvidence.create({
       data: {
         ...taggedEvidence,
+        id: undefined,
         createdBy: { connect: { id: user.id } },
         case: { connect: { id: caseId }, },
       },
