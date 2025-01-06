@@ -19,7 +19,7 @@ class EvidenceListView extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error occured: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No evidence data found'));
+            return const Center(child: Text('No evidence data found with current case ID'));
           } else {
             final evidenceList = snapshot.data!;
             return ListView.builder(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:developer';
+import 'package:coc/service/authentication.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,10 +26,12 @@ class Evidence {
   }
 
   static Future<List<Evidence>> fetchEvidence() async {
-    // TODO: add token for auth
-    final url = Uri.parse("https://coc.hootsifer.com/evidence/tag");
+    // TODO: make URL dynamic for case selection later
+    final token = await Authentication.getBearerToken();
+    final url = Uri.parse("https://coc.hootsifer.com/case/cm5l43iw70004o52i2ywugo2y");
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': token,
     };
     try {
       final response = await http.get(url, headers: headers);
@@ -50,7 +53,7 @@ class Evidence {
 
   static List<Evidence> parseJson(String responseBody) {
     final parsed = jsonDecode(responseBody) as Map<String, dynamic>;
-    final evidenceList = parsed['data'] as List<dynamic>;
+    final evidenceList = parsed['data']['taggedEvidence'] as List<dynamic>;
     return evidenceList.map<Evidence>((json) => Evidence.fromJson(json as Map<String, dynamic>)).toList();
   }
 }
