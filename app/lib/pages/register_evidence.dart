@@ -3,9 +3,11 @@ import 'package:coc/service/authentication.dart';
 import 'package:coc/service/location.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:coc/pages/scanner.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:cool_alert/cool_alert.dart';
+import 'package:coc/components/succes_animation.dart';
+import 'package:coc/components/failed_animation.dart';
 
 class RegisterEvidencePage extends StatefulWidget {
   final Map<String, dynamic> scannedData;
@@ -77,6 +79,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
         headers: headers,
         body: body,
       );
+      print(response);
       return response;
     } catch (e) {
       throw Exception('Failed to submit evidence data');
@@ -213,33 +216,123 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                             final response = await submitEvidenceData();
                             // Log response
                             print(response.body);
+
                             if (response.statusCode == 201) {
-                              CoolAlert.show(
+                              showDialog(
                                 context: context,
-                                type: CoolAlertType.success,
-                                title: 'Success',
-                                text: 'Submission complete',
-                                onConfirmBtnTap: () {
-                                  Navigator.pop(context);
-                                  // Navigate to scan more
-                                },
-                                confirmBtnText: 'Scan More',
-                                onCancelBtnTap: () {
-                                  Navigator.push(context,
-                                    MaterialPageRoute(
-                                      builder: (context) => App(),
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'Evidence added',
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 20),
+                                        CheckAnimation(
+                                          size: 200, // Adjusted size to make the animation smaller
+                                          onComplete: () {
+                                            //
+                                          },
+                                        ),
+                                      ],
                                     ),
+                                    actions: <Widget>[
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => QRScannerPage()),
+                                              );
+                                            },
+                                            child: Text('Scan More'),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                                Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => App(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text('Go to Main'),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   );
                                 },
-                                cancelBtnText: 'Go to Main',
-                                showCancelBtn: true,
                               );
                             } else {
-                              CoolAlert.show(
+                              showDialog(
                                 context: context,
-                                type: CoolAlertType.error,
-                                title: 'Error',
-                                text: 'Submission failed. Please try again.',
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'Submission failed',
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 20),
+                                        FailedAnimation(
+                                          size: 200, // Adjusted size to make the animation smaller
+                                          onComplete: () {
+                                            //
+                                          },
+                                        ),
+                                        SizedBox(height: 20),
+                                        Text(
+                                          'Error code: ${response.statusCode}',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: <Widget>[
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('Retry'),
+                                            ),
+                                          ),
+                                          SizedBox(width: 10),
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => App()),
+                                                );
+                                              },
+                                              child: Text('Go to Main'),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
                             }
                           }
