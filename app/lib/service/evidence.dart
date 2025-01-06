@@ -5,16 +5,23 @@ import 'package:coc/service/authentication.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-// TODO: expand class for further display
 class Evidence {
   final String evidenceID;
   final String evidenceType;
   final String evidenceDescription;
+  final String evidenceOriginCoords;
+  final String evidenceOriginDescription;
+  final DateTime evidenceCreatedAt;
+  final DateTime evidenceUpdatedAt;
 
   const Evidence({
     required this.evidenceID,
     required this.evidenceType,
     required this.evidenceDescription,
+    required this.evidenceOriginCoords,
+    required this.evidenceOriginDescription,
+    required this.evidenceCreatedAt,
+    required this.evidenceUpdatedAt,
   });
 
   factory Evidence.fromJson(Map<String, dynamic> json) {
@@ -22,6 +29,10 @@ class Evidence {
       evidenceID: json['id'] as String,
       evidenceType: json['itemType'] as String,
       evidenceDescription: json['description'] as String,
+      evidenceOriginCoords: json['originCoordinates'] as String,
+      evidenceOriginDescription: json['originLocationDescription'] as String,
+      evidenceCreatedAt: DateTime.parse(json['createdAt'] as String),
+      evidenceUpdatedAt: DateTime.parse(json['updatedAt'] as String),
     );
   }
 

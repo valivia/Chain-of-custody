@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:coc/service/evidence.dart';
+import 'package:coc/pages/evidence_detail.dart';
 
 class EvidenceListView extends StatelessWidget {
   const EvidenceListView({super.key});
@@ -9,7 +10,7 @@ class EvidenceListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Evidence List'),
+        title: const Text('Evidence of [Case id]'),
       ),
       body: FutureBuilder<List<Evidence>>(
         future: Evidence.fetchEvidence(),
@@ -33,6 +34,12 @@ class EvidenceListView extends StatelessWidget {
                   onPressed: () {
                     // TODO: Handle item click
                     log('Clicked on ${evidence.evidenceID}');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EvidenceDetailView(evidenceItem: evidence),
+                      ),
+                    );
                   },
                   child: Text("ID: ${evidence.evidenceID}"),
                 );
