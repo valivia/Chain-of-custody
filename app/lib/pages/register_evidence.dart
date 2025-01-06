@@ -3,8 +3,11 @@ import 'package:coc/service/authentication.dart';
 import 'package:coc/service/location.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:coc/pages/scanner.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:coc/components/succes_animation.dart';
+import 'package:coc/components/failed_animation.dart';
 
 class RegisterEvidencePage extends StatefulWidget {
   final Map<String, dynamic> scannedData;
@@ -69,11 +72,18 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
       'originCoordinates': _originCoordinatesController.text,
       'originLocationDescription': _originLocationDescriptionController.text,
     });
-    return http.post(
-      url,
-      headers: headers,
-      body: body,
-    );
+
+    try {
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: body,
+      );
+      print(response);
+      return response;
+    } catch (e) {
+      throw Exception('Failed to submit evidence data');
+    }
   }
 
   @override
@@ -188,24 +198,147 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                 ),
                 SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('Back'),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Back'),
+                      ),
                     ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          final response = await submitEvidenceData();
-                          // Log response
-                          print(response.body);
-                          // Navigator.pop(context);
-                        }
-                      },
-                      child: Text('Submit'),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            final response = await submitEvidenceData();
+                            // Log response
+                            print(response.body);
+
+                            if (response.statusCode == 201) {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'Evidence added',
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 20),
+                                        CheckAnimation(
+                                          size: 200, // Adjusted size to make the animation smaller
+                                          onComplete: () {
+                                            //
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    actions: <Widget>[
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => QRScannerPage()),
+                                              );
+                                            },
+                                            child: Text('Scan More'),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                                Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => App(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text('Go to Main'),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'Submission failed',
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 20),
+                                        FailedAnimation(
+                                          size: 200, // Adjusted size to make the animation smaller
+                                          onComplete: () {
+                                            //
+                                          },
+                                        ),
+                                        SizedBox(height: 20),
+                                        Text(
+                                          'Error code: ${response.statusCode}',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: <Widget>[
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('Retry'),
+                                            ),
+                                          ),
+                                          SizedBox(width: 10),
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => App()),
+                                                );
+                                              },
+                                              child: Text('Go to Main'),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          }
+                        },
+                        child: Text('Submit'),
+                      ),
                     ),
                   ],
                 ),
