@@ -3,11 +3,10 @@ import 'package:coc/service/authentication.dart';
 import 'package:coc/service/location.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:coc/pages/scanner.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:coc/components/succes_animation.dart';
-import 'package:coc/components/failed_animation.dart';
+import 'package:coc/components/local_store.dart';
+import 'package:coc/components/popups.dart'; // Import the popups.dart file
 
 class RegisterEvidencePage extends StatefulWidget {
   final Map<String, dynamic> scannedData;
@@ -58,29 +57,28 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     });
   }
 
-  Future<http.Response> submitEvidenceData() async {
+  Future<Map<String, dynamic>> submitEvidenceData() async {
     final url = Uri.parse('https://coc.hootsifer.com/evidence/tag');
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': await Authentication.getBearerToken(),
     };
-    final body = jsonEncode({
+    final body = {
       'id': _idController.text,
       'containerType': 1,
       'itemType': _itemTypeController.text,
       'description': _descriptionController.text,
       'originCoordinates': _originCoordinatesController.text,
       'originLocationDescription': _originLocationDescriptionController.text,
-    });
+    };
 
     try {
       final response = await http.post(
         url,
         headers: headers,
-        body: body,
+        body: jsonEncode(body),
       );
-      print(response);
-      return response;
+      return {'response': response, 'request': {'url': url.toString(), 'headers': headers, 'body': body}};
     } catch (e) {
       throw Exception('Failed to submit evidence data');
     }
@@ -213,127 +211,26 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            final response = await submitEvidenceData();
-                            // Log response
-                            print(response.body);
+                            bool isConnected = await LocalStore.hasInternetConnection();
+                            Map<String, dynamic> result = await submitEvidenceData();
+                            http.Response response = result['response'];
+                            Map<String, dynamic> requestData = result['request'];
+                            String evidenceKey = requestData['body']['id']; // Generate a unique key
 
-                            if (response.statusCode == 201) {
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          'Evidence added',
-                                          style: TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(height: 20),
-                                        CheckAnimation(
-                                          size: 200, // Adjusted size to make the animation smaller
-                                          onComplete: () {
-                                            //
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    actions: <Widget>[
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(builder: (context) => QRScannerPage()),
-                                              );
-                                            },
-                                            child: Text('Scan More'),
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                                Navigator.push(context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) => App(),
-                                                  ),
-                                                );
-                                              },
-                                              child: Text('Go to Main'),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                            if (isConnected) {
+                              // Handle response status code
+                              if (response.statusCode == 401) {
+                                showFailureDialog(context, 'Unauthorized access. Please log in again.');
+                              } else if (response.statusCode == 200) {
+                                showSuccessDialog(context, 'Evidence submitted successfully');
+                              } else {
+                                showFailureDialog(context, 'Failed to submit evidence data: ${response.statusCode}');
+                              }
                             } else {
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          'Submission failed',
-                                          style: TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(height: 20),
-                                        FailedAnimation(
-                                          size: 200, // Adjusted size to make the animation smaller
-                                          onComplete: () {
-                                            //
-                                          },
-                                        ),
-                                        SizedBox(height: 20),
-                                        Text(
-                                          'Error code: ${response.statusCode}',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    actions: <Widget>[
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('Retry'),
-                                            ),
-                                          ),
-                                          SizedBox(width: 10),
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(builder: (context) => App()),
-                                                );
-                                              },
-                                              child: Text('Go to Main'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                              // Save evidence locally
+                              requestData['timestamp'] = DateTime.now().toIso8601String();
+                              await LocalStore.saveApiResponse(evidenceKey, requestData);
+                              showSuccessDialog(context, 'Evidence saved locally');
                             }
                           }
                         },
