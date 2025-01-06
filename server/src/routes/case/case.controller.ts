@@ -18,7 +18,6 @@ class CaseUpdateDto extends CaseDto {
   status: CaseStatus;
 }
 
-
 @Controller('case')
 export class CaseController {
   constructor(private readonly prisma: PrismaService) { }
@@ -29,6 +28,26 @@ export class CaseController {
     if (!userInCase) {
       throw new ForbiddenException();
     }
+  }
+
+  @Get()
+  async findAll(@User() user: UserEntity) {
+    const data = await this.prisma.case.findMany({
+      where: {
+        users: {
+          some: {
+            userId: user.id
+          }
+        }
+      },
+      include: {
+        users: { where: { userId: user.id } },
+        taggedEvidence: true,
+        mediaEvidence: true
+      }
+    });
+
+    return { data };
   }
 
   @Get(':id')
