@@ -6,7 +6,7 @@ class MapPointer extends StatelessWidget {
   final double latitude;
   final double longitude;
 
-  MapPointer({required this.latitude, required this.longitude});
+  const MapPointer({super.key, required this.latitude, required this.longitude});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class MapPointer extends StatelessWidget {
       children: [
         TileLayer(
           urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          subdomains: ['a', 'b', 'c'],
+          subdomains: const['a', 'b', 'c'],
         ),
         MarkerLayer(
           markers:  [
