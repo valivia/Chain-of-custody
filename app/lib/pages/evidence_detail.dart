@@ -66,14 +66,14 @@ class EvidenceDetailView extends StatelessWidget {
                               const SizedBox(height: 10),
                               Text('Origin location coordinates: ${evidenceItem.evidenceOriginCoords}'),
                               const SizedBox(height: 10),
-                              // SizedBox(
-                              //   width: double.infinity,
-                              //   height: 200,
-                              //   // child: MapPage(
-                              //   //   latitude: (EditFormats().getLatitude(evidenceItem.evidenceOriginCoords)),
-                              //   //   longitude: (EditFormats().getLongitude(evidenceItem.evidenceOriginCoords)),
-                              //   // ),
-                              // ),
+                              SizedBox(
+                                width: double.infinity,
+                                height: 200,
+                                child: MapPointer(
+                                  latitude: (EditFormats().getLatitude(evidenceItem.evidenceOriginCoords)),
+                                  longitude: (EditFormats().getLongitude(evidenceItem.evidenceOriginCoords)),
+                                ),
+                              ),
                             ],
                           ),
                         ),
