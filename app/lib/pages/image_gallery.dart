@@ -40,9 +40,42 @@ class _ImageGalleryPageState extends State<ImageGalleryPage> {
               ),
               itemCount: _images.length,
               itemBuilder: (context, index) {
-                return Image.file(_images[index]);
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ImagePreviewPage(imageFile: _images[index]),
+                      ),
+                    );
+                  },
+                  child: ClipRect(
+                    child: Container(
+                      child: FittedBox(
+                        fit: BoxFit.cover,
+                        child: Image.file(_images[index]),
+                      ),
+                    ),
+                  ),
+                );
               },
             ),
+    );
+  }
+}
+
+class ImagePreviewPage extends StatelessWidget {
+  final File imageFile;
+
+  const ImagePreviewPage({Key? key, required this.imageFile}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Image Preview')),
+      body: Center(
+        child: Image.file(imageFile),
+      ),
     );
   }
 }
