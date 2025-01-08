@@ -74,18 +74,17 @@ class Case {
         return caseList;
       } else {
         final error = jsonDecode(response.body)["message"];
-        log(" --- Error occured fetching data: $error --- ");
+        log(" --- Error occured fetching case data: $error --- ");
         return Future.error(error);
       }
     } catch (error) {
-      log(" --- Error occurred with request: $error --- ");
+      log(" --- Error occurred with case request: $error --- ");
       return Future.error("Unknown error occurred");
     }
   }
 
   static List<Case> parseJson(String responseBody) {
     final parsed = jsonDecode(responseBody) as Map<String, dynamic>;
-    log(parsed.toString());
     final caseList = parsed['data'] as List<dynamic>;
     return caseList
         .map<Case>((json) => Case.fromJson(json as Map<String, dynamic>))
