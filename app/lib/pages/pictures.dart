@@ -16,6 +16,7 @@ class PictureTakingPage extends StatefulWidget {
 class _PictureTakingPageState extends State<PictureTakingPage> {
   CameraController? _cameraController;
   List<CameraDescription>? cameras;
+  bool _isFlashOn = false;
 
   @override
   void initState() {
@@ -43,9 +44,24 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
       final String filePath = '$pictureDirectory/${DateTime.now().millisecondsSinceEpoch}.jpg';
 
       try {
+        // Set flash mode to auto or always before taking a picture
+        await _cameraController!.setFlashMode(_isFlashOn ? FlashMode.always : FlashMode.off);
+
         XFile picture = await _cameraController!.takePicture();
         await picture.saveTo(filePath);
         print('Picture saved to $filePath');
+
+        // Show feedback when a picture is taken without flash
+        if (!_isFlashOn) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Center(
+                heightFactor: 1, // Ensures the text is vertically centered
+                child: Text('Picture saved'),
+              ),
+            ),
+          );
+        }
 
         // Check if the file exists
         if (await File(filePath).exists()) {
@@ -74,7 +90,18 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Take a Picture')),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(_isFlashOn ? Icons.flash_on : Icons.flash_off),
+            onPressed: () {
+              setState(() {
+                _isFlashOn = !_isFlashOn;
+              });
+            },
+          ),
+        ],
+      ),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 1,
