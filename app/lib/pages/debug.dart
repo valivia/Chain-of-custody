@@ -1,11 +1,11 @@
 import 'dart:developer';
+import 'package:coc/controllers/case.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/pages/scanner.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/nfc.dart';
 import 'package:coc/pages/login.dart';
 import 'package:coc/components/evidence_list.dart';
-import 'package:coc/service/case.dart';
 import 'package:coc/pages/case_detail.dart';
 
 class DebugPage extends StatelessWidget {
@@ -107,7 +107,7 @@ class DebugPage extends StatelessWidget {
                                 ),
                                 onPressed: () {
                                   // TODO: Handle item click
-                                  log('Clicked on ${caseItem.caseID}');
+                                  log('Clicked on ${caseItem.id}');
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -115,7 +115,7 @@ class DebugPage extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                child: Text("ID: ${caseItem.caseID}"),
+                                child: Text("ID: ${caseItem.id}"),
                               );
                             },
                           );

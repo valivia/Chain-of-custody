@@ -1,8 +1,5 @@
-import 'dart:developer';
+import 'package:coc/controllers/case.dart';
 import 'package:flutter/material.dart';
-import 'package:coc/service/evidence.dart';
-import 'package:coc/service/edit_formats.dart';
-import 'package:coc/service/case.dart';
 import 'package:coc/components/evidence_list.dart';
 
 class CaseDetailView extends StatelessWidget {
@@ -13,7 +10,7 @@ class CaseDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('CASE ID: ${caseItem.caseID}'),
+        title: Text('CASE ID: ${caseItem.id}'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -21,12 +18,12 @@ class CaseDetailView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Case Title: ${caseItem.caseTitle}',
+              'Case Title: ${caseItem.title}',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const Text("Tagged Evidence"),
             Expanded(
-              child: EvidenceListView(caseID: caseItem.caseID),
+              child: EvidenceListView(taggedEvidence: caseItem.taggedEvidence),
             )
           ],
         ),
