@@ -1,5 +1,8 @@
 import 'package:coc/controllers/case.dart';
 import 'package:flutter/material.dart';
+import 'package:coc/service/evidence.dart';
+import 'package:coc/service/edit_formats.dart';
+import 'package:coc/components/evidence_list.dart';
 
 class CaseDetailView extends StatelessWidget {
   const CaseDetailView({super.key, required this.caseItem});
@@ -13,12 +16,19 @@ class CaseDetailView extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            'Case Title: ${caseItem.title}',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ]),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Case Title: ${caseItem.title}',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const Text("Tagged Evidence"),
+            Expanded(
+              child: EvidenceListView(caseID: caseItem.id),
+            )
+          ],
+        ),
       ),
     );
   }

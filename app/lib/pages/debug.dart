@@ -5,7 +5,7 @@ import 'package:coc/pages/scanner.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/nfc.dart';
 import 'package:coc/pages/login.dart';
-import 'package:coc/pages/evidence_list.dart';
+import 'package:coc/components/evidence_list.dart';
 import 'package:coc/pages/case_detail.dart';
 
 class DebugPage extends StatelessWidget {
@@ -63,16 +63,6 @@ class DebugPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
-                },
-              ),
-              const SizedBox(height: 20), // Add spacing between buttons
-              ElevatedButton(
-                child: const Text('Evidence List'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => EvidenceListView()),
                   );
                 },
               ),
