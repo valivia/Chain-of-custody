@@ -5,6 +5,7 @@ import 'package:coc/pages/nfc.dart';
 import 'package:coc/pages/login.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/pages/evidence_list.dart';
+// import 'package:coc/Themes/theme.dart';
 import 'dart:math';
 
 class DebugPage extends StatelessWidget {
@@ -13,9 +14,9 @@ class DebugPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(45, 45, 45, 1),
+      //backgroundColor: const Color.fromRGBO(45, 45, 45, 1),
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(23, 23, 23, 1),
+        //backgroundColor: const Color.fromRGBO(23, 23, 23, 1),
         leading: const Icon(Icons.home, color: Colors.white),
         title: const Text('Debug'),
       ),
