@@ -5,13 +5,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:coc/components/local_store.dart';
 
 final globalState = GetIt.instance;
 
-void main() {
-  globalState
-      .registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize Hive and open the box
+  await LocalStore.init();
+
+  globalState.registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
   globalState.registerSingleton<LocationService>(LocationService());
 
   runApp(const App());

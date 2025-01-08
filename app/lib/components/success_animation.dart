@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:angles/angles.dart';
 import 'dart:math';
 
-class CheckAnimation extends StatefulWidget {
+class SuccessAnimation extends StatefulWidget {
   final double size;
   final VoidCallback onComplete;
 
-  CheckAnimation({this.size = 50, required this.onComplete}); // Adjusted size to 50
+  SuccessAnimation({this.size = 50, required this.onComplete});
 
   @override
-  _CheckAnimationState createState() => _CheckAnimationState();
+  _SuccessAnimationState createState() => _SuccessAnimationState();
 }
 
-class _CheckAnimationState extends State<CheckAnimation>
+class _SuccessAnimationState extends State<SuccessAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> curve;
@@ -39,7 +38,7 @@ class _CheckAnimationState extends State<CheckAnimation>
       width: widget.size,
       color: Colors.transparent,
       child: CustomPaint(
-        painter: CheckPainter(value: curve.value),
+        painter: SuccessPainter(value: curve.value),
       ),
     );
   }
@@ -51,24 +50,16 @@ class _CheckAnimationState extends State<CheckAnimation>
   }
 }
 
-class CheckPainter extends CustomPainter {
+class SuccessPainter extends CustomPainter {
   late Paint _paint;
   double value;
 
-  late double _length;
-  late double _offset;
-  late double _startingAngle;
-
-  CheckPainter({required this.value}) {
+  SuccessPainter({required this.value}) {
     _paint = Paint()
       ..color = Colors.greenAccent
       ..strokeWidth = 5.0
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
-
-    _length = 20; // Adjusted length to make the animation smaller
-    _offset = 0;
-    _startingAngle = 205;
   }
 
   @override
@@ -112,7 +103,7 @@ class CheckPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CheckPainter old) {
+  bool shouldRepaint(SuccessPainter old) {
     return old.value != value;
   }
 }
