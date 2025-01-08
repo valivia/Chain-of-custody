@@ -51,7 +51,7 @@ class DebugPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const PictureTakingPage()),
+                        builder: (context) => const PictureTakingPage(caseId:  "cm5lbsq5b0002n02ixqc71e2w")),
                   );
                 },
               ),

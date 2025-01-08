@@ -5,9 +5,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:coc/pages/image_gallery.dart'; // Import the new page
 import 'package:coc/pages/scanner.dart'; // Import the QR scanner page
+import 'package:coc/components/local_store.dart'; // Import the LocalStore class
 
 class PictureTakingPage extends StatefulWidget {
-  const PictureTakingPage({super.key});
+  final String caseId; // Add caseId to the constructor
+
+  const PictureTakingPage({super.key, required this.caseId});
 
   @override
   _PictureTakingPageState createState() => _PictureTakingPageState();
@@ -51,15 +54,13 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
         await picture.saveTo(filePath);
         print('Picture saved to $filePath');
 
+        // Save picture metadata to Hive
+        await LocalStore.savePictureMetadata(filePath, widget.caseId);
+
         // Show feedback when a picture is taken without flash
         if (!_isFlashOn) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Center(
-                heightFactor: 1, // Ensures the text is vertically centered
-                child: Text('Picture saved'),
-              ),
-            ),
+            const SnackBar(content: Text('Picture saved')),
           );
         }
 
@@ -91,6 +92,7 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
 
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Take a Picture'),
         actions: [
           IconButton(
             icon: Icon(_isFlashOn ? Icons.flash_on : Icons.flash_off),

@@ -25,6 +25,21 @@ class LocalStore {
     return Map<String, dynamic>.from(box.get(key));
   }
 
+  // Save picture metadata
+  static Future<void> savePictureMetadata(String filePath, String caseId) async {
+    var box = Hive.box(_boxName);
+    await box.add({'filePath': filePath, 'caseId': caseId});
+  }
+
+  // Retrieve all pictures
+  static List<Map<String, dynamic>> getAllPictures() {
+    var box = Hive.box(_boxName);
+    return box.values
+        .where((value) => value is Map && value.containsKey('filePath') && value.containsKey('caseId'))
+        .map((value) => Map<String, dynamic>.from(value))
+        .toList();
+  }
+
   // Check internet connection
   static Future<bool> hasInternetConnection() async {
     return await InternetConnectionChecker().hasConnection;
@@ -38,28 +53,28 @@ class LocalStore {
 
   // Send all saved requests
   static Future<List<Map<String, String>>> sendAllSavedRequests() async {
-  var box = Hive.box(_boxName);
-  List<Map<String, String>> statusList = [];
+    var box = Hive.box(_boxName);
+    List<Map<String, String>> statusList = [];
 
-  for (var key in box.keys) {
-    Map<String, dynamic> request = Map<String, dynamic>.from(box.get(key));
-    try {
-      final response = await http.post(
-        Uri.parse(request['url']),
-        headers: Map<String, String>.from(request['headers']),
-        body: jsonEncode(request['body']), // Encode the body before sending
-      );
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        await box.delete(key); // Remove the request from the box if it was successfully sent
-        statusList.add({'id': request['body']['id'], 'status': 'Success'});
-      } else {
-        statusList.add({'id': request['body']['id'], 'status': 'Failed: ${response.statusCode}'});
+    for (var key in box.keys) {
+      Map<String, dynamic> request = Map<String, dynamic>.from(box.get(key));
+      try {
+        final response = await http.post(
+          Uri.parse(request['url']),
+          headers: Map<String, String>.from(request['headers']),
+          body: jsonEncode(request['body']), // Encode the body before sending
+        );
+        if (response.statusCode == 201 || response.statusCode == 200) {
+          await box.delete(key); // Remove the request from the box if it was successfully sent
+          statusList.add({'id': request['body']['id'], 'status': 'Success'});
+        } else {
+          statusList.add({'id': request['body']['id'], 'status': 'Failed: ${response.statusCode}'});
+        }
+      } catch (e) {
+        statusList.add({'id': request['body']['id'], 'status': 'Error: $e'});
       }
-    } catch (e) {
-      statusList.add({'id': request['body']['id'], 'status': 'Error: $e'});
     }
-  }
-  return statusList;
+    return statusList;
   }
 
   // Get box name
@@ -70,6 +85,20 @@ class LocalStore {
   // Get all data for debugging
   static Future<Map<String, dynamic>> getAllData() async {
     var box = Hive.box(_boxName);
-    return Map<String, dynamic>.from(box.toMap());
+    var allData = <String, dynamic>{};
+
+    // Convert integer keys to strings
+    box.toMap().forEach((key, value) {
+      allData[key.toString()] = value;
+    });
+
+    // Filter and include picture metadata
+    var pictures = box.values
+        .where((value) => value is Map && value.containsKey('filePath') && value.containsKey('caseId'))
+        .map((value) => Map<String, dynamic>.from(value))
+        .toList();
+
+    allData['pictures'] = pictures;
+    return allData;
   }
 }
