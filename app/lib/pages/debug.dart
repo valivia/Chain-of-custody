@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:coc/pages/scanner.dart';
 import 'package:coc/pages/pictures.dart';
@@ -5,6 +6,7 @@ import 'package:coc/pages/nfc.dart';
 import 'package:coc/pages/login.dart';
 import 'package:coc/pages/evidence_list.dart';
 import 'package:coc/service/case.dart';
+import 'package:coc/pages/case_detial.dart';
 
 class DebugPage extends StatelessWidget {
   const DebugPage({super.key});
@@ -115,13 +117,13 @@ class DebugPage extends StatelessWidget {
                                 ),
                                 onPressed: () {
                                   // TODO: Handle item click
-                                  // log('Clicked on ${caseItem.caseID}');
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => EvidenceDetailView(evidenceItem: evidence),
-                                  //   ),
-                                  // );
+                                  log('Clicked on ${caseItem.caseID}');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CaseDetailView(caseItem: caseItem),
+                                    ),
+                                  );
                                 },
                                 child: Text("ID: ${caseItem.caseID}"),
                               );
