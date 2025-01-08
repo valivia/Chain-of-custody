@@ -16,6 +16,8 @@ class TAppTheme{
     textTheme: TTextTheme.lightTextTheme,
     elevatedButtonTheme: TElevetedButtonTheme.lightElevatedButtonTheme,
     snackBarTheme: TSnackbarTheme.lightSnackBarTheme,
+    //error: Colors.red,
+    //onError: Colors.white,
     
   );
   static ThemeData darkTheme = ThemeData(

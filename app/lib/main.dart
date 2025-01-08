@@ -27,26 +27,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Color definition
-    // const Color primaryColor = Color.fromRGBO(23, 23, 23, 1);
-    // const Color secondaryColor = Color.fromRGBO(35, 35, 35, 1);
-    // const Color tertiaryColor = Color.fromRGBO(45, 45, 45, 1);
-    // const Color textColor = Color.fromRGBO(255, 255, 255, 1);
-
     return MaterialApp(
       themeMode: ThemeMode.system,
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
-      // title: 'Flutter Demo',
-      // debugShowCheckedModeBanner: false,
-      // theme: ThemeData(
-      //   useMaterial3: true,
-      //   colorScheme: const ColorScheme(
-      //     brightness: Brightness.dark,
-
-      //     error: Colors.red,
-      //     onError: Colors.white,
-
       //     surface: tertiaryColor,
       //     onSurface: textColor,
       //     // primary,
@@ -77,10 +61,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: const Color.fromRGBO(45, 45, 45, 1),
       appBar: AppBar(
-      //   backgroundColor: const Color.fromRGBO(23, 23, 23, 1),
-      //   leading: const Icon(Icons.home, color: Colors.white),
+        leading: const Icon(Icons.home, color: Colors.white),
         title: const Text('Home'),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
