@@ -49,7 +49,7 @@ class LocalStore {
         headers: Map<String, String>.from(request['headers']),
         body: jsonEncode(request['body']), // Encode the body before sending
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         await box.delete(key); // Remove the request from the box if it was successfully sent
         statusList.add({'id': request['body']['id'], 'status': 'Success'});
       } else {

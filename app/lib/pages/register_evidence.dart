@@ -65,6 +65,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     };
     final body = {
       'id': _idController.text,
+      'caseId': "cm5lbsq5b0002n02ixqc71e2w",
       'containerType': 1,
       'itemType': _itemTypeController.text,
       'description': _descriptionController.text,
@@ -221,14 +222,14 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                               // Handle response status code
                               if (response.statusCode == 401) {
                                 showFailureDialog(context, 'Unauthorized access. Please log in again.');
-                              } else if (response.statusCode == 200) {
+                              } else if (response.statusCode == 201) {
                                 showSuccessDialog(context, 'Evidence submitted successfully');
                               } else {
                                 showFailureDialog(context, 'Failed to submit evidence data: ${response.statusCode}');
                               }
                             } else {
                               // Save evidence locally
-                              requestData['timestamp'] = DateTime.now().toIso8601String();
+                              requestData['body']['madeOn'] = DateTime.now().toIso8601String();
                               await LocalStore.saveApiResponse(evidenceKey, requestData);
                               showSuccessDialog(context, 'Evidence saved locally');
                             }
