@@ -36,10 +36,10 @@ class Evidence {
     );
   }
 
-  static Future<List<Evidence>> fetchEvidence() async {
+  static Future<List<Evidence>> fetchEvidence(String caseID) async {
     // TODO: make URL dynamic for case selection later
     final token = await Authentication.getBearerToken();
-    final url = Uri.parse("https://coc.hootsifer.com/case/cm5l43iw70004o52i2ywugo2y");
+    final url = Uri.parse("https://coc.hootsifer.com/case/$caseID");
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': token,

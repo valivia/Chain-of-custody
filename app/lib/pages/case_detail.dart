@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:coc/service/evidence.dart';
 import 'package:coc/service/edit_formats.dart';
 import 'package:coc/service/case.dart';
+import 'package:coc/components/evidence_list.dart';
 
 class CaseDetailView extends StatelessWidget {
   const CaseDetailView({super.key, required this.caseItem});
@@ -23,6 +24,10 @@ class CaseDetailView extends StatelessWidget {
               'Case Title: ${caseItem.caseTitle}',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
+            const Text("Tagged Evidence"),
+            Expanded(
+              child: EvidenceListView(caseID: caseItem.caseID),
+            )
           ],
         ),
       ),
