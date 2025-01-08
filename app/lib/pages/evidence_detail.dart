@@ -1,8 +1,7 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:coc/service/evidence.dart';
 import 'package:coc/service/edit_formats.dart';
-import 'package:coc/service/map_pointer.dart';
+import 'package:coc/components/map_pointer.dart';
 
 class EvidenceDetailView extends StatelessWidget {
   const EvidenceDetailView({super.key, required this.evidenceItem});
