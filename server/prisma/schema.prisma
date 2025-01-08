@@ -16,7 +16,7 @@ model Case {
 
   title       String
   description String
-  status      CaseStatus @default(OPEN)
+  status      CaseStatus @default(open)
 
   users          CaseUser[]
   taggedEvidence TaggedEvidence[]
@@ -25,9 +25,9 @@ model Case {
 }
 
 enum CaseStatus {
-  OPEN
-  CLOSED
-  ARCHIVED
+  open
+  closed
+  archived
 }
 
 model CaseUser {
