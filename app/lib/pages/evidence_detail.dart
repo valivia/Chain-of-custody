@@ -63,7 +63,7 @@ class EvidenceDetailView extends StatelessWidget {
                             children: <Widget>[
                               Text('Origin location description: ${evidenceItem.description}'),
                               const SizedBox(height: 10),
-                              Text('Origin location coordinates: ${evidenceItem.originCoordinates.toString()}'),
+                              Text('Origin location coordinates: ${evidenceItem.originCoordinates.latitude}, ${evidenceItem.originCoordinates.longitude}'),
                               const SizedBox(height: 10),
                               SizedBox(
                                 width: double.infinity,
