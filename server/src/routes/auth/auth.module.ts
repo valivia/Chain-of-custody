@@ -9,11 +9,11 @@ import { PrismaService } from "src/services/prisma.service";
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60m' },
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
   ],
   controllers: [AuthController],
   providers: [AuthService, PrismaService],
   exports: [AuthService],
 })
-export class AuthModule {}
+export class AuthModule { }
