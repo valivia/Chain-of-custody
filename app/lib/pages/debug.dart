@@ -1,8 +1,10 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:coc/pages/scanner.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/nfc.dart';
 import 'package:coc/pages/login.dart';
+import 'package:coc/components/case_list.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/pages/evidence_list.dart';
 import 'dart:math';
@@ -75,6 +77,8 @@ class DebugPage extends StatelessWidget {
                   );
                 },
               ),
+              const SizedBox(height: 20),
+              CaseList(),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 onPressed: () async {
