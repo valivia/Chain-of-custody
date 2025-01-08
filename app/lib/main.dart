@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:coc/components/local_store.dart';
-import 'package:coc/utils/theme.dart';
+import 'package:coc/Themes/theme.dart';
 
 final globalState = GetIt.instance;
 
@@ -65,36 +65,8 @@ class App extends StatelessWidget {
       //     tertiaryContainer: primaryColor,
       //     onTertiaryContainer: textColor,
       //   ),
-      //   appBarTheme: const AppBarTheme(
-      //     shape: RoundedRectangleBorder(
-      //       borderRadius: BorderRadius.vertical(
-      //         bottom: Radius.circular(16),
-      //       ),
-      //     ),
-      //     backgroundColor: primaryColor,
-      //   ),
-      //   elevatedButtonTheme: ElevatedButtonThemeData(
-      //     style: ElevatedButton.styleFrom(
-      //       backgroundColor: const Color.fromRGBO(23, 23, 23, 1),
-      //       foregroundColor: Colors.white,
-      //       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-      //       elevation: 6,
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.circular(24),
-      //       ),
-      //     ),
-      //   ),
-      //   snackBarTheme: const SnackBarThemeData(
-      //     backgroundColor: Color.fromRGBO(23, 23, 23, 1),
-      //     contentTextStyle: TextStyle(color: Colors.white),
-      //     shape: RoundedRectangleBorder(
-      //       borderRadius: BorderRadius.vertical(
-      //         top: Radius.circular(16),
-      //       ),
-      //     ),
-      //   ),
       // ),
-      // home: const HomePage(),
+      home: const HomePage(),
     );
   }
 }
