@@ -81,7 +81,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
       );
       return {'response': response, 'request': {'url': url.toString(), 'headers': headers, 'body': body}};
     } catch (e) {
-      throw Exception('Failed to submit evidence data');
+      return {'response': http.Response('Error: $e', 500), 'request': {'url': url.toString(), 'headers': headers, 'body': body}};
     }
   }
 
