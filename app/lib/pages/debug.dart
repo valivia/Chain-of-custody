@@ -1,12 +1,10 @@
 import 'dart:developer';
-import 'package:coc/controllers/case.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/pages/scanner.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/nfc.dart';
 import 'package:coc/pages/login.dart';
-import 'package:coc/components/evidence_list.dart';
-import 'package:coc/pages/case_detail.dart';
+import 'package:coc/components/case_list.dart';
 
 class DebugPage extends StatelessWidget {
   const DebugPage({super.key});
@@ -67,64 +65,7 @@ class DebugPage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Colors.grey[800],
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Case List',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    FutureBuilder<List<Case>>(
-                      future: Case.fetchCases(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(child: Text('Error occurred: ${snapshot.error}'));
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                          return const Center(child: Text('No cases found attached to you'));
-                        } else {
-                          final caseList = snapshot.data!;
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: caseList.length,
-                            itemBuilder: (context, index) {
-                              final caseItem = caseList[index];
-                              return ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.all(10),
-                                ),
-                                onPressed: () {
-                                  // TODO: Handle item click
-                                  log('Clicked on ${caseItem.id}');
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CaseDetailView(caseItem: caseItem),
-                                    ),
-                                  );
-                                },
-                                child: Text("ID: ${caseItem.id}"),
-                              );
-                            },
-                          );
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              CaseList(),
             ],
           ),
         ),
