@@ -57,21 +57,47 @@ class LocalStore {
     List<Map<String, String>> statusList = [];
 
     for (var key in box.keys) {
-      Map<String, dynamic> request = Map<String, dynamic>.from(box.get(key));
-      try {
-        final response = await http.post(
-          Uri.parse(request['url']),
-          headers: Map<String, String>.from(request['headers']),
-          body: jsonEncode(request['body']), // Encode the body before sending
-        );
-        if (response.statusCode == 201 || response.statusCode == 200) {
-          await box.delete(key); // Remove the request from the box if it was successfully sent
-          statusList.add({'id': request['body']['id'], 'status': 'Success'});
-        } else {
-          statusList.add({'id': request['body']['id'], 'status': 'Failed: ${response.statusCode}'});
+      var value = box.get(key);
+      if (value is Map && value.containsKey('url')) {
+        // Handle API requests
+        Map<String, dynamic> request = Map<String, dynamic>.from(value);
+        try {
+          final response = await http.post(
+            Uri.parse(request['url']),
+            headers: Map<String, String>.from(request['headers']),
+            body: jsonEncode(request['body']), // Encode the body before sending
+          );
+          if (response.statusCode == 201 || response.statusCode == 200) {
+            await box.delete(key); // Remove the request from the box if it was successfully sent
+            statusList.add({'id': request['body']['id'], 'status': 'Success'});
+          } else {
+            statusList.add({'id': request['body']['id'], 'status': 'Failed: ${response.statusCode}'});
+          }
+        } catch (e) {
+          statusList.add({'id': request['body']['id'], 'status': 'Error: $e'});
         }
-      } catch (e) {
-        statusList.add({'id': request['body']['id'], 'status': 'Error: $e'});
+      } else if (value is Map && value.containsKey('filePath') && value.containsKey('caseId')) {
+        // Handle picture uploads
+        String filePath = value['filePath'];
+        String caseId = value['caseId'];
+        try {
+          var request = http.MultipartRequest(
+            'POST',
+            Uri.parse('https://coc.hootsifer.com/evidence/case/$caseId'), /// Replace with your API endpoint
+          );
+          request.fields['caseId'] = caseId;
+          request.files.add(await http.MultipartFile.fromPath('picture', filePath));
+
+          var response = await request.send();
+          if (response.statusCode == 201 || response.statusCode == 200) {
+            await box.delete(key); // Remove the picture metadata from the box if it was successfully sent
+            statusList.add({'filePath': filePath, 'status': 'Success'});
+          } else {
+            statusList.add({'filePath': filePath, 'status': 'Failed: ${response.statusCode}'});
+          }
+        } catch (e) {
+          statusList.add({'filePath': filePath, 'status': 'Error: $e'});
+        }
       }
     }
     return statusList;
@@ -87,17 +113,17 @@ class LocalStore {
     var box = Hive.box(_boxName);
     var allData = <String, dynamic>{};
 
-    // Convert integer keys to strings
+    // Convert integer keys to strings and filter out picture metadata
+    var pictures = <Map<String, dynamic>>[];
     box.toMap().forEach((key, value) {
-      allData[key.toString()] = value;
+      if (value is Map && value.containsKey('filePath') && value.containsKey('caseId')) {
+        pictures.add(Map<String, dynamic>.from(value));
+      } else {
+        allData[key.toString()] = value;
+      }
     });
 
-    // Filter and include picture metadata
-    var pictures = box.values
-        .where((value) => value is Map && value.containsKey('filePath') && value.containsKey('caseId'))
-        .map((value) => Map<String, dynamic>.from(value))
-        .toList();
-
+    // Include picture metadata separately
     allData['pictures'] = pictures;
     return allData;
   }
