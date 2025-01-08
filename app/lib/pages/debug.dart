@@ -3,9 +3,9 @@ import 'package:coc/pages/scanner.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/nfc.dart';
 import 'package:coc/pages/login.dart';
+import 'package:coc/pages/image_gallery.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/pages/evidence_list.dart';
-import 'dart:math';
 
 class DebugPage extends StatelessWidget {
   const DebugPage({super.key});
@@ -52,6 +52,16 @@ class DebugPage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const PictureTakingPage()),
+                  );
+                },
+              ),
+              const SizedBox(height: 20), // Add spacing between buttons
+              ElevatedButton(
+                child: const Text('View Images'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ImageGalleryPage()),
                   );
                 },
               ),
