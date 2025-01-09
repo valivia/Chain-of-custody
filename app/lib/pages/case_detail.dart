@@ -22,18 +22,31 @@ class CaseDetailView extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-            children: [              
-              Text(
-                'Case Title: ${caseItem.title}',
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              
-              // Tagged evidence to case
-              const SizedBox(height: 8),
-              Expanded(
-                child: EvidenceListView(taggedEvidence: caseItem.taggedEvidence),
-              )
-            ],
+          children: [
+            Text(
+              'Case Title: ${caseItem.title}',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Case details',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 5),
+            Text("Case status: ${caseItem.caseStatusString.toUpperCase()}"),
+            const SizedBox(height: 5),
+            Text("Case description: \n${caseItem.description}"),
+            const SizedBox(height: 5),
+            Text("Created at: ${EditFormats().formatTimestamp(caseItem.createdAt).toString()}"),
+            const SizedBox(height: 5),
+            Text("Updated at: ${EditFormats().formatTimestamp(caseItem.updatedAt).toString()}"),
+            
+            // Tagged evidence to case
+            const SizedBox(height: 16),
+            Expanded(
+              child: EvidenceListView(taggedEvidence: caseItem.taggedEvidence),
+            )
+          ],
         ),
       ),
     );
