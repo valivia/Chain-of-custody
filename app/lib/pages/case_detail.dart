@@ -1,4 +1,6 @@
+import 'package:coc/components/user_list.dart';
 import 'package:coc/controllers/case.dart';
+import 'package:coc/controllers/case_user.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/components/evidence_list.dart';
 import 'package:coc/service/edit_formats.dart';
@@ -27,6 +29,7 @@ class CaseDetailView extends StatelessWidget {
               'Case Title: ${caseItem.title}',
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
+            // case details
             const SizedBox(height: 8),
             const Text(
               'Case details',
@@ -40,12 +43,17 @@ class CaseDetailView extends StatelessWidget {
             Text("Created at: ${EditFormats().formatTimestamp(caseItem.createdAt).toString()}"),
             const SizedBox(height: 5),
             Text("Updated at: ${EditFormats().formatTimestamp(caseItem.updatedAt).toString()}"),
-            
+            const SizedBox(height: 8),
+            // Users on case
+            Expanded(
+              child: CaseUserListView(users: caseItem.users),
+            ),
             // Tagged evidence to case
-            const SizedBox(height: 16),
             Expanded(
               child: EvidenceListView(taggedEvidence: caseItem.taggedEvidence),
-            )
+            ),
+
+
           ],
         ),
       ),
