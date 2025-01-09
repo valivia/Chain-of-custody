@@ -50,6 +50,7 @@ class App extends StatelessWidget {
       //     onTertiaryContainer: textColor,
       //   ),
       // ),
+      
       home: const HomePage(),
     );
   }
@@ -60,10 +61,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme AtextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.home, color: Colors.white),
-        title: const Text('Home'),
+        title: const Text('Home', style: AtextTheme.headlineLarge), //TODO:: fix this
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
         ],
