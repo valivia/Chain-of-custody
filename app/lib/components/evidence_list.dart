@@ -21,27 +21,43 @@ class EvidenceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: taggedEvidence.length,
-      itemBuilder: (context, index) {
-        final evidence = taggedEvidence[index];
-        return ElevatedButton(
+    return Column(
+      children: [
+      const Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+        'Tagged evidence',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      Expanded(
+        child: ListView.builder(
+        itemCount: taggedEvidence.length,
+        itemBuilder: (context, index) {
+          final evidence = taggedEvidence[index];
+          return ElevatedButton(
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.all(10),
           ),
           onPressed: () {
             log('Clicked on ${evidence.id}');
             Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    EvidenceDetailView(evidenceItem: evidence),
-              ),
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                EvidenceDetailView(evidenceItem: evidence),
+            ),
             );
           },
           child: Text("ID: ${evidence.id}"),
-        );
-      },
+          );
+        },
+        ),
+      ),
+      ],
     );
   }
 }
