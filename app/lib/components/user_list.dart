@@ -50,7 +50,7 @@ class CaseUserList extends StatelessWidget {
                   children: [
                     const Icon(Icons.person),
                     const SizedBox(width: 10),
-                    Text(handler.userId),
+                    Text(handler.firstName),
                   ],
                 ),
               );
