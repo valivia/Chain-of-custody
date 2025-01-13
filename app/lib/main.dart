@@ -65,9 +65,7 @@ class HomePage extends StatelessWidget {
     TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        // leading: const Icon(Icons.home, color: Colors.white),
         leading: IconButton(onPressed: () {}, icon: const Icon(Icons.home,)),
-        // title: Text('Home', style: Theme.of(context,).textTheme.headlineMedium),
         centerTitle: true,
         title: Text('Home', style: aTextTheme.headlineMedium,),
         actions: [
@@ -82,28 +80,6 @@ class HomePage extends StatelessWidget {
             //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const SizedBox(height: 20), // Add spacing between buttons
-              // // Create Case Button
-              // Button(
-              //   title: 'Create Case',
-              //   icon: Icons.open_in_new,
-              //   onTap: () {},
-              // ),
-
-              // const SizedBox(height: 20), // Add spacing between buttons
-              // // Join Case Button
-              // Button(
-              //   title: 'Join case',
-              //   icon: Icons.photo_camera,
-              //   onTap: () {},
-              // ),
-
-              // const SizedBox(height: 20), // Add spacing between buttons
-              // // Transfer Evidence Button
-              // Button(
-              //   title: 'Transfer evidence',
-              //   icon: Icons.photo_camera,
-              //   onTap: () {},
-              // ),
 
     	        SizedBox(
                 width: double.infinity,
@@ -147,7 +123,7 @@ class HomePage extends StatelessWidget {
               if (kDebugMode)
                 // Debug page Button
                 const SizedBox(height: 20), // Add spacing between buttons
-              ElevatedButton(
+                ElevatedButton(
                 child: Text('Debug page', style: aTextTheme.bodyMedium,),
                 onPressed: () {
                   Navigator.push(
@@ -155,10 +131,12 @@ class HomePage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const DebugPage()),
                   );
                 },
+              
               ),
+              CaseList(),
             ],
           ),
-          CaseList(),
+          
         ),
         
       ),

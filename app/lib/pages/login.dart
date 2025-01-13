@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/pages/debug.dart';
+import 'package:coc/main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
