@@ -2,9 +2,10 @@ import 'package:coc/controllers/case.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/components/case_baseDetails.dart';
 import 'package:coc/components/lim_case_user_list.dart';
+import 'package:coc/components/lim_evidence_list.dart';
 
-class CaseDetailViewRemake extends StatelessWidget {
-  const CaseDetailViewRemake({super.key, required this.caseItem});
+class CaseDetailView extends StatelessWidget {
+  const CaseDetailView({super.key, required this.caseItem});
   final Case caseItem;
 
   @override
@@ -21,7 +22,9 @@ class CaseDetailViewRemake extends StatelessWidget {
             children: [
               buildCaseDetails(caseItem),
               const SizedBox(height: 16),
-              caseUserListRemake(context, caseItem.users),
+              limCaseUserList(context, caseItem.users),
+              const SizedBox(height: 8),
+              limEvidenceList(context, caseItem.taggedEvidence)
             ],
           ),
         ),
