@@ -90,4 +90,17 @@ class Case {
         .map<Case>((json) => Case.fromJson(json as Map<String, dynamic>))
         .toList();
   }
+
+  String get caseStatusString { 
+    switch (status) {
+      case CaseStatus.open:
+        return 'Open';
+      case CaseStatus.closed:
+        return 'Closed';
+      case CaseStatus.archived:
+        return 'Archived';
+      default:
+        return 'Unknown';
+    }
+  }  
 }

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:developer';
-
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/case_detail.dart';
 
-
 class CaseList extends StatelessWidget {
+  const CaseList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
