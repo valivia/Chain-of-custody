@@ -9,6 +9,11 @@ Widget buildCaseDetails(caseItem) {
         'Case Title: ${caseItem.title}',
         style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
+      Text(
+        'Case ID: ${caseItem.id}',
+        style: const TextStyle(fontSize: 18),
+      ),
+      const SizedBox(height: 8),
       // case details
       const SizedBox(height: 8),
       const Text(

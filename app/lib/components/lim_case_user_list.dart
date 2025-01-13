@@ -8,11 +8,20 @@ Widget limCaseUserList(BuildContext context, List<CaseUser> caseUsers) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Text(
-          'Users on case',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Handlers on case',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Total: ${caseUsers.length}',
+              style: const TextStyle(fontSize: 16),
+            ),
+          ],
         ),
       ),
       ListView.builder(
