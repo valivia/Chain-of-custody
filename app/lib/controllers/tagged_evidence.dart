@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:coc/utility/helpers.dart';
 import 'package:latlong2/latlong.dart';
 

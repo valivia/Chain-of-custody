@@ -1,6 +1,6 @@
 import 'package:coc/controllers/case.dart';
 import 'package:flutter/material.dart';
-import 'package:coc/components/case_baseDetails.dart';
+import 'package:coc/components/case_base_details.dart';
 import 'package:coc/components/lim_case_user_list.dart';
 import 'package:coc/components/lim_evidence_list.dart';
 
