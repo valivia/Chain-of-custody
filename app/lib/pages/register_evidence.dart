@@ -49,7 +49,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
 
     // When we reach here, permissions are granted and we can continue
     Position position =
-        await globalState<LocationService>().getCurrentLocation();
+        await globalState<LocationService>().getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
     setState(() {
       _originCoordinatesController.text =
           '${position.latitude}, ${position.longitude}';

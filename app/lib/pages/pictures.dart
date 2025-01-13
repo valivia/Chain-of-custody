@@ -3,11 +3,12 @@ import 'package:camera/camera.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:coc/service/authentication.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:coc/pages/image_gallery.dart'; // Import the new page
 import 'package:coc/pages/scanner.dart'; // Import the QR scanner page
 import 'package:coc/components/local_store.dart'; // Import the LocalStore class
+import 'package:coc/service/authentication.dart';
 
 class PictureTakingPage extends StatefulWidget {
   final String caseId; // Add caseId to the constructor
@@ -55,18 +56,23 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
         XFile picture = await _cameraController!.takePicture();
         await picture.saveTo(filePath);
 
+        // Get current coordinates
+        // TODO: check if lowest is good enuff
+        Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.lowest);
+        String coordinates = '${position.latitude},${position.longitude}';
+
         // Attempt to send the picture to the server
-        bool uploadSuccess = await _uploadPicture(filePath, widget.caseId);
+        bool uploadSuccess = await _uploadPicture(filePath, widget.caseId, coordinates);
 
         if (!uploadSuccess) {
           // Save picture metadata to Hive if upload fails
-          await LocalStore.savePictureMetadata(filePath, widget.caseId);
+          await LocalStore.savePictureMetadata(filePath, widget.caseId, coordinates);
         }
 
         // Show feedback when a picture is taken without flash
         if (!_isFlashOn) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Picture saved locally')),
+            const SnackBar(content: Text('Picture saved')),
           );
         }
 
@@ -84,7 +90,7 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
     }
   }
 
-  Future<bool> _uploadPicture(String filePath, String caseId) async {
+  Future<bool> _uploadPicture(String filePath, String caseId, String coordinates) async {
     try {
       var request = http.MultipartRequest(
         'POST',
@@ -93,20 +99,26 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
 
       // Add headers including the Bearer token
       request.headers['Authorization'] = await Authentication.getBearerToken();
-      request.fields['caseId'] = caseId;
+
+      request.fields['caseId'] = 'cm5v833zu0000vv2if2t2z3yh';
+      request.fields['coordinates'] = coordinates;
       request.files.add(await http.MultipartFile.fromPath('file', filePath));
 
       var response = await request.send();
-      print(request.fields);
+
+      // Read the response stream and convert it to a string
+      var responseString = await response.stream.bytesToString();
 
       if (response.statusCode == 201 || response.statusCode == 200) {
         print('Picture uploaded successfully');
+        print('Response: $responseString');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Picture saved to server')),
         );
         return true;
       } else {
         print('Failed to upload picture: ${response.statusCode}');
+        print('Response: $responseString');
         return false;
       }
     } catch (e) {
