@@ -21,7 +21,7 @@ export class EvidenceController {
     }
 
     const fileName = `${data.id}.jpg`;
-    res.set({ 'Content-Disposition': `attachment; filename=${fileName}` });
+    res.set({ 'Content-Disposition': `attachment; filename=${fileName}`, 'Content-Type': 'image/jpeg' });
 
     // Open file
     const stream = createReadStream(join(process.cwd(), `data/evidence/${fileName}`));
