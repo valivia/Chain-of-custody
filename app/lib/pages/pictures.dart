@@ -58,12 +58,11 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
 
         // Get current coordinates
         // TODO: check if lowest is good enuff
-        Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.lowest);
+        Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
         String coordinates = '${position.latitude},${position.longitude}';
 
         // Attempt to send the picture to the server
         bool uploadSuccess = await _uploadPicture(filePath, widget.caseId, coordinates);
-
         if (!uploadSuccess) {
           // Save picture metadata to Hive if upload fails
           await LocalStore.savePictureMetadata(filePath, widget.caseId, coordinates);
@@ -99,7 +98,6 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
 
       // Add headers including the Bearer token
       request.headers['Authorization'] = await Authentication.getBearerToken();
-
       request.fields['caseId'] = 'cm5v833zu0000vv2if2t2z3yh';
       request.fields['coordinates'] = coordinates;
       request.files.add(await http.MultipartFile.fromPath('file', filePath));

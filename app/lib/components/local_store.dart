@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:coc/service/authentication.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'dart:convert';
 
@@ -28,7 +29,7 @@ class LocalStore {
   // Save picture metadata
   static Future<void> savePictureMetadata(String filePath, String caseId, String coordinates) async {
     var box = Hive.box(_boxName);
-    await box.add({'filePath': filePath, 'caseId': caseId, 'coordinates': coordinates});
+    await box.add({'filePath': filePath, 'caseId': 'cm5v833zu0000vv2if2t2z3yh', 'coordinates': coordinates});
   }
 
   // Retrieve all pictures
@@ -69,9 +70,9 @@ class LocalStore {
           );
           if (response.statusCode == 201 || response.statusCode == 200) {
             await box.delete(key); // Remove the request from the box if it was successfully sent
-            statusList.add({'id': request['body']['id'], 'status': 'Success'});
+            statusList.add({'id': request['body']['id'], 'status': 'Success', 'type': 'evidence'});
           } else {
-            statusList.add({'id': request['body']['id'], 'status': 'Failed: ${response.statusCode}'});
+            statusList.add({'id': request['body']['id'], 'status': 'Failed: ${response.statusCode}', 'type': 'evidence'});
           }
         } catch (e) {
           statusList.add({'id': request['body']['id'], 'status': 'Error: $e'});
@@ -83,17 +84,19 @@ class LocalStore {
         try {
           var request = http.MultipartRequest(
             'POST',
-            Uri.parse('https://coc.hootsifer.com/evidence/case/$caseId'), /// Replace with your API endpoint
+            Uri.parse('https://coc.hootsifer.com/evidence/media'), /// Replace with your API endpoint
           );
+          request.headers['Authorization'] = await Authentication.getBearerToken();
           request.fields['caseId'] = caseId;
-          request.files.add(await http.MultipartFile.fromPath('picture', filePath));
+          request.fields['coordinates'] = value['coordinates'];
+          request.files.add(await http.MultipartFile.fromPath('file', filePath));
 
           var response = await request.send();
           if (response.statusCode == 201 || response.statusCode == 200) {
             await box.delete(key); // Remove the picture metadata from the box if it was successfully sent
-            statusList.add({'filePath': filePath, 'status': 'Success'});
+            statusList.add({'id': caseId.substring(0, 5), 'status': 'Success', 'type': 'picture'});
           } else {
-            statusList.add({'filePath': filePath, 'status': 'Failed: ${response.statusCode}'});
+            statusList.add({'id': caseId.substring(0, 5), 'status': 'Failed: ${response.statusCode}', 'type': 'picure'});
           }
         } catch (e) {
           statusList.add({'filePath': filePath, 'status': 'Error: $e'});

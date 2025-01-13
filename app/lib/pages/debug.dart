@@ -138,8 +138,12 @@ class DebugPage extends StatelessWidget {
                               return Row(
                                 children: [
                                   Expanded(
-                                    child: Text('${status['id']}    ${status['status']}'),
-                                  ),
+                                    child: Text(
+                                        status['status'] != 'Success'
+                                            ? '${status['id']}     ${status['type']}     ${status['status']}'
+                                            : '${status['id']}     ${status['type']}'
+                                      ),
+                                    ),
                                   Icon(
                                     status['status'] == 'Success' ? Icons.check_circle : Icons.close,
                                     color: status['status'] == 'Success' ? Colors.green : Colors.red,
