@@ -1,5 +1,7 @@
+import 'package:coc/service/location.dart'; // Import the LocationService class
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'dart:developer';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -16,10 +18,10 @@ class PictureTakingPage extends StatefulWidget {
   const PictureTakingPage({super.key, required this.caseId});
 
   @override
-  _PictureTakingPageState createState() => _PictureTakingPageState();
+  PictureTakingPageState createState() => PictureTakingPageState();
 }
 
-class _PictureTakingPageState extends State<PictureTakingPage> {
+class PictureTakingPageState extends State<PictureTakingPage> {
   CameraController? _cameraController;
   List<CameraDescription>? cameras;
   bool _isFlashOn = false;
@@ -58,7 +60,7 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
 
         // Get current coordinates
         // TODO: check if lowest is good enuff
-        Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+        Position position = await LocationService().getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
         String coordinates = '${position.latitude},${position.longitude}';
 
         // Attempt to send the picture to the server
@@ -74,18 +76,11 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
             const SnackBar(content: Text('Picture saved')),
           );
         }
-
-        // Check if the file exists
-        if (await File(filePath).exists()) {
-          print('File exists at $filePath');
-        } else {
-          print('File does not exist at $filePath');
-        }
       } catch (e) {
-        print('Error taking picture: $e');
+        log('Error taking picture: $e');
       }
     } else {
-      print('Storage permission not granted');
+      log('Storage permission not granted');
     }
   }
 
@@ -97,30 +92,24 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
       );
 
       // Add headers including the Bearer token
+      // TODO - Add the caseId to the request
       request.headers['Authorization'] = await Authentication.getBearerToken();
       request.fields['caseId'] = 'cm5v833zu0000vv2if2t2z3yh';
       request.fields['coordinates'] = coordinates;
       request.files.add(await http.MultipartFile.fromPath('file', filePath));
 
       var response = await request.send();
-
-      // Read the response stream and convert it to a string
-      var responseString = await response.stream.bytesToString();
-
       if (response.statusCode == 201 || response.statusCode == 200) {
-        print('Picture uploaded successfully');
-        print('Response: $responseString');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Picture saved to server')),
         );
         return true;
       } else {
-        print('Failed to upload picture: ${response.statusCode}');
-        print('Response: $responseString');
+        log('Failed to upload picture: ${response.statusCode}');
         return false;
       }
     } catch (e) {
-      print('Error uploading picture: $e');
+      log('Error uploading picture: $e');
       return false;
     }
   }
@@ -152,7 +141,7 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
         ],
       ),
       body: Center(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width * 1,
           child: CameraPreview(_cameraController!),
         ),
@@ -169,7 +158,7 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ImageGalleryPage()),
+                  MaterialPageRoute(builder: (context) => const ImageGalleryPage()),
                 );
               },
             ),
@@ -198,9 +187,9 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
                       child: Container(
                         width: 60.0,
                         height: 60.0,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          color: const Color.fromARGB(255, 241, 238, 238),
+                          color: Color.fromARGB(255, 241, 238, 238),
                         ),
                       ),
                     ),

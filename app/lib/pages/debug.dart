@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:coc/pages/scanner.dart';
 import 'package:coc/pages/pictures.dart';
@@ -51,7 +52,8 @@ class DebugPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const PictureTakingPage(caseId:  "cm5lbsq5b0002n02ixqc71e2w")),
+                      // TODO Add caseId to the parameters
+                      builder: (context) => const PictureTakingPage(caseId:  "cm5lbsq5b0002n02ixqc71e2w")),
                   );
                 },
               ),

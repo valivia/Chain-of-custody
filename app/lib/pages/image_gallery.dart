@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:coc/components/local_store.dart'; // Import the LocalStore class
+import 'package:coc/components/local_store.dart';
 
 class ImageGalleryPage extends StatelessWidget {
-  const ImageGalleryPage({Key? key}) : super(key: key);
+  const ImageGalleryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +37,11 @@ class ImageGalleryPage extends StatelessWidget {
                           );
                         },
                         child: ClipRect(
-                          child: Container(
                             child: FittedBox(
                               fit: BoxFit.cover,
                               child: Image.file(File(pictures[index]['filePath'])),
                             ),
                           ),
-                        ),
                       );
                     },
                   ),
@@ -57,7 +55,7 @@ class ImageGalleryPage extends StatelessWidget {
 class ImagePreviewPage extends StatelessWidget {
   final File imageFile;
 
-  const ImagePreviewPage({Key? key, required this.imageFile}) : super(key: key);
+  const ImagePreviewPage({super.key, required this.imageFile});
 
   @override
   Widget build(BuildContext context) {

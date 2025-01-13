@@ -1,4 +1,3 @@
-import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:coc/service/authentication.dart';
@@ -27,6 +26,7 @@ class LocalStore {
   }
 
   // Save picture metadata
+  // TODO: Add caseId to the parameters
   static Future<void> savePictureMetadata(String filePath, String caseId, String coordinates) async {
     var box = Hive.box(_boxName);
     await box.add({'filePath': filePath, 'caseId': 'cm5v833zu0000vv2if2t2z3yh', 'coordinates': coordinates});
