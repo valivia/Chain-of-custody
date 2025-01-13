@@ -9,6 +9,8 @@ class TElevetedButtonTheme {
       foregroundColor: const Color(0xFF282C2F),
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       elevation: 6,
+      alignment: Alignment.centerLeft,
+      //minimumSize: const Size.fromWidth(double.infinity),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       ),

@@ -61,13 +61,16 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme AtextTheme = Theme.of(context).textTheme;
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.home, color: Colors.white),
-        title: const Text('Home', style: AtextTheme.headlineLarge), //TODO:: fix this
+        // leading: const Icon(Icons.home, color: Colors.white),
+        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.home,)),
+        // title: Text('Home', style: Theme.of(context,).textTheme.headlineMedium),
+        centerTitle: true,
+        title: Text('Home', style: aTextTheme.headlineMedium,),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.settings,)),
         ],
       ),
       body: Center(
@@ -76,28 +79,64 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 20), // Add spacing between buttons
-              // Create Case Button
-              Button(
-                title: 'Create Case',
-                icon: Icons.open_in_new,
-                onTap: () {},
+              // // Create Case Button
+              // Button(
+              //   title: 'Create Case',
+              //   icon: Icons.open_in_new,
+              //   onTap: () {},
+              // ),
+
+              // const SizedBox(height: 20), // Add spacing between buttons
+              // // Join Case Button
+              // Button(
+              //   title: 'Join case',
+              //   icon: Icons.photo_camera,
+              //   onTap: () {},
+              // ),
+
+              // const SizedBox(height: 20), // Add spacing between buttons
+              // // Transfer Evidence Button
+              // Button(
+              //   title: 'Transfer evidence',
+              //   icon: Icons.photo_camera,
+              //   onTap: () {},
+              // ),
+
+    	        SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  label: Text('Create Case', style: aTextTheme.bodyMedium,),
+                  icon: const Icon(Icons.open_in_new),
+                  iconAlignment: IconAlignment.end,
+                  onPressed: () {},
+                ),
               ),
 
               const SizedBox(height: 20), // Add spacing between buttons
-              // Join Case Button
-              Button(
-                title: 'Join case',
-                icon: Icons.photo_camera,
-                onTap: () {},
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  label: Text('Join case', style: aTextTheme.bodyMedium,),
+                  icon: const Icon(Icons.photo_camera),
+                  iconAlignment: IconAlignment.end,
+                  onPressed: () {},
+                ),
               ),
 
               const SizedBox(height: 20), // Add spacing between buttons
-              // Transfer Evidence Button
-              Button(
-                title: 'Transfer evidence',
-                icon: Icons.photo_camera,
-                onTap: () {},
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  label: Text('Transfer evidence', style: aTextTheme.bodyMedium,),
+                  icon: const Icon(Icons.photo_camera),
+                  iconAlignment: IconAlignment.end,
+                  onPressed: () {},
+                ),
               ),
+
+              const SizedBox(height: 20), // Add spacing between buttons
 
               if (kDebugMode)
                 // Debug page Button
