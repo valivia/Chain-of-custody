@@ -3,6 +3,8 @@ import 'package:camera/camera.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:coc/service/authentication.dart';
+import 'package:http/http.dart' as http;
 import 'package:coc/pages/image_gallery.dart'; // Import the new page
 import 'package:coc/pages/scanner.dart'; // Import the QR scanner page
 import 'package:coc/components/local_store.dart'; // Import the LocalStore class
@@ -52,15 +54,19 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
 
         XFile picture = await _cameraController!.takePicture();
         await picture.saveTo(filePath);
-        print('Picture saved to $filePath');
 
-        // Save picture metadata to Hive
-        await LocalStore.savePictureMetadata(filePath, widget.caseId);
+        // Attempt to send the picture to the server
+        bool uploadSuccess = await _uploadPicture(filePath, widget.caseId);
+
+        if (!uploadSuccess) {
+          // Save picture metadata to Hive if upload fails
+          await LocalStore.savePictureMetadata(filePath, widget.caseId);
+        }
 
         // Show feedback when a picture is taken without flash
         if (!_isFlashOn) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Picture saved')),
+            const SnackBar(content: Text('Picture saved locally')),
           );
         }
 
@@ -75,6 +81,37 @@ class _PictureTakingPageState extends State<PictureTakingPage> {
       }
     } else {
       print('Storage permission not granted');
+    }
+  }
+
+  Future<bool> _uploadPicture(String filePath, String caseId) async {
+    try {
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('https://coc.hootsifer.com/evidence/media'),
+      );
+
+      // Add headers including the Bearer token
+      request.headers['Authorization'] = await Authentication.getBearerToken();
+      request.fields['caseId'] = caseId;
+      request.files.add(await http.MultipartFile.fromPath('file', filePath));
+
+      var response = await request.send();
+      print(request.fields);
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        print('Picture uploaded successfully');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Picture saved to server')),
+        );
+        return true;
+      } else {
+        print('Failed to upload picture: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('Error uploading picture: $e');
+      return false;
     }
   }
 
