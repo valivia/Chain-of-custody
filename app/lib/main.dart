@@ -1,4 +1,4 @@
-import 'package:coc/components/button.dart';
+//import 'package:coc/components/button.dart';
 import 'package:coc/pages/debug.dart';
 import 'package:coc/service/location.dart';
 import 'package:flutter/foundation.dart';
@@ -77,6 +77,8 @@ class HomePage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Column(
+            //mainAxisSize: MainAxisSize.max,
+            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const SizedBox(height: 20), // Add spacing between buttons
               // // Create Case Button
@@ -113,6 +115,7 @@ class HomePage extends StatelessWidget {
               ),
 
               const SizedBox(height: 20), // Add spacing between buttons
+              // const Spacer(),
 
               SizedBox(
                 width: double.infinity,
@@ -125,6 +128,7 @@ class HomePage extends StatelessWidget {
               ),
 
               const SizedBox(height: 20), // Add spacing between buttons
+              // const Spacer(),
 
               SizedBox(
                 width: double.infinity,
@@ -136,13 +140,14 @@ class HomePage extends StatelessWidget {
                 ),
               ),
 
+              // const Spacer(),
               const SizedBox(height: 20), // Add spacing between buttons
 
               if (kDebugMode)
                 // Debug page Button
                 const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
-                child: const Text('Debug page'),
+                child: Text('Debug page', style: aTextTheme.bodyMedium,),
                 onPressed: () {
                   Navigator.push(
                     context,

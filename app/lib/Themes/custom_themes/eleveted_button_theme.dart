@@ -14,6 +14,7 @@ class TElevetedButtonTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       ),
+      iconColor: const Color(0xFFE7E7E7),
     ),
   );
 
@@ -26,6 +27,7 @@ class TElevetedButtonTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       ),
+      iconColor: const Color(0xFFE7E7E7),
     ),
   );
 }
