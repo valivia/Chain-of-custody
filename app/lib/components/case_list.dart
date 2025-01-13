@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:developer';
-
 import 'package:coc/controllers/case.dart';
-import 'package:coc/pages/case_detail.dart';
+import 'package:coc/pages/case_detail_remake.dart';
 
 
 class CaseList extends StatelessWidget {
@@ -50,7 +48,7 @@ class CaseList extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CaseDetailView(caseItem: caseItem),
+                            builder: (context) => CaseDetailViewRemake(caseItem: caseItem),
                           ),
                         );
                       },
