@@ -1,9 +1,4 @@
-import 'dart:math';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:coc/controllers/case.dart';
-import 'package:coc/controllers/user.dart';
 import 'package:coc/controllers/case_user.dart';
 
 class CaseUserListView extends StatelessWidget {
@@ -31,7 +26,7 @@ class CaseUserList extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              "Handlers",
+              "caseUsers",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
@@ -40,7 +35,7 @@ class CaseUserList extends StatelessWidget {
           child: ListView.builder(
             itemCount: users.length,
             itemBuilder: (context, index) {
-              final handler = users[index];
+              final caseUser = users[index];
               return ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(10),
@@ -50,7 +45,7 @@ class CaseUserList extends StatelessWidget {
                   children: [
                     const Icon(Icons.person),
                     const SizedBox(width: 10),
-                    Text("${handler.firstName} ${handler.lastName}"),
+                    Text("${caseUser.firstName} ${caseUser.lastName}"),
                   ],
                 ),
               );
