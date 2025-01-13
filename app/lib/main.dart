@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/Themes/theme.dart';
+import 'package:coc/components/case_list.dart';
 
 final globalState = GetIt.instance;
 
@@ -157,7 +158,9 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
+          CaseList(),
         ),
+        
       ),
     );
   }
