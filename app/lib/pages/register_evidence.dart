@@ -49,7 +49,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
 
     // When we reach here, permissions are granted and we can continue
     Position position =
-        await globalState<LocationService>().getCurrentLocation();
+        await globalState<LocationService>().getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
     setState(() {
       _originCoordinatesController.text =
           '${position.latitude}, ${position.longitude}';
@@ -65,7 +65,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     };
     final body = {
       'id': _idController.text,
-      'caseId': "cm5lbsq5b0002n02ixqc71e2w",
+      'caseId': "cm5v833zu0000vv2if2t2z3yh",
       'containerType': 1,
       'itemType': _itemTypeController.text,
       'description': _descriptionController.text,
@@ -117,10 +117,10 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _idController,
-                  decoration: InputDecoration(labelText: 'ID'),
+                  decoration: const InputDecoration(labelText: 'ID'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the ID';
@@ -130,7 +130,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                 ),
                 DropdownButtonFormField<String>(
                   value: _selectedContainerType,
-                  decoration: InputDecoration(labelText: 'Container Type'),
+                  decoration: const InputDecoration(labelText: 'Container Type'),
                   items: _containerTypes.map((String type) {
                     return DropdownMenuItem<String>(
                       value: type,
@@ -152,7 +152,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                 ),
                 TextFormField(
                   controller: _itemTypeController,
-                  decoration: InputDecoration(labelText: 'Item Type'),
+                  decoration: const InputDecoration(labelText: 'Item Type'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the item type';
@@ -162,14 +162,14 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                 ),
                 TextFormField(
                   controller: _descriptionController,
-                  decoration: InputDecoration(labelText: 'Description'),
+                  decoration: const InputDecoration(labelText: 'Description'),
                   validator: (value) {
                     return null; // Description is optional
                   },
                 ),
                 TextFormField(
                   controller: _originCoordinatesController,
-                  decoration: InputDecoration(labelText: 'Origin Coordinates'),
+                  decoration: const InputDecoration(labelText: 'Origin Coordinates'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the origin coordinates';
@@ -178,8 +178,8 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                   },
                 ),
                 if (_isFetchingLocation)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
                     child: Center(
                       child: CircularProgressIndicator(),
                     ),
@@ -187,7 +187,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                 TextFormField(
                   controller: _originLocationDescriptionController,
                   decoration:
-                      InputDecoration(labelText: 'Origin Location Description'),
+                      const InputDecoration(labelText: 'Origin Location Description'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the origin location description';
@@ -195,7 +195,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -204,10 +204,10 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text('Back'),
+                        child: const Text('Back'),
                       ),
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () async {
@@ -235,7 +235,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                             }
                           }
                         },
-                        child: Text('Submit'),
+                        child: const Text('Submit'),
                       ),
                     ),
                   ],

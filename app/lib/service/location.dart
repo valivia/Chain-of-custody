@@ -42,7 +42,7 @@ class LocationService {
   }
 
   /// Fetches the current position of the device.
-  Future<Position> getCurrentLocation() async {
+  Future<Position> getCurrentLocation({required LocationAccuracy desiredAccuracy}) async {
     bool hasPermission = await _handlePermissions();
     if (!hasPermission) return Future.error("Location permissions denied.");
 
