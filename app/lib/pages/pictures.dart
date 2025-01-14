@@ -47,8 +47,13 @@ class PictureTakingPageState extends State<PictureTakingPage> {
       return;
     }
 
+    var storagePermission = await Permission.storage.request();
+    var photoPermissions  = await Permission.photos.request();
+
+    log('Permissions: storage: $storagePermission, photos: $photoPermissions');
+
     // Check for storage permissions
-    if (await Permission.storage.request().isGranted) {
+    if (storagePermission.isGranted || photoPermissions.isGranted) {
       final Directory appDirectory = await getApplicationDocumentsDirectory();
       final String pictureDirectory = '${appDirectory.path}/Pictures';
       await Directory(pictureDirectory).create(recursive: true);
