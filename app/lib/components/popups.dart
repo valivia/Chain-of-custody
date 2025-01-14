@@ -1,9 +1,10 @@
+import 'package:coc/pages/case_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/components/success_animation.dart'; 
 import 'package:coc/components/failed_animation.dart'; 
 import 'package:coc/main.dart'; 
 
-void showSuccessDialog(BuildContext context, String message) {
+void showSuccessDialog(BuildContext context, String message, dynamic caseItem) {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -31,14 +32,15 @@ void showSuccessDialog(BuildContext context, String message) {
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                   onPressed: () {
-                    Navigator.of(context).pop();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const App()),
+                      MaterialPageRoute(
+                        builder: (context) => CaseDetailView(caseItem: caseItem),
+                      ),
                     );
                   },
                   child: const Text(
-                    'Go to Main',
+                    'Go to Case',
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -50,7 +52,8 @@ void showSuccessDialog(BuildContext context, String message) {
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.push(context, 
+                    MaterialPageRoute(builder: (context) => const App()),);
                   },
                   child: const Text(
                     'Scan More',
@@ -66,7 +69,7 @@ void showSuccessDialog(BuildContext context, String message) {
   );
 }
 
-void showFailureDialog(BuildContext context, String message) {
+void showFailureDialog(BuildContext context, String message, dynamic caseItem) {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -95,10 +98,11 @@ void showFailureDialog(BuildContext context, String message) {
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                   onPressed: () {
-                    Navigator.of(context).pop();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const App()), // Replace with your main screen widget
+                      MaterialPageRoute(
+                        builder: (context) => CaseDetailView(caseItem: caseItem.id),
+                      ),
                     );
                   },
                   child: const Text(

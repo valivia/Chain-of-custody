@@ -28,10 +28,11 @@ class CaseDetailView extends StatelessWidget {
                 title: 'Add evidence',
                 icon: Icons.qr_code,
                 onTap: () {
-                  MaterialPageRoute(
-                      builder: (context) => QRScannerPage(
-                            onScan: navigateToEvidenceCreate(context, caseItem),
-                          ));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => QRScannerPage(
+                              onScan: navigateToEvidenceCreate(caseItem))));
                 },
               ),
               Button(

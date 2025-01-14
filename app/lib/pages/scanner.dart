@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRScannerPage extends StatefulWidget {
-  final Function(String) onScan;
+  final Function(BuildContext, String) onScan;
   const QRScannerPage({super.key, required this.onScan});
   @override
   QRScannerPageState createState() => QRScannerPageState();
@@ -30,7 +30,7 @@ class QRScannerPageState extends State<QRScannerPage> {
           if (barcode.rawValue != null) {
             final String code = barcode.rawValue!;
             scannerController.stop();
-            widget.onScan(code);
+            widget.onScan(context, code);
             // TODO: check if this works
             scannerController.start();
           }

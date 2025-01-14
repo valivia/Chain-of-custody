@@ -9,8 +9,8 @@ import 'dart:convert';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/components/popups.dart';
 
-Function(String) navigateToEvidenceCreate(BuildContext context, Case caseItem) {
-  onscan(String code) {
+Function(BuildContext, String) navigateToEvidenceCreate(Case caseItem) {
+  onscan(BuildContext context, String code) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -83,7 +83,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     };
     final body = {
       'id': _idController.text,
-      'caseId': "cm5v833zu0000vv2if2t2z3yh",
+      'caseId': widget.caseItem.id,
       'containerType': 1,
       'itemType': _itemTypeController.text,
       'description': _descriptionController.text,
@@ -251,13 +251,13 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                               // Handle response status code
                               if (response.statusCode == 401) {
                                 showFailureDialog(context,
-                                    'Unauthorized access. Please log in again.');
+                                    'Unauthorized access. Please log in again.', widget.caseItem);
                               } else if (response.statusCode == 201) {
                                 showSuccessDialog(
-                                    context, 'Evidence submitted successfully');
+                                    context, 'Evidence submitted successfully', widget.caseItem);	
                               } else {
                                 showFailureDialog(context,
-                                    'Failed to submit evidence data: ${response.statusCode}');
+                                    'Failed to submit evidence data: ${response.statusCode}', widget.caseItem);
                               }
                             } else {
                               // Save evidence locally
@@ -266,7 +266,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                               await LocalStore.saveApiResponse(
                                   evidenceKey, requestData);
                               showSuccessDialog(
-                                  context, 'Evidence saved locally');
+                                  context, 'Evidence saved locally', widget.caseItem);
                             }
                           }
                         },

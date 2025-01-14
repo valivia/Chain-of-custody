@@ -36,7 +36,8 @@ class PictureTakingPageState extends State<PictureTakingPage> {
 
   Future<void> initializeCamera() async {
     cameras = await availableCameras();
-    _cameraController = CameraController(cameras![0], ResolutionPreset.high);
+    _cameraController = CameraController(cameras![0], ResolutionPreset.high,
+        enableAudio: false);
     await _cameraController!.initialize();
     setState(() {});
   }
@@ -214,8 +215,7 @@ class PictureTakingPageState extends State<PictureTakingPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => QRScannerPage(
-                            onScan: navigateToEvidenceCreate(
-                                context, widget.caseItem),
+                            onScan: navigateToEvidenceCreate(widget.caseItem),
                           )),
                 );
               },
