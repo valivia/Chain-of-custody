@@ -20,7 +20,6 @@ Function(BuildContext, String) navigateToEvidenceCreate(Case caseItem) {
           ),
         ));
   }
-
   return onscan;
 }
 
