@@ -30,9 +30,10 @@ class QRScannerPageState extends State<QRScannerPage> {
           if (barcode.rawValue != null) {
             final String code = barcode.rawValue!;
             scannerController.stop();
-            widget.onScan(context, code);
             // TODO: check if this works
-            scannerController.start();
+            widget.onScan(context, code).then((_) {
+              scannerController.start();
+            });
           }
         },
       ),

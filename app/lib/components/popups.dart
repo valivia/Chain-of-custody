@@ -1,10 +1,12 @@
+import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/case_detail.dart';
+import 'package:coc/pages/register_evidence.dart';
+import 'package:coc/pages/scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/components/success_animation.dart'; 
 import 'package:coc/components/failed_animation.dart'; 
-import 'package:coc/main.dart'; 
 
-void showSuccessDialog(BuildContext context, String message, dynamic caseItem) {
+void showSuccessDialog(BuildContext context, String message, Case caseItem) {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -53,7 +55,7 @@ void showSuccessDialog(BuildContext context, String message, dynamic caseItem) {
                   ),
                   onPressed: () {
                     Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => const App()),);
+                    MaterialPageRoute(builder: (context) => QRScannerPage(onScan: navigateToEvidenceCreate(caseItem))),);
                   },
                   child: const Text(
                     'Scan More',
@@ -69,7 +71,7 @@ void showSuccessDialog(BuildContext context, String message, dynamic caseItem) {
   );
 }
 
-void showFailureDialog(BuildContext context, String message, dynamic caseItem) {
+void showFailureDialog(BuildContext context, String message, Case caseItem) {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -101,7 +103,7 @@ void showFailureDialog(BuildContext context, String message, dynamic caseItem) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CaseDetailView(caseItem: caseItem.id),
+                        builder: (context) => CaseDetailView(caseItem: caseItem),
                       ),
                     );
                   },

@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:coc/components/button.dart';
 import 'package:coc/components/case_list.dart';
 import 'package:coc/components/local_store.dart';
 
 import 'package:coc/pages/debug.dart';
 import 'package:coc/pages/settings.dart';
-import 'package:coc/pages/login.dart';
 
 import 'package:coc/service/location.dart';
 import 'package:coc/service/authentication.dart';
