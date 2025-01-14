@@ -1,3 +1,4 @@
+import 'package:coc/controllers/case.dart';
 import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/location.dart';
@@ -6,12 +7,29 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:coc/components/local_store.dart';
-import 'package:coc/components/popups.dart'; // Import the popups.dart file
+import 'package:coc/components/popups.dart';
+
+Function(BuildContext, String) navigateToEvidenceCreate(Case caseItem) {
+  onscan(BuildContext context, String code) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RegisterEvidencePage(
+            evidenceId: code,
+            caseItem: caseItem,
+          ),
+        ));
+  }
+
+  return onscan;
+}
 
 class RegisterEvidencePage extends StatefulWidget {
-  final Map<String, dynamic> scannedData;
+  final String evidenceId;
+  final Case caseItem;
 
-  const RegisterEvidencePage({super.key, required this.scannedData});
+  const RegisterEvidencePage(
+      {super.key, required this.evidenceId, required this.caseItem});
 
   @override
   RegisterEvidencePageState createState() => RegisterEvidencePageState();
@@ -32,7 +50,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
   @override
   void initState() {
     super.initState();
-    _idController = TextEditingController(text: widget.scannedData['qrData']);
+    _idController = TextEditingController(text: widget.evidenceId);
     _containerTypeController = TextEditingController();
     _itemTypeController = TextEditingController();
     _descriptionController = TextEditingController();
@@ -48,8 +66,8 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     });
 
     // When we reach here, permissions are granted and we can continue
-    Position position =
-        await globalState<LocationService>().getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
+    Position position = await globalState<LocationService>()
+        .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
     setState(() {
       _originCoordinatesController.text =
           '${position.latitude}, ${position.longitude}';
@@ -65,7 +83,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     };
     final body = {
       'id': _idController.text,
-      'caseId': "cm5v833zu0000vv2if2t2z3yh",
+      'caseId': widget.caseItem.id,
       'containerType': 1,
       'itemType': _itemTypeController.text,
       'description': _descriptionController.text,
@@ -79,9 +97,15 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
         headers: headers,
         body: jsonEncode(body),
       );
-      return {'response': response, 'request': {'url': url.toString(), 'headers': headers, 'body': body}};
+      return {
+        'response': response,
+        'request': {'url': url.toString(), 'headers': headers, 'body': body}
+      };
     } catch (e) {
-      return {'response': http.Response('Error: $e', 500), 'request': {'url': url.toString(), 'headers': headers, 'body': body}};
+      return {
+        'response': http.Response('Error: $e', 500),
+        'request': {'url': url.toString(), 'headers': headers, 'body': body}
+      };
     }
   }
 
@@ -130,7 +154,8 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                 ),
                 DropdownButtonFormField<String>(
                   value: _selectedContainerType,
-                  decoration: const InputDecoration(labelText: 'Container Type'),
+                  decoration:
+                      const InputDecoration(labelText: 'Container Type'),
                   items: _containerTypes.map((String type) {
                     return DropdownMenuItem<String>(
                       value: type,
@@ -169,7 +194,8 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                 ),
                 TextFormField(
                   controller: _originCoordinatesController,
-                  decoration: const InputDecoration(labelText: 'Origin Coordinates'),
+                  decoration:
+                      const InputDecoration(labelText: 'Origin Coordinates'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the origin coordinates';
@@ -186,8 +212,8 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                   ),
                 TextFormField(
                   controller: _originLocationDescriptionController,
-                  decoration:
-                      const InputDecoration(labelText: 'Origin Location Description'),
+                  decoration: const InputDecoration(
+                      labelText: 'Origin Location Description'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the origin location description';
@@ -212,26 +238,35 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            bool isConnected = await LocalStore.hasInternetConnection();
-                            Map<String, dynamic> result = await submitEvidenceData();
+                            bool isConnected =
+                                await LocalStore.hasInternetConnection();
+                            Map<String, dynamic> result =
+                                await submitEvidenceData();
                             http.Response response = result['response'];
-                            Map<String, dynamic> requestData = result['request'];
-                            String evidenceKey = requestData['body']['id']; // Generate a unique key
+                            Map<String, dynamic> requestData =
+                                result['request'];
+                            String evidenceKey = requestData['body']['id'];
 
                             if (isConnected) {
                               // Handle response status code
                               if (response.statusCode == 401) {
-                                showFailureDialog(context, 'Unauthorized access. Please log in again.');
+                                showFailureDialog(context,
+                                    'Unauthorized access. Please log in again.', widget.caseItem);
                               } else if (response.statusCode == 201) {
-                                showSuccessDialog(context, 'Evidence submitted successfully');
+                                showSuccessDialog(
+                                    context, 'Evidence submitted successfully', widget.caseItem);	
                               } else {
-                                showFailureDialog(context, 'Failed to submit evidence data: ${response.statusCode}');
+                                showFailureDialog(context,
+                                    'Failed to submit evidence data: ${response.statusCode}', widget.caseItem);
                               }
                             } else {
                               // Save evidence locally
-                              requestData['body']['madeOn'] = DateTime.now().toIso8601String();
-                              await LocalStore.saveApiResponse(evidenceKey, requestData);
-                              showSuccessDialog(context, 'Evidence saved locally');
+                              requestData['body']['madeOn'] =
+                                  DateTime.now().toIso8601String();
+                              await LocalStore.saveApiResponse(
+                                  evidenceKey, requestData);
+                              showSuccessDialog(
+                                  context, 'Evidence saved locally', widget.caseItem);
                             }
                           }
                         },
