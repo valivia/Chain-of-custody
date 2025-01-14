@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:coc/components/success_animation.dart'; // Import the success animation widget
-import 'package:coc/components/failed_animation.dart'; // Import the failed animation widget
-import 'package:coc/main.dart'; // Import the main screen widget
-import 'package:coc/pages/scanner.dart'; // Import the scan screen widget
+import 'package:coc/components/success_animation.dart'; 
+import 'package:coc/components/failed_animation.dart'; 
+import 'package:coc/main.dart'; 
 
 void showSuccessDialog(BuildContext context, String message) {
   showDialog(
@@ -16,10 +15,9 @@ void showSuccessDialog(BuildContext context, String message) {
             SuccessAnimation(
               size: 200,
               onComplete: () {
-                // Optional: Do something when the animation completes
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(message),
           ],
         ),
@@ -36,16 +34,16 @@ void showSuccessDialog(BuildContext context, String message) {
                     Navigator.of(context).pop();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => App()), // Replace with your main screen widget
+                      MaterialPageRoute(builder: (context) => const App()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'Go to Main',
                     textAlign: TextAlign.center,
                   ),
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -53,12 +51,8 @@ void showSuccessDialog(BuildContext context, String message) {
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => QRScannerPage()), // Replace with your scan screen widget
-                    );
                   },
-                  child: Text(
+                  child: const Text(
                     'Scan More',
                     textAlign: TextAlign.center,
                   ),
@@ -87,7 +81,7 @@ void showFailureDialog(BuildContext context, String message) {
                 // Optional: Do something when the animation completes
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(message),
           ],
         ),
@@ -104,16 +98,16 @@ void showFailureDialog(BuildContext context, String message) {
                     Navigator.of(context).pop();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => App()), // Replace with your main screen widget
+                      MaterialPageRoute(builder: (context) => const App()), // Replace with your main screen widget
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'Go to Main',
                     textAlign: TextAlign.center,
                   ),
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -121,12 +115,8 @@ void showFailureDialog(BuildContext context, String message) {
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => QRScannerPage()), // Replace with your scan screen widget
-                    );
                   },
-                  child: Text(
+                  child: const Text(
                     'Scan More',
                     textAlign: TextAlign.center,
                   ),

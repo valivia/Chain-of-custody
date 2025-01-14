@@ -1,14 +1,9 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:coc/pages/scanner.dart';
-import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/login.dart';
 import 'package:coc/pages/image_gallery.dart';
 import 'package:coc/components/local_store.dart';
-import 'package:coc/pages/evidence_list.dart';
 import 'package:coc/pages/nfc.dart';
 import 'package:coc/components/case_list.dart';
-import 'package:coc/components/local_store.dart';
 
 class DebugPage extends StatelessWidget {
   const DebugPage({super.key});
@@ -27,28 +22,6 @@ class DebugPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Column(
             children: [
-              const SizedBox(height: 20), // Add spacing between buttons
-              ElevatedButton(
-                child: const Text('Scan QR Code'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => QRScannerPage()),
-                  );
-                },
-              ),
-              const SizedBox(height: 20), // Add spacing between buttons
-              ElevatedButton(
-                child: const Text('Take Picture'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      // TODO Add caseId to the parameters
-                      builder: (context) => const PictureTakingPage(caseId:  "cm5lbsq5b0002n02ixqc71e2w")),
-                  );
-                },
-              ),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 child: const Text('View Images'),

@@ -1,4 +1,6 @@
-import 'package:coc/service/location.dart'; // Import the LocationService class
+import 'package:coc/controllers/case.dart';
+import 'package:coc/pages/register_evidence.dart';
+import 'package:coc/service/location.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'dart:developer';
@@ -7,15 +9,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:coc/pages/image_gallery.dart'; // Import the new page
-import 'package:coc/pages/scanner.dart'; // Import the QR scanner page
-import 'package:coc/components/local_store.dart'; // Import the LocalStore class
+import 'package:coc/pages/image_gallery.dart';
+import 'package:coc/pages/scanner.dart';
+import 'package:coc/components/local_store.dart';
 import 'package:coc/service/authentication.dart';
 
 class PictureTakingPage extends StatefulWidget {
-  final String caseId; // Add caseId to the constructor
+  final Case caseItem;
 
-  const PictureTakingPage({super.key, required this.caseId});
+  const PictureTakingPage({super.key, required this.caseItem});
 
   @override
   PictureTakingPageState createState() => PictureTakingPageState();
@@ -49,25 +51,30 @@ class PictureTakingPageState extends State<PictureTakingPage> {
       final Directory appDirectory = await getApplicationDocumentsDirectory();
       final String pictureDirectory = '${appDirectory.path}/Pictures';
       await Directory(pictureDirectory).create(recursive: true);
-      final String filePath = '$pictureDirectory/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final String filePath =
+          '$pictureDirectory/${DateTime.now().millisecondsSinceEpoch}.jpg';
 
       try {
         // Set flash mode to auto or always before taking a picture
-        await _cameraController!.setFlashMode(_isFlashOn ? FlashMode.always : FlashMode.off);
+        await _cameraController!
+            .setFlashMode(_isFlashOn ? FlashMode.always : FlashMode.off);
 
         XFile picture = await _cameraController!.takePicture();
         await picture.saveTo(filePath);
 
         // Get current coordinates
         // TODO: check if lowest is good enuff
-        Position position = await LocationService().getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
+        Position position = await LocationService()
+            .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
         String coordinates = '${position.latitude},${position.longitude}';
 
         // Attempt to send the picture to the server
-        bool uploadSuccess = await _uploadPicture(filePath, widget.caseId, coordinates);
+        bool uploadSuccess =
+            await _uploadPicture(filePath, widget.caseItem.id, coordinates);
         if (!uploadSuccess) {
           // Save picture metadata to Hive if upload fails
-          await LocalStore.savePictureMetadata(filePath, widget.caseId, coordinates);
+          await LocalStore.savePictureMetadata(
+              filePath, widget.caseItem.id, coordinates);
         }
 
         // Show feedback when a picture is taken without flash
@@ -84,7 +91,8 @@ class PictureTakingPageState extends State<PictureTakingPage> {
     }
   }
 
-  Future<bool> _uploadPicture(String filePath, String caseId, String coordinates) async {
+  Future<bool> _uploadPicture(
+      String filePath, String caseId, String coordinates) async {
     try {
       var request = http.MultipartRequest(
         'POST',
@@ -92,9 +100,8 @@ class PictureTakingPageState extends State<PictureTakingPage> {
       );
 
       // Add headers including the Bearer token
-      // TODO - Add the caseId to the request
       request.headers['Authorization'] = await Authentication.getBearerToken();
-      request.fields['caseId'] = 'cm5v833zu0000vv2if2t2z3yh';
+      request.fields['caseId'] = caseId;
       request.fields['coordinates'] = coordinates;
       request.files.add(await http.MultipartFile.fromPath('file', filePath));
 
@@ -158,7 +165,8 @@ class PictureTakingPageState extends State<PictureTakingPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ImageGalleryPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const ImageGalleryPage()),
                 );
               },
             ),
@@ -181,7 +189,8 @@ class PictureTakingPageState extends State<PictureTakingPage> {
                     height: 75.0,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Theme.of(context).scaffoldBackgroundColor, // Match the background color
+                      color: Theme.of(context)
+                          .scaffoldBackgroundColor, // Match the background color
                     ),
                     child: Center(
                       child: Container(
@@ -203,7 +212,11 @@ class PictureTakingPageState extends State<PictureTakingPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => QRScannerPage()),
+                  MaterialPageRoute(
+                      builder: (context) => QRScannerPage(
+                            onScan: navigateToEvidenceCreate(
+                                context, widget.caseItem),
+                          )),
                 );
               },
             ),

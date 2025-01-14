@@ -1,13 +1,14 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 class NfcScanPage extends StatefulWidget {
+  const NfcScanPage({super.key});
+
   @override
-  _NfcScanPageState createState() => _NfcScanPageState();
+  NfcScanPageState createState() => NfcScanPageState();
 }
 
-class _NfcScanPageState extends State<NfcScanPage> {
+class NfcScanPageState extends State<NfcScanPage> {
   ValueNotifier<Map<String, dynamic>> result = ValueNotifier({});
 
   @override
@@ -29,17 +30,17 @@ class _NfcScanPageState extends State<NfcScanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Scan NFC Tag')),
+      appBar: AppBar(title: const Text('Scan NFC Tag')),
       body: SafeArea(
         child: Center(
           child: ValueListenableBuilder<Map<String, dynamic>>(
             valueListenable: result,
             builder: (context, value, _) {
               if (value.isEmpty) {
-                return Text('Scan an NFC tag');
+                return  const Text('Scan an NFC tag');
               } else {
                 return ListView(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   children: value.entries.map((entry) {
                     return ListTile(
                       title: Text(entry.key),
