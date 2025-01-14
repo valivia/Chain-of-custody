@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:coc/components/case_base_details.dart';
 import 'package:coc/components/lim_case_user_list.dart';
 import 'package:coc/components/lim_evidence_list.dart';
+import 'package:coc/components/media_evidence.dart';
 
 class CaseDetailView extends StatelessWidget {
   const CaseDetailView({super.key, required this.caseItem});
@@ -24,7 +25,9 @@ class CaseDetailView extends StatelessWidget {
               const SizedBox(height: 16),
               limCaseUserList(context, caseItem.users),
               const SizedBox(height: 8),
-              limEvidenceList(context, caseItem.taggedEvidence)
+              limEvidenceList(context, caseItem.taggedEvidence), 
+              const SizedBox(height: 8), 
+              MediaEvidenceView(mediaEvidence: caseItem.mediaEvidence)
             ],
           ),
         ),

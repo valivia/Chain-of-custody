@@ -67,10 +67,12 @@ class Case {
     };
     try {
       final response = await http.get(url, headers: headers);
+      log(response.body.toString());
 
       if (response.statusCode == 200) {
         log(" --- Request Succesfulll! --- ");
         final caseList = await compute(parseJson, response.body);
+        log(caseList.toString());
         return caseList;
       } else {
         final error = jsonDecode(response.body)["message"];
