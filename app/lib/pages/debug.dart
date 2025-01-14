@@ -2,11 +2,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:coc/pages/scanner.dart';
 import 'package:coc/pages/pictures.dart';
-import 'package:coc/pages/nfc.dart';
 import 'package:coc/pages/login.dart';
 import 'package:coc/pages/image_gallery.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/pages/evidence_list.dart';
+import 'package:coc/pages/nfc.dart';
+import 'package:coc/components/case_list.dart';
+import 'package:coc/components/local_store.dart';
 
 class DebugPage extends StatelessWidget {
   const DebugPage({super.key});
@@ -32,16 +34,6 @@ class DebugPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => QRScannerPage()),
-                  );
-                },
-              ),
-              const SizedBox(height: 20), // Add spacing between buttons
-              ElevatedButton(
-                child: const Text('Evidence List'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => EvidenceListView()),
                   );
                 },
               ),
@@ -83,10 +75,12 @@ class DebugPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
               ),
+              const SizedBox(height: 20), // Add spacing between buttons
+              CaseList(),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 onPressed: () async {
@@ -95,7 +89,7 @@ class DebugPage extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('All Data from Hive'),
+                        title: const Text('All Data from Hive'),
                         content: SingleChildScrollView(
                           child: ListBody(
                             children: allData.entries.map((entry) {
@@ -108,14 +102,14 @@ class DebugPage extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('OK'),
+                            child: const Text('OK'),
                           ),
                         ],
                       );
                     },
                   );
                 },
-                child: Text('Get All Data from Hive'),
+                child:const Text('Get All Data from Hive'),
               ),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
@@ -123,7 +117,7 @@ class DebugPage extends StatelessWidget {
                   await LocalStore.clearApiCache();
                   print('Hive cache cleared');
                 },
-                child: Text('Clear Cache'),
+                child: const Text('Clear Cache'),
               ),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
@@ -133,7 +127,7 @@ class DebugPage extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Send Status'),
+                        title: const Text('Send Status'),
                         content: SingleChildScrollView(
                           child: ListBody(
                             children: statusList.map((status) {
@@ -160,14 +154,14 @@ class DebugPage extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('OK'),
+                            child: const Text('OK'),
                           ),
                         ],
                       );
                     },
                   );
                 },
-                child: Text('Send All Saved Data'),
+                child: const Text('Send All Saved Data'),
               ),
             ],
           ),

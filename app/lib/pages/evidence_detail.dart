@@ -1,19 +1,18 @@
-import 'dart:developer';
+import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:flutter/material.dart';
-import 'package:coc/service/evidence.dart';
 import 'package:coc/service/edit_formats.dart';
-import 'package:coc/service/map_pointer.dart';
+import 'package:coc/components/map_pointer.dart';
 
 class EvidenceDetailView extends StatelessWidget {
   const EvidenceDetailView({super.key, required this.evidenceItem});
-  final Evidence evidenceItem;
+  final TaggedEvidence evidenceItem;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          evidenceItem.evidenceID,
+          evidenceItem.id,
         ),
       ),
       body: Padding(
@@ -21,33 +20,33 @@ class EvidenceDetailView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Case ID: [Case ID]',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              'Case ID: ${evidenceItem.caseId}',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Text(
-              'Evidence ID: ${evidenceItem.evidenceID}',
+              'Evidence ID: ${evidenceItem.id}',
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 10),
             Text(
-              'Type: ${evidenceItem.evidenceType}',
+              'Type: ${evidenceItem.itemType}',
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 10),
             Text(
-              'Description: ${evidenceItem.evidenceDescription}',
+              'Description: ${evidenceItem.description}',
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 10),
             Text(
-              'Entry created at: ${EditFormats().formatTimestamp(evidenceItem.evidenceCreatedAt).toString()}',
+              'Entry created at: ${EditFormats().formatTimestamp(evidenceItem.madeOn).toString()}',
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 10),
             Text(
-              'Entry updated at: ${EditFormats().formatTimestamp(evidenceItem.evidenceUpdatedAt).toString()}',
+              'Entry updated at: ${EditFormats().formatTimestamp(evidenceItem.updatedAt).toString()}',
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
@@ -62,16 +61,16 @@ class EvidenceDetailView extends StatelessWidget {
                         content: SingleChildScrollView(
                           child: ListBody(
                             children: <Widget>[
-                              Text('Origin location description: ${evidenceItem.evidenceOriginDescription}'),
+                              Text('Origin location description: ${evidenceItem.description}'),
                               const SizedBox(height: 10),
-                              Text('Origin location coordinates: ${evidenceItem.evidenceOriginCoords}'),
+                              Text('Origin location coordinates: ${evidenceItem.originCoordinates.latitude}, ${evidenceItem.originCoordinates.longitude}'),
                               const SizedBox(height: 10),
                               SizedBox(
                                 width: double.infinity,
                                 height: 200,
                                 child: MapPointer(
-                                  latitude: (EditFormats().getLatitude(evidenceItem.evidenceOriginCoords)),
-                                  longitude: (EditFormats().getLongitude(evidenceItem.evidenceOriginCoords)),
+                                  latitude: evidenceItem.originCoordinates.latitude,
+                                  longitude: evidenceItem.originCoordinates.longitude,
                                 ),
                               ),
                             ],
