@@ -1,18 +1,27 @@
-import 'package:coc/pages/register_evidence.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRScannerPage extends StatefulWidget {
+  final Function(BuildContext, String) onScan;
+
+  const QRScannerPage({super.key, required this.onScan});
+
   @override
-  _QRScannerPageState createState() => _QRScannerPageState();
+  QRScannerPageState createState() => QRScannerPageState();
 }
 
-class _QRScannerPageState extends State<QRScannerPage> {
-  final MobileScannerController _scannerController = MobileScannerController();
+class QRScannerPageState extends State<QRScannerPage> {
+  final MobileScannerController scannerController = MobileScannerController();
+
+  @override
+  void initState() {
+    super.initState();
+    scannerController.start();
+  }
 
   @override
   void dispose() {
-    _scannerController.dispose();
+    scannerController.dispose();
     super.dispose();
   }
 
@@ -23,22 +32,16 @@ class _QRScannerPageState extends State<QRScannerPage> {
         title: const Text('QR Scanner'),
       ),
       body: MobileScanner(
-        controller: _scannerController,
-        onDetect: (barcodeCapture) {
+        controller: scannerController,
+        onDetect: (barcodeCapture) async {
           final barcode = barcodeCapture.barcodes.first;
           if (barcode.rawValue != null) {
             final String code = barcode.rawValue!;
-            _scannerController.stop();
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    RegisterEvidencePage(scannedData: {'qrData': code}),
-              ),
-            ).then((_) {
-              // Resume the camera when returning to the scanner page
-              _scannerController.start();
-            });
+            scannerController.stop();
+            await widget.onScan(context, code);
+            if (mounted) {
+              scannerController.start();
+            }
           }
         },
       ),

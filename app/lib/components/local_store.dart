@@ -26,10 +26,9 @@ class LocalStore {
   }
 
   // Save picture metadata
-  // TODO: Add caseId to the parameters
   static Future<void> savePictureMetadata(String filePath, String caseId, String coordinates) async {
     var box = Hive.box(_boxName);
-    await box.add({'filePath': filePath, 'caseId': 'cm5v833zu0000vv2if2t2z3yh', 'coordinates': coordinates});
+    await box.add({'filePath': filePath, 'caseId': caseId, 'coordinates': coordinates});
   }
 
   // Retrieve all pictures

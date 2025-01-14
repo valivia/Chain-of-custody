@@ -4,7 +4,7 @@ import 'package:latlong2/latlong.dart';
 class MediaEvidence {
   String id;
   String userId;
-  String evidenceId;
+  String caseId;
 
   DateTime createdAt;
   DateTime updatedAt;
@@ -15,7 +15,7 @@ class MediaEvidence {
   MediaEvidence({
     required this.id,
     required this.userId,
-    required this.evidenceId,
+    required this.caseId,
     required this.createdAt,
     required this.updatedAt,
     required this.madeOn,
@@ -26,7 +26,7 @@ class MediaEvidence {
     return MediaEvidence(
       id: json['id'] as String,
       userId: json['userId'] as String,
-      evidenceId: json['evidenceId'] as String,
+      caseId: json['caseId'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       madeOn: DateTime.parse(json['madeOn'] as String),
