@@ -1,11 +1,10 @@
 // import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:coc/pages/scanner.dart';
-import 'package:coc/pages/pictures.dart';
-import 'package:coc/pages/nfc.dart';
 import 'package:coc/pages/login.dart';
-import 'package:coc/components/case_list.dart';
+import 'package:coc/pages/image_gallery.dart';
 import 'package:coc/components/local_store.dart';
+import 'package:coc/pages/nfc.dart';
+import 'package:coc/components/case_list.dart';
 // import 'package:coc/components/evidence_list.dart';
 // import 'dart:math';
 
@@ -30,11 +29,12 @@ class DebugPage extends StatelessWidget {
             children: [
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
-                child: Text('Scan QR Code', style: bTextTheme.bodyMedium,),
+                child: Text('View Images', style: bTextTheme.bodyMedium,),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => QRScannerPage()),
+                    MaterialPageRoute(builder: (context) => ImageGalleryPage()),
+                    //MaterialPageRoute(builder: (context) => QRScannerPage()),
                   );
                 },
               ),
@@ -54,8 +54,8 @@ class DebugPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const PictureTakingPage()),
+                    // MaterialPageRoute(
+                    //     builder: (context) => const PictureTakingPage()),
                   );
                 },
               ),
@@ -75,11 +75,11 @@ class DebugPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 20), // Add spacing between buttons
               CaseList(),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
@@ -134,8 +134,12 @@ class DebugPage extends StatelessWidget {
                               return Row(
                                 children: [
                                   Expanded(
-                                    child: Text('${status['id']}    ${status['status']}'),
-                                  ),
+                                    child: Text(
+                                        status['status'] != 'Success'
+                                            ? '${status['id']}     ${status['type']}     ${status['status']}'
+                                            : '${status['id']}     ${status['type']}'
+                                      ),
+                                    ),
                                   Icon(
                                     status['status'] == 'Success' ? Icons.check_circle : Icons.close,
                                     color: status['status'] == 'Success' ? Colors.green : Colors.red,
