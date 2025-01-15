@@ -2,6 +2,8 @@ import { Controller, Get, NotFoundException, Param, Res, StreamableFile } from '
 import { Response } from "express";
 import { createReadStream } from "fs";
 import { join } from "path";
+import { User, UserEntity } from "src/guards/auth.guard";
+import { checkCaseVisibility } from "src/routes/case/permissions";
 import { PrismaService } from "src/services/prisma.service";
 
 @Controller('media/evidence')
@@ -9,18 +11,20 @@ export class EvidenceController {
   constructor(private readonly prisma: PrismaService) { }
 
   @Get(':id')
-  async findOne(@Param('id') id: string, @Res({ passthrough: true }) res: Response): Promise<StreamableFile> {
+  async findOne(@User() user: UserEntity, @Param('id') id: string, @Res({ passthrough: true }) res: Response): Promise<StreamableFile> {
     // Get evidence info
-    const data = await this.prisma.mediaEvidence.findUnique({
+    const mediaEvidence = await this.prisma.mediaEvidence.findUnique({
       where: { id },
       include: { case: true }
     });
 
-    if (!data) {
+    if (!mediaEvidence) {
       throw new NotFoundException();
     }
 
-    const fileName = `${data.id}.jpg`;
+    await checkCaseVisibility(this.prisma, mediaEvidence.caseId, user.id);
+
+    const fileName = `${mediaEvidence.id}.jpg`;
     res.set({ 'Content-Disposition': `attachment; filename=${fileName}`, 'Content-Type': 'image/jpeg' });
 
     // Open file

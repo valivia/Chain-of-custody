@@ -1,9 +1,10 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, ForbiddenException, Get, NotFoundException, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Type } from "class-transformer";
 import { IsString, IsOptional, IsDate, MinDate, IsLatLong } from "class-validator";
 import { writeFile } from "fs/promises";
 import { User, UserEntity } from "src/guards/auth.guard";
+import { CasePermission, checkCaseVisibility } from "src/routes/case/permissions";
 import { PrismaService } from "src/services/prisma.service";
 
 class MediaEvidenceDto {
@@ -26,14 +27,18 @@ export class MediaController {
   constructor(private readonly prisma: PrismaService) { }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const data = await this.prisma.mediaEvidence.findUnique({
+  async findOne(@Param('id') id: string, @User() user: UserEntity) {
+    const mediaEvidence = await this.prisma.mediaEvidence.findUnique({
       where: { id },
     });
 
-    // TODO: permissions!!
+    if (!mediaEvidence) {
+      throw new NotFoundException("Evidence not found");
+    }
 
-    return { data };
+    await checkCaseVisibility(this.prisma, mediaEvidence.caseId, user.id);
+
+    return { data: mediaEvidence };
   }
 
   @Post()
@@ -43,23 +48,17 @@ export class MediaController {
       throw new BadRequestException("File not found");
     }
 
-    const { caseId } = input;
+    const caseUser = await checkCaseVisibility(this.prisma, input.caseId, user.id);
 
-    const caseData = await this.prisma.case.findUnique({
-      where: { id: caseId },
-    });
-
-    if (!caseData) {
-      throw new BadRequestException("Case not found");
+    if (!caseUser.hasPermission(CasePermission.addEvidence)) {
+      throw new ForbiddenException("Permission denied");
     }
-
-    // TODO: permissions!!}
 
     const evidence = await this.prisma.mediaEvidence.create({
       data: {
         madeOn: input.madeOn,
         originCoordinates: input.coordinates,
-        case: { connect: { id: caseId } },
+        case: { connect: { id: input.caseId } },
         createdBy: { connect: { id: user.id } },
       }
     });
