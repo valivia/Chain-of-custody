@@ -20,6 +20,7 @@ Function(BuildContext, String) navigateToEvidenceCreate(Case caseItem) {
           ),
         ));
   }
+
   return onscan;
 }
 
@@ -78,7 +79,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     final url = Uri.parse('https://coc.hootsifer.com/evidence/tag');
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': await Authentication.getBearerToken(),
+      'Authorization': globalState<Authentication>().bearerToken,
     };
     final body = {
       'id': _idController.text,
@@ -249,14 +250,20 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                             if (isConnected) {
                               // Handle response status code
                               if (response.statusCode == 401) {
-                                showFailureDialog(context,
-                                    'Unauthorized access. Please log in again.', widget.caseItem);
+                                showFailureDialog(
+                                    context,
+                                    'Unauthorized access. Please log in again.',
+                                    widget.caseItem);
                               } else if (response.statusCode == 201) {
                                 showSuccessDialog(
-                                    context, 'Evidence submitted successfully', widget.caseItem);	
+                                    context,
+                                    'Evidence submitted successfully',
+                                    widget.caseItem);
                               } else {
-                                showFailureDialog(context,
-                                    'Failed to submit evidence data: ${response.statusCode}', widget.caseItem);
+                                showFailureDialog(
+                                    context,
+                                    'Failed to submit evidence data: ${response.statusCode}',
+                                    widget.caseItem);
                               }
                             } else {
                               // Save evidence locally
@@ -264,8 +271,8 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                                   DateTime.now().toIso8601String();
                               await LocalStore.saveApiResponse(
                                   evidenceKey, requestData);
-                              showSuccessDialog(
-                                  context, 'Evidence saved locally', widget.caseItem);
+                              showSuccessDialog(context,
+                                  'Evidence saved locally', widget.caseItem);
                             }
                           }
                         },

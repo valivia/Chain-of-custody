@@ -1,19 +1,53 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:coc/main.dart';
+import 'package:coc/controllers/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class Authentication {
-  static Future<bool> login(String email, String password) async {
+  String? _token;
+  User? _user;
+
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+
+  Authentication._();
+
+  static Future<Authentication> create() async {
+    var instance = Authentication._();
+    await instance._getTokenFromStorage();
+    return instance;
+  }
+
+  void _updateToken(String? token) {
+    _token = token;
+
+    if (token == null) {
+      _user = null;
+      _secureStorage.delete(key: "token");
+    } else {
+      _secureStorage.write(key: "token", value: token);
+      _user = User.fromJson(JwtDecoder.decode(token));
+    }
+  }
+
+  Future<void> _getTokenFromStorage() async {
+    var token = await _secureStorage.read(key: "token");
+    _updateToken(token);
+    log('Token: $_token');
+  }
+
+  Future<bool> login(String email, String password) async {
     final url = Uri.parse("https://coc.hootsifer.com/auth/login");
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     };
+
     final body = jsonEncode({
       'email': email,
       'password': password,
     });
+
     final response = await http.post(
       url,
       headers: headers,
@@ -22,7 +56,7 @@ class Authentication {
 
     if (response.statusCode == 200) {
       final token = jsonDecode(response.body)['access_token'];
-      globalState<FlutterSecureStorage>().write(key: "token", value: token);
+      _updateToken(token);
       log('Logged in');
       return true;
     } else {
@@ -32,21 +66,17 @@ class Authentication {
     }
   }
 
-  static logout() {
-    globalState<FlutterSecureStorage>().delete(key: "token");
+  void logout() {
+    _updateToken(null);
     log('Logged out');
   }
 
-  static Future<String> getToken() async {
-    final token = await globalState<FlutterSecureStorage>().read(key: "token");
-    if (token == null) {
-      return Future.error('No token found');
-    }
-    return token;
-  }
+  bool get isLoggedIn => _token != null;
 
-  static Future<String> getBearerToken() async {
-    final token = await getToken();
-    return 'Bearer $token';
-  }
+  User get user => _user != null ? _user! : throw 'Not logged in';
+
+  String get bearerToken =>
+      isLoggedIn ? 'Bearer $_token' : throw 'Not logged in';
+
+  bool get isExpired => isLoggedIn ? JwtDecoder.isExpired(_token!) : true;
 }

@@ -9,7 +9,6 @@ import 'package:coc/service/location.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
 final globalState = GetIt.instance;
@@ -20,8 +19,9 @@ void main() async {
   // Initialize Hive and open the box
   await LocalStore.init();
 
-  globalState
-      .registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
+  var authentication = await Authentication.create();
+  globalState.registerSingleton<Authentication>(authentication);
+
   globalState.registerSingleton<LocationService>(LocationService());
 
   runApp(const App());
@@ -101,16 +101,15 @@ class App extends StatelessWidget {
   }
 }
 // TODO:
-// auth check 
-// Get token  -> if no token 
+// auth check
+// Get token  -> if no token
 //            -> check connection
-                // -> if no connection continue
+// -> if no connection continue
 //            -> login page
 //          -> else -> continue
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-  
 
   @override
   Widget build(BuildContext context) {
@@ -121,12 +120,14 @@ class HomePage extends StatelessWidget {
         leading: const Icon(Icons.home, color: Colors.white),
         title: const Text('Home'),
         actions: [
-          IconButton(onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SettingsPage()),
-            );
-          }, icon: const Icon(Icons.settings)),
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                );
+              },
+              icon: const Icon(Icons.settings)),
         ],
       ),
       body: Center(
@@ -157,7 +158,7 @@ class HomePage extends StatelessWidget {
                 icon: Icons.photo_camera,
                 onTap: () {},
               ),
-              
+
               // Caselist view
               const SizedBox(height: 20),
               const CaseList(),
