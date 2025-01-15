@@ -11,7 +11,7 @@ class MediaEvidencePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final url = Uri.parse("${EnvironmentConfig.apiUrl}media/evidence/");
+    final url = Uri.parse("${EnvironmentConfig.apiUrl}/media/evidence/");
     final headers = {
       'Authorization': globalState<Authentication>().bearerToken,
     };
