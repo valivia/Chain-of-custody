@@ -2,7 +2,7 @@ import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/service/edit_formats.dart';
 import 'package:coc/components/map_pointer.dart';
-import 'package:coc/components/media_evidence.dart';
+import 'package:coc/components/full_media_evidence.dart';
 
 class EvidenceDetailView extends StatelessWidget {
   const EvidenceDetailView({super.key, required this.evidenceItem});

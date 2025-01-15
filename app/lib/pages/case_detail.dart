@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:coc/components/case_base_details.dart';
 import 'package:coc/components/lim_case_user_list.dart';
 import 'package:coc/components/lim_evidence_list.dart';
-import 'package:coc/components/media_evidence.dart';
+import 'package:coc/components/lim_media_evidence.dart';
 
 class CaseDetailView extends StatelessWidget {
   const CaseDetailView({super.key, required this.caseItem});
@@ -67,7 +67,8 @@ class CaseDetailView extends StatelessWidget {
                   } else if (snapshot.hasError) {
                     return const Text('Error loading media evidence');
                   } else {
-                    return mediaEvidenceView(
+                    return limMediaEvidenceView(
+                      context: context,
                       mediaEvidence: caseItem.mediaEvidence,
                       token: snapshot.data!,
                     );
