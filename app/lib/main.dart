@@ -1,10 +1,10 @@
 import 'package:coc/components/button.dart';
 import 'package:coc/components/case_list.dart';
 import 'package:coc/components/local_store.dart';
-
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:coc/components/refresh_page.dart';
 import 'package:coc/pages/debug.dart';
 import 'package:coc/pages/settings.dart';
-
 import 'package:coc/service/location.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:flutter/foundation.dart';
@@ -20,8 +20,7 @@ void main() async {
   // Initialize Hive and open the box
   await LocalStore.init();
 
-  globalState
-      .registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
+  globalState.registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
   globalState.registerSingleton<LocationService>(LocationService());
 
   runApp(const App());
@@ -45,23 +44,18 @@ class App extends StatelessWidget {
         useMaterial3: true,
         colorScheme: const ColorScheme(
           brightness: Brightness.dark,
-
           error: Colors.red,
           onError: Colors.white,
-
           surface: tertiaryColor,
           onSurface: textColor,
-          // primary,
           primary: primaryColor,
           onPrimary: textColor,
           primaryContainer: tertiaryColor,
           onPrimaryContainer: textColor,
-          // secondary
           secondary: secondaryColor,
           onSecondary: textColor,
           secondaryContainer: secondaryColor,
           onSecondaryContainer: textColor,
-          // tertiary
           tertiary: tertiaryColor,
           onTertiary: textColor,
           tertiaryContainer: primaryColor,
@@ -100,17 +94,14 @@ class App extends StatelessWidget {
     );
   }
 }
-// TODO:
-// auth check 
-// Get token  -> if no token 
-//            -> check connection
-                // -> if no connection continue
-//            -> login page
-//          -> else -> continue
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-  
+
+  Future<void> _refreshCaseList() async {
+    CaseList;
+    await Future.delayed(const Duration(seconds: 2));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,61 +112,62 @@ class HomePage extends StatelessWidget {
         leading: const Icon(Icons.home, color: Colors.white),
         title: const Text('Home'),
         actions: [
-          IconButton(onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SettingsPage()),
-            );
-          }, icon: const Icon(Icons.settings)),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            },
+            icon: const Icon(Icons.settings),
+          ),
         ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          child: Column(
-            children: [
-              // Create Case Button
-              const SizedBox(height: 20),
-              Button(
-                title: 'Create Case',
-                icon: Icons.open_in_new,
-                onTap: () {},
-              ),
-
-              // Join Case Button
-              const SizedBox(height: 20),
-              Button(
-                title: 'Join case',
-                icon: Icons.photo_camera,
-                onTap: () {},
-              ),
-
-              // Transfer Evidence Button
-              const SizedBox(height: 20),
-              Button(
-                title: 'Transfer evidence',
-                icon: Icons.photo_camera,
-                onTap: () {},
-              ),
-              
-              // Caselist view
-              const SizedBox(height: 20),
-              const CaseList(),
-
-              // Debug page Button
-              const SizedBox(height: 20),
-              if (kDebugMode)
-                ElevatedButton(
-                  child: const Text('Debug page'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DebugPage()),
-                    );
-                  },
+      body: RefreshablePage(
+        onRefresh: _refreshCaseList,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            child: Column(
+              children: [
+                // Create Case Button
+                const SizedBox(height: 20),
+                Button(
+                  title: 'Create Case',
+                  icon: Icons.open_in_new,
+                  onTap: () {},
                 ),
-            ],
+                // Join Case Button
+                const SizedBox(height: 20),
+                Button(
+                  title: 'Join case',
+                  icon: Icons.photo_camera,
+                  onTap: () {},
+                ),
+                // Transfer Evidence Button
+                const SizedBox(height: 20),
+                Button(
+                  title: 'Transfer evidence',
+                  icon: Icons.photo_camera,
+                  onTap: () {},
+                ),
+                // Caselist view
+                const SizedBox(height: 20),
+                const CaseList(),
+                // Debug page Button
+                const SizedBox(height: 20),
+                if (kDebugMode)
+                  ElevatedButton(
+                    child: const Text('Debug page'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const DebugPage()),
+                      );
+                    },
+                  ),
+              ],
+            ),
           ),
         ),
       ),

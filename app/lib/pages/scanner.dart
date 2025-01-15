@@ -3,7 +3,6 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRScannerPage extends StatefulWidget {
   final Function(BuildContext, String) onScan;
-
   const QRScannerPage({super.key, required this.onScan});
 
   @override
