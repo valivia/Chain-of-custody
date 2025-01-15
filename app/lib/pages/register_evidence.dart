@@ -1,6 +1,7 @@
 import 'package:coc/controllers/case.dart';
 import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
+import 'package:coc/service/enviroment.dart';
 import 'package:coc/service/location.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -76,7 +77,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
   }
 
   Future<Map<String, dynamic>> submitEvidenceData() async {
-    final url = Uri.parse('https://coc.hootsifer.com/evidence/tag');
+    final url = Uri.parse('${EnvironmentConfig.apiUrl}/evidence/tag');
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': globalState<Authentication>().bearerToken,

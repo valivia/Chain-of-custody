@@ -6,6 +6,7 @@ import 'package:coc/controllers/media_evidence.dart';
 import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
+import 'package:coc/service/enviroment.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
@@ -60,7 +61,7 @@ class Case {
   }
 
   static Future<List<Case>> fetchCases() async {
-    final url = Uri.parse("https://coc.hootsifer.com/case");
+    final url = Uri.parse("${EnvironmentConfig.apiUrl}/case");
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': globalState<Authentication>().bearerToken,
@@ -69,7 +70,7 @@ class Case {
       final response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
-        log(" --- Request Succesfulll! --- ");
+        log(" --- Sucessfully fetched cases --- ");
         final caseList = await compute(parseJson, response.body);
         return caseList;
       } else {

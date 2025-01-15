@@ -1,5 +1,6 @@
 import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
+import 'package:coc/service/enviroment.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/controllers/media_evidence.dart';
 import 'package:coc/components/full_media_evidence.dart';
@@ -8,7 +9,7 @@ Widget limMediaEvidenceView({
   required BuildContext context,
   required List<MediaEvidence> mediaEvidence,
 }) {
-  final url = Uri.parse("https://coc.hootsifer.com/media/evidence/");
+  final url = Uri.parse("${EnvironmentConfig.apiUrl}/media/evidence/");
   final headers = {
     'Authorization': globalState<Authentication>().bearerToken,
   };

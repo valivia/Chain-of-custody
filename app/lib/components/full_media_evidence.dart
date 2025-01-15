@@ -1,5 +1,6 @@
 import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
+import 'package:coc/service/enviroment.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/controllers/media_evidence.dart';
 
@@ -10,7 +11,7 @@ class MediaEvidencePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final url = Uri.parse("https://coc.hootsifer.com/media/evidence/");
+    final url = Uri.parse("${EnvironmentConfig.apiUrl}/media/evidence/");
     final headers = {
       'Authorization': globalState<Authentication>().bearerToken,
     };
