@@ -1,4 +1,5 @@
 import 'package:coc/controllers/case.dart';
+import 'package:coc/main.dart';
 import 'package:coc/pages/register_evidence.dart';
 import 'package:coc/service/location.dart';
 import 'package:flutter/material.dart';
@@ -101,7 +102,7 @@ class PictureTakingPageState extends State<PictureTakingPage> {
       );
 
       // Add headers including the Bearer token
-      request.headers['Authorization'] = await Authentication.getBearerToken();
+      request.headers['Authorization'] = globalState<Authentication>().bearerToken;
       request.fields['caseId'] = caseId;
       request.fields['coordinates'] = coordinates;
       request.files.add(await http.MultipartFile.fromPath('file', filePath));

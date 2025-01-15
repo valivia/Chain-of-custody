@@ -3,6 +3,7 @@
 // Togle light/darkmode?
 // Offlinemode
 
+import 'package:coc/main.dart';
 import 'package:coc/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/service/authentication.dart';
@@ -22,7 +23,7 @@ class SettingsPage extends StatelessWidget {
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),
             onTap: () {
-              Authentication.logout();
+              globalState<Authentication>().logout();
                 Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) =>  const LoginPage()),

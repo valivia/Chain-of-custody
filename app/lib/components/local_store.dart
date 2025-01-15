@@ -1,3 +1,4 @@
+import 'package:coc/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:coc/service/authentication.dart';
@@ -85,7 +86,7 @@ class LocalStore {
             'POST',
             Uri.parse('https://coc.hootsifer.com/evidence/media'), /// Replace with your API endpoint
           );
-          request.headers['Authorization'] = await Authentication.getBearerToken();
+          request.headers['Authorization'] = globalState<Authentication>().bearerToken;
           request.fields['caseId'] = caseId;
           request.fields['coordinates'] = value['coordinates'];
           request.files.add(await http.MultipartFile.fromPath('file', filePath));
