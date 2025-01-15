@@ -91,7 +91,7 @@ class Case {
         .toList();
   }
 
-  String get caseStatusString { 
+  String get caseStatusString {
     switch (status) {
       case CaseStatus.open:
         return 'Open';
@@ -99,8 +99,12 @@ class Case {
         return 'Closed';
       case CaseStatus.archived:
         return 'Archived';
-      default:
-        return 'Unknown';
     }
-  }  
+  }
+
+  canIUse(CasePermission permission) {
+    final user = users.firstWhere(
+        (user) => user.userId == globalState<Authentication>().user.id);
+    return user.hasPermission(permission);
+  }
 }
