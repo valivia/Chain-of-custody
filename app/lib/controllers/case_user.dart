@@ -1,3 +1,28 @@
+enum CasePermission {
+  view,
+  manage,
+  addEvidence,
+  removeEvidence,
+  deleteCase,
+}
+
+extension CasePermissionValue on CasePermission {
+  int get value {
+    switch (this) {
+      case CasePermission.view:
+        return 1;
+      case CasePermission.manage:
+        return 2;
+      case CasePermission.addEvidence:
+        return 4;
+      case CasePermission.removeEvidence:
+        return 8;
+      case CasePermission.deleteCase:
+        return 16;
+    }
+  }
+}
+
 class CaseUser {
   final String id;
   final DateTime createdAt;
@@ -27,7 +52,9 @@ class CaseUser {
     );
   }
 
-  bool hasPermission(String permission) {
-    throw UnimplementedError();
+  bool hasPermission(CasePermission permission) {
+    final permissionValue = permission.value;
+    final userPermission = int.parse(permissions);
+    return (userPermission & permissionValue) == permissionValue;
   }
 }
