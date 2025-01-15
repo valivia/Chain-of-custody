@@ -20,17 +20,7 @@ Widget limMediaEvidenceView({
     children: [
       const Padding(
         padding: EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Media Evidence',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
       ),
-      const SizedBox(height: 10),
       GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
