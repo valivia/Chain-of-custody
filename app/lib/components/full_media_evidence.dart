@@ -22,7 +22,7 @@ class MediaEvidencePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -39,34 +39,37 @@ class MediaEvidencePage extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 4.0,
-                mainAxisSpacing: 4.0,
-              ),
-              itemCount: mediaEvidence.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MediaPreview(imageUrl: url.toString() + mediaEvidence[index].id),
-                      ),
-                    );
-                  },
-                  child: ClipRect(
-                    child: FittedBox(
-                      fit: BoxFit.cover,
-                      child: Image.network(
-                        url.toString() + mediaEvidence[index].id,
-                        headers: headers,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                ),
+                itemCount: mediaEvidence.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MediaPreview(imageUrl: url.toString() + mediaEvidence[index].id),
+                        ),
+                      );
+                    },
+                    child: ClipRect(
+                      child: FittedBox(
+                        fit: BoxFit.cover,
+                        child: Image.network(
+                          url.toString() + mediaEvidence[index].id,
+                          headers: headers,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ],
@@ -85,7 +88,10 @@ class MediaPreview extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Image Preview')),
       body: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Image.network(imageUrl),
+      ),
       ),
     );
   }

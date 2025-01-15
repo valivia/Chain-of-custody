@@ -47,64 +47,80 @@ class CaseDetailView extends StatelessWidget {
                   );
                 },
               ),
-              Button(
-                title: "Add media evidence",
-                icon: Icons.camera,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PictureTakingPage(caseItem: caseItem),
-                    ),
-                  );
-                },
-              ),
               buildCaseDetails(caseItem),
               const SizedBox(height: 16),
               limCaseUserList(context, caseItem.users),
               const SizedBox(height: 8),
               limEvidenceList(context, caseItem.taggedEvidence),
               const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Text(
-                  'Media Evidence',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[700],
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-              ),
-              FutureBuilder<bool>(
-                future: hasInternetConnection(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError || !snapshot.data!) {
-                    return const Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: Text('No internet connection'),
-                    );
-                  } else {
-                    token = Authentication.getBearerToken();
-                    return FutureBuilder<String>(
-                      future: token,
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            'Media Evidence',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PictureTakingPage(caseItem: caseItem),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    FutureBuilder<bool>(
+                      future: hasInternetConnection(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return const CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
-                            return const Padding(
+                        } else if (snapshot.hasError || !snapshot.data!) {
+                          return const Padding(
                             padding: EdgeInsets.only(left: 8.0),
-                            child: Text('Error loading media evidence'),
-                            );
+                            child: Text('No internet connection'),
+                          );
                         } else {
-                          return limMediaEvidenceView(
-                            context: context,
-                            mediaEvidence: caseItem.mediaEvidence,
-                            token: snapshot.data!,
+                          token = Authentication.getBearerToken();
+                          return FutureBuilder<String>(
+                            future: token,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return const Padding(
+                                  padding: EdgeInsets.only(left: 8.0),
+                                  child: Text('Error loading media evidence'),
+                                );
+                              } else {
+                                return limMediaEvidenceView(
+                                  context: context,
+                                  mediaEvidence: caseItem.mediaEvidence,
+                                  token: snapshot.data!,
+                                );
+                              }
+                            },
                           );
                         }
                       },
-                    );
-                  }
-                },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
