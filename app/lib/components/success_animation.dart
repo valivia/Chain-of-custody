@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class SuccessAnimation extends StatefulWidget {
   final double size;
   final VoidCallback onComplete;
 
-  SuccessAnimation({this.size = 50, required this.onComplete});
+  const SuccessAnimation({super.key, this.size = 50, required this.onComplete});
 
   @override
-  _SuccessAnimationState createState() => _SuccessAnimationState();
+  SuccessAnimationState createState() => SuccessAnimationState();
 }
 
-class _SuccessAnimationState extends State<SuccessAnimation>
+class SuccessAnimationState extends State<SuccessAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> curve;
@@ -19,7 +18,7 @@ class _SuccessAnimationState extends State<SuccessAnimation>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(duration: Duration(seconds: 1), vsync: this);
+    _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
     curve = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
 
     _controller.addListener(() {
@@ -64,7 +63,6 @@ class SuccessPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    var rect = Offset(0, 0) & size;
     _paint.color = Colors.greenAccent.withOpacity(.05);
 
     // Draw the circular highlight
@@ -103,7 +101,7 @@ class SuccessPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(SuccessPainter old) {
-    return old.value != value;
+  bool shouldRepaint(SuccessPainter oldDelegate) {
+    return oldDelegate.value != value;
   }
 }

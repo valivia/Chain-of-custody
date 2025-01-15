@@ -1,11 +1,15 @@
 import 'package:coc/components/button.dart';
+import 'package:coc/components/case_list.dart';
+import 'package:coc/components/local_store.dart';
+
 import 'package:coc/pages/debug.dart';
+import 'package:coc/pages/settings.dart';
+
 import 'package:coc/service/location.dart';
+import 'package:coc/service/authentication.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:coc/components/local_store.dart';
 
 final globalState = GetIt.instance;
 
@@ -15,7 +19,9 @@ void main() async {
   // Initialize Hive and open the box
   await LocalStore.init();
 
-  globalState.registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
+  var authentication = await Authentication.create();
+  globalState.registerSingleton<Authentication>(authentication);
+
   globalState.registerSingleton<LocationService>(LocationService());
 
   runApp(const App());
@@ -94,6 +100,13 @@ class App extends StatelessWidget {
     );
   }
 }
+// TODO:
+// auth check
+// Get token  -> if no token
+//            -> check connection
+// -> if no connection continue
+//            -> login page
+//          -> else -> continue
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -107,7 +120,14 @@ class HomePage extends StatelessWidget {
         leading: const Icon(Icons.home, color: Colors.white),
         title: const Text('Home'),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                );
+              },
+              icon: const Icon(Icons.settings)),
         ],
       ),
       body: Center(
@@ -115,42 +135,47 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Column(
             children: [
-              const SizedBox(height: 20), // Add spacing between buttons
               // Create Case Button
+              const SizedBox(height: 20),
               Button(
                 title: 'Create Case',
                 icon: Icons.open_in_new,
                 onTap: () {},
               ),
 
-              const SizedBox(height: 20), // Add spacing between buttons
               // Join Case Button
+              const SizedBox(height: 20),
               Button(
                 title: 'Join case',
                 icon: Icons.photo_camera,
                 onTap: () {},
               ),
 
-              const SizedBox(height: 20), // Add spacing between buttons
               // Transfer Evidence Button
+              const SizedBox(height: 20),
               Button(
                 title: 'Transfer evidence',
                 icon: Icons.photo_camera,
                 onTap: () {},
               ),
 
+              // Caselist view
+              const SizedBox(height: 20),
+              const CaseList(),
+
+              // Debug page Button
+              const SizedBox(height: 20),
               if (kDebugMode)
-                // Debug page Button
-                const SizedBox(height: 20), // Add spacing between buttons
-              ElevatedButton(
-                child: const Text('Debug page'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const DebugPage()),
-                  );
-                },
-              ),
+                ElevatedButton(
+                  child: const Text('Debug page'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DebugPage()),
+                    );
+                  },
+                ),
             ],
           ),
         ),

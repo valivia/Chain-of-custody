@@ -1,7 +1,7 @@
 import 'dart:developer';
+import 'package:coc/main.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/service/authentication.dart';
-import 'package:coc/pages/debug.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -47,7 +47,7 @@ class LoginPageState extends State<LoginPage> {
     }
 
     try {
-      bool loginResponse = await Authentication.login(
+      bool loginResponse = await globalState<Authentication>().login(
         _emailInputController.text,
         _passwordInputController.text,
       );
@@ -135,7 +135,7 @@ class LoginPageState extends State<LoginPage> {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        Authentication.logout();
+                        globalState<Authentication>().logout();
                         Navigator.pop(context);
                       },
                       child: const Text("Logout"),

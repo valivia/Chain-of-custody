@@ -2,6 +2,7 @@ import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/service/edit_formats.dart';
 import 'package:coc/components/map_pointer.dart';
+import 'package:coc/components/full_media_evidence.dart';
 
 class EvidenceDetailView extends StatelessWidget {
   const EvidenceDetailView({super.key, required this.evidenceItem});
@@ -20,9 +21,9 @@ class EvidenceDetailView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Case ID: [Case ID]',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              'Case ID: ${evidenceItem.caseId}',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Text(
@@ -120,37 +121,6 @@ class EvidenceDetailView extends StatelessWidget {
                   );
                 },
                 child: const Text('Transfer History'),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Media'),
-                        content: const SingleChildScrollView(
-                          child: ListBody(
-                            children: <Widget>[
-                              Text('Media display to be build')
-                            ],
-                          ),
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Close'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: const Text('Media'),
               ),
             ),
           ],
