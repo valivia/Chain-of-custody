@@ -23,7 +23,6 @@ export async function checkCaseVisibility(db: PrismaService, caseId: string, use
         userId,
       },
     },
-    include: { case: true },
   });
 
   if (!caseUser || !caseUser.hasPermission(CasePermission.view)) {

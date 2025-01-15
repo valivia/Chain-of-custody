@@ -132,11 +132,10 @@ export class CaseController {
 
   @Patch(':id')
   async update(@Param('id') id: string, @User() user: UserEntity, @Body() caseData: CaseUpdateDto) {
-
     const caseUser = await checkCaseVisibility(this.prisma, id, user.id);
 
     if (!caseUser.hasPermission(CasePermission.manage)) {
-      throw new ForbiddenException("You do not have permission to manage this case");
+      throw new ForbiddenException("Permission denied");
     }
 
     const data = await this.prisma.case.update({

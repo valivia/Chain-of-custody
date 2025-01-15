@@ -33,7 +33,7 @@ export class MediaController {
     });
 
     if (!mediaEvidence) {
-      throw new NotFoundException("Evidence not found");
+      throw new NotFoundException();
     }
 
     await checkCaseVisibility(this.prisma, mediaEvidence.caseId, user.id);

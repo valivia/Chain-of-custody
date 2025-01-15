@@ -28,6 +28,7 @@ export class CaseUserController {
     const userToAdd = await this.prisma.user.findUnique({
       where: { id: input.userId },
     });
+
     if (!userToAdd) {
       throw new NotFoundException("User not found");
     }
@@ -56,6 +57,7 @@ export class CaseUserController {
     const userToRemove = await this.prisma.user.findUnique({
       where: { id: userId },
     });
+
     if (!userToRemove) {
       throw new NotFoundException("User not found");
     }

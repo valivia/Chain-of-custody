@@ -55,7 +55,7 @@ export class TagController {
     });
 
     if (!taggedEvidence) {
-      throw new NotFoundException("Evidence not found");
+      throw new NotFoundException();
     }
 
     await checkCaseVisibility(this.prisma, taggedEvidence.caseId, user.id);
@@ -96,7 +96,7 @@ export class TagController {
     });
 
     if (!evidence) {
-      throw new NotFoundException("Evidence not found");
+      throw new NotFoundException();
     }
 
     await this.prisma.auditLog.create({
