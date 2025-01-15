@@ -9,7 +9,6 @@ Widget limMediaEvidenceView({
 }) {
   final url = Uri.parse("https://coc.hootsifer.com/media/evidence/");
   final headers = {
-    'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': token,
   };
   const int displayMediaCount = 4;

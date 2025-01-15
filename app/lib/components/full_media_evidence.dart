@@ -10,8 +10,7 @@ class MediaEvidencePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final url = Uri.parse("https://coc.hootsifer.com/media/evidence/");
-    final headers = <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
+    final headers = {
       'Authorization': token,
     };
 
