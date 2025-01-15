@@ -1,3 +1,5 @@
+import 'package:coc/main.dart';
+import 'package:coc/service/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/controllers/media_evidence.dart';
 import 'package:coc/components/full_media_evidence.dart';
@@ -5,11 +7,10 @@ import 'package:coc/components/full_media_evidence.dart';
 Widget limMediaEvidenceView({
   required BuildContext context,
   required List<MediaEvidence> mediaEvidence,
-  required String token,
 }) {
   final url = Uri.parse("https://coc.hootsifer.com/media/evidence/");
   final headers = {
-    'Authorization': token,
+    'Authorization': globalState<Authentication>().bearerToken,
   };
   const int displayMediaCount = 4;
   final displayedMediaItems = mediaEvidence.take(displayMediaCount).toList();
@@ -66,7 +67,6 @@ Widget limMediaEvidenceView({
                 MaterialPageRoute(
                   builder: (context) => MediaEvidencePage(
                     mediaEvidence: mediaEvidence,
-                    token: token,
                   ),
                 ),
               );

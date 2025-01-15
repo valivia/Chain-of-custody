@@ -3,7 +3,6 @@ import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/register_evidence.dart';
 import 'package:coc/pages/scanner.dart';
-import 'package:coc/service/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/components/case_base_details.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -18,8 +17,6 @@ class CaseDetailView extends StatelessWidget {
   static Future<bool> hasInternetConnection() async {
     return await InternetConnectionChecker().hasConnection;
   }
-
-  late final Future<String> token;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +65,8 @@ class CaseDetailView extends StatelessWidget {
                           padding: EdgeInsets.only(left: 8.0),
                           child: Text(
                             'Media Evidence',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                         ),
                         const Spacer(),
@@ -78,7 +76,8 @@ class CaseDetailView extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PictureTakingPage(caseItem: caseItem),
+                                builder: (context) =>
+                                    PictureTakingPage(caseItem: caseItem),
                               ),
                             );
                           },
@@ -88,7 +87,8 @@ class CaseDetailView extends StatelessWidget {
                     FutureBuilder<bool>(
                       future: hasInternetConnection(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         } else if (snapshot.hasError || !snapshot.data!) {
                           return const Padding(
@@ -96,25 +96,9 @@ class CaseDetailView extends StatelessWidget {
                             child: Text('No internet connection'),
                           );
                         } else {
-                          token = Authentication.getBearerToken();
-                          return FutureBuilder<String>(
-                            future: token,
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return const CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return const Padding(
-                                  padding: EdgeInsets.only(left: 8.0),
-                                  child: Text('Error loading media evidence'),
-                                );
-                              } else {
-                                return limMediaEvidenceView(
-                                  context: context,
-                                  mediaEvidence: caseItem.mediaEvidence,
-                                  token: snapshot.data!,
-                                );
-                              }
-                            },
+                          return limMediaEvidenceView(
+                            context: context,
+                            mediaEvidence: caseItem.mediaEvidence,
                           );
                         }
                       },

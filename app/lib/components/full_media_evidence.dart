@@ -1,17 +1,18 @@
+import 'package:coc/main.dart';
+import 'package:coc/service/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/controllers/media_evidence.dart';
 
 class MediaEvidencePage extends StatelessWidget {
   final List<MediaEvidence> mediaEvidence;
-  final String token;
 
-  const MediaEvidencePage({super.key, required this.mediaEvidence, required this.token});
+  const MediaEvidencePage({super.key, required this.mediaEvidence});
 
   @override
   Widget build(BuildContext context) {
     final url = Uri.parse("https://coc.hootsifer.com/media/evidence/");
     final headers = {
-      'Authorization': token,
+      'Authorization': globalState<Authentication>().bearerToken,
     };
 
     return Scaffold(
@@ -54,7 +55,9 @@ class MediaEvidencePage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MediaPreview(imageUrl: url.toString() + mediaEvidence[index].id),
+                          builder: (context) => MediaPreview(
+                              imageUrl:
+                                  url.toString() + mediaEvidence[index].id),
                         ),
                       );
                     },
@@ -88,10 +91,10 @@ class MediaPreview extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Image Preview')),
       body: Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Image.network(imageUrl),
-      ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Image.network(imageUrl),
+        ),
       ),
     );
   }
