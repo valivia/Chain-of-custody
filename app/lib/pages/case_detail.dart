@@ -28,7 +28,7 @@ class CaseDetailView extends StatelessWidget {
                 title: 'Add evidence',
                 icon: Icons.qr_code,
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => QRScannerPage(
