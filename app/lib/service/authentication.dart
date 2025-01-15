@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:coc/controllers/user.dart';
+import 'package:coc/service/enviroment.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -38,7 +39,7 @@ class Authentication {
   }
 
   Future<bool> login(String email, String password) async {
-    final url = Uri.parse("https://coc.hootsifer.com/auth/login");
+    final url = Uri.parse("${EnvironmentConfig.apiUrl}/auth/login");
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     };
