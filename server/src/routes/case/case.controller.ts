@@ -148,20 +148,20 @@ export class CaseController {
       throw new ForbiddenException("Permission denied");
     }
 
-    const data = await this.prisma.case.update({
+    const updatedCase = await this.prisma.case.update({
       where: { id },
       data: caseData,
     });
 
     await saveToAuditLog(this.prisma, req, {
       action: Action.UPDATE,
-      oldData: data,
-      newData: caseUser.case,
+      oldData: caseUser.case,
+      newData: updatedCase,
       userId: user.id,
       caseId: id,
     });
 
-    return { data };
+    return { data: updatedCase };
   }
 
 }
