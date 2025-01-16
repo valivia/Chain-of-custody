@@ -4,6 +4,7 @@ import 'package:coc/components/local_store.dart';
 
 import 'package:coc/pages/debug.dart';
 import 'package:coc/pages/settings.dart';
+import 'package:coc/pages/register_case.dart';
 
 import 'package:coc/service/location.dart';
 import 'package:coc/service/authentication.dart';
@@ -140,7 +141,12 @@ class HomePage extends StatelessWidget {
               Button(
                 title: 'Create Case',
                 icon: Icons.open_in_new,
-                onTap: () {},
+                onTap: () {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>  RegisterCase()),
+                    );
+                },
               ),
 
               // Join Case Button
