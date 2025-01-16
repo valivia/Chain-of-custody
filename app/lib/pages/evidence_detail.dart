@@ -1,8 +1,7 @@
 import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/service/edit_formats.dart';
-import 'package:coc/components/map_pointer.dart';
-import 'package:coc/components/full_media_evidence.dart';
+import 'package:coc/components/location_display.dart';
 
 class EvidenceDetailView extends StatelessWidget {
   const EvidenceDetailView({super.key, required this.evidenceItem});
@@ -54,37 +53,13 @@ class EvidenceDetailView extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  showDialog(
+                  showModalBottomSheet(
+                    showDragHandle: true,
                     context: context,
                     builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Location info'),
-                        content: SingleChildScrollView(
-                          child: ListBody(
-                            children: <Widget>[
-                              Text('Origin location description: ${evidenceItem.description}'),
-                              const SizedBox(height: 10),
-                              Text('Origin location coordinates: ${evidenceItem.originCoordinates.latitude}, ${evidenceItem.originCoordinates.longitude}'),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 200,
-                                child: MapPointer(
-                                  latitude: evidenceItem.originCoordinates.latitude,
-                                  longitude: evidenceItem.originCoordinates.longitude,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Close'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
+                      return MapPointerBottomSheet(
+                        evidenceItem: evidenceItem, 
+                        title: "Origin"
                       );
                     },
                   );
