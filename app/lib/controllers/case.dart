@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:coc/controllers/audit_log.dart';
 import 'package:coc/controllers/case_user.dart';
 import 'package:coc/controllers/media_evidence.dart';
 import 'package:coc/controllers/tagged_evidence.dart';
@@ -27,6 +28,7 @@ class Case {
   List<CaseUser> users;
   List<TaggedEvidence> taggedEvidence;
   List<MediaEvidence> mediaEvidence;
+  List<AuditLog> auditLogs;
 
   Case({
     required this.id,
@@ -38,6 +40,7 @@ class Case {
     required this.users,
     required this.taggedEvidence,
     required this.mediaEvidence,
+    required this.auditLogs,
   });
 
   factory Case.fromJson(Map<String, dynamic> json) {
@@ -56,6 +59,9 @@ class Case {
           .toList(),
       mediaEvidence: (json['mediaEvidence'] as List)
           .map((evidence) => MediaEvidence.fromJson(evidence))
+          .toList(),
+      auditLogs: (json['auditLog'] as List)
+          .map((log) => AuditLog.fromJson(log))
           .toList(),
     );
   }
