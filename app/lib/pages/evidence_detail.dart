@@ -58,7 +58,8 @@ class EvidenceDetailView extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return MapPointerBottomSheet(
-                        evidenceItem: evidenceItem
+                        evidenceItem: evidenceItem, 
+                        title: "Origin"
                       );
                     },
                   );
