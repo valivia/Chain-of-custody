@@ -67,7 +67,7 @@ export class MediaController {
     });
 
     await saveToAuditLog(this.prisma, req, {
-      action: Action.CREATE,
+      action: Action.create,
       newData: evidence,
       userId: user.id,
       caseId: input.caseId,

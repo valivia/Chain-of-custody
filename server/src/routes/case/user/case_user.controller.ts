@@ -46,7 +46,7 @@ export class CaseUserController {
     });
 
     await saveToAuditLog(this.prisma, req, {
-      action: Action.CREATE,
+      action: Action.create,
       caseId,
       newData: newCaseUser,
       userId: user.id,
@@ -84,7 +84,7 @@ export class CaseUserController {
     });
 
     await saveToAuditLog(this.prisma, req, {
-      action: Action.DELETE,
+      action: Action.delete,
       caseId,
       oldData: deletedCaseUser,
       userId: user.id,

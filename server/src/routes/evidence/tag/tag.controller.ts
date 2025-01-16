@@ -83,7 +83,7 @@ export class TagController {
     });
 
     await saveToAuditLog(this.prisma, req, {
-      action: Action.CREATE,
+      action: Action.create,
       newData: data,
       userId: user.id,
       taggedEvidenceId: data.id,
@@ -105,7 +105,7 @@ export class TagController {
     }
 
     await saveToAuditLog(this.prisma, req, {
-      action: Action.TRANSFER,
+      action: Action.transfer,
       userId: user.id,
       taggedEvidenceId: id,
       location: body.coordinates,

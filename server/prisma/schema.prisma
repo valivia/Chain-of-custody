@@ -133,8 +133,8 @@ model AuditLog {
 }
 
 enum Action {
-  CREATE
-  UPDATE
-  DELETE
-  TRANSFER
+  create
+  update
+  delete
+  transfer
 }

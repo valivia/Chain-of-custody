@@ -131,7 +131,7 @@ export class CaseController {
     });
 
     await saveToAuditLog(this.prisma, req, {
-      action: Action.CREATE,
+      action: Action.create,
       newData: createdCase,
       userId: user.id,
       caseId: createdCase.id,
@@ -154,7 +154,7 @@ export class CaseController {
     });
 
     await saveToAuditLog(this.prisma, req, {
-      action: Action.UPDATE,
+      action: Action.update,
       oldData: caseUser.case,
       newData: updatedCase,
       userId: user.id,
