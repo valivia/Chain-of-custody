@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:coc/service/edit_formats.dart';
+import 'package:coc/controllers/case.dart';
 
 class MapPointer extends StatelessWidget {
   final LatLng location;
@@ -81,6 +82,7 @@ class MapPointerBottomSheet extends StatelessWidget {
                 const Icon(Icons.person, color: Colors.white),
                 const SizedBox(width: 8),
                 Text(
+                  // TODO: Display username of person of interest
                   evidenceItem.userId,
                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
