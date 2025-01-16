@@ -1,11 +1,14 @@
-import { BadRequestException, Body, Controller, ForbiddenException, Get, NotFoundException, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, ForbiddenException, Get, NotFoundException, Param, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from "@nestjs/platform-express";
+import { Action } from "@prisma/client";
 import { Type } from "class-transformer";
 import { IsString, IsOptional, IsDate, MinDate, IsLatLong } from "class-validator";
+import { Request } from "express";
 import { writeFile } from "fs/promises";
 import { User, UserEntity } from "src/guards/auth.guard";
 import { CasePermission, checkCaseVisibility } from "src/routes/case/permissions";
 import { PrismaService } from "src/services/prisma.service";
+import { saveToAuditLog } from "src/util/auditlog";
 
 class MediaEvidenceDto {
   @IsOptional()
@@ -43,7 +46,7 @@ export class MediaController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async create(@User() user: UserEntity, @UploadedFile() file: Express.Multer.File | undefined, @Body() input: MediaEvidenceDto) {
+  async create(@Req() req: Request, @User() user: UserEntity, @UploadedFile() file: Express.Multer.File | undefined, @Body() input: MediaEvidenceDto) {
     if (!file) {
       throw new BadRequestException("File not found");
     }
@@ -63,10 +66,18 @@ export class MediaController {
       }
     });
 
-    // save to disk
-    await writeFile(`./data/evidence/${evidence.id}.jpg`, file.buffer);
+    await saveToAuditLog(this.prisma, req, {
+      action: Action.CREATE,
+      newData: evidence,
+      userId: user.id,
+      caseId: input.caseId,
+      mediaEvidenceId: evidence.id,
+    });
+
+      // save to disk
+      await writeFile(`./data/evidence/${evidence.id}.jpg`, file.buffer);
 
 
-    return { evidence };
-  }
+      return { evidence };
+    }
 }

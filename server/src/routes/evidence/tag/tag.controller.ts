@@ -4,9 +4,9 @@ import { Type } from "class-transformer";
 import { IsDate, IsLatLong, IsNumber, IsOptional, IsString, MinDate } from "class-validator";
 import { Request } from "express";
 import { User, UserEntity } from "src/guards/auth.guard";
-import { getIp } from "src/lib/request";
 import { checkCaseVisibility, CasePermission } from "src/routes/case/permissions";
 import { PrismaService } from 'src/services/prisma.service';
+import { saveToAuditLog } from "src/util/auditlog";
 
 
 class TaggedEvidenceDto {
@@ -64,7 +64,7 @@ export class TagController {
   }
 
   @Post()
-  async create(@User() user: UserEntity, @Body() input: TaggedEvidenceDto) {
+  async create(@User() user: UserEntity, @Req() req: Request, @Body() input: TaggedEvidenceDto) {
 
     const { caseId, ...taggedEvidence } = input;
 
@@ -82,14 +82,19 @@ export class TagController {
       },
     });
 
+    await saveToAuditLog(this.prisma, req, {
+      action: Action.CREATE,
+      newData: data,
+      userId: user.id,
+      taggedEvidenceId: data.id,
+    });
+
     return { data };
   }
 
 
   @Post(':id/transfer')
   async transfer(@Req() req: Request, @User() user: UserEntity, @Param('id') id: string, @Body() body: TransferDto) {
-    const userAgent = req.header("user-agent") ?? "unknown";
-    const ip = getIp(req);
 
     const evidence = await this.prisma.taggedEvidence.findUnique({
       where: { id },
@@ -99,15 +104,11 @@ export class TagController {
       throw new NotFoundException();
     }
 
-    await this.prisma.auditLog.create({
-      data: {
-        ip,
-        userAgent,
-        location: body.coordinates,
-        userId: user.id,
-        action: Action.TRANSFER,
-        taggedEvidenceId: id,
-      },
+    await saveToAuditLog(this.prisma, req, {
+      action: Action.TRANSFER,
+      userId: user.id,
+      taggedEvidenceId: id,
+      location: body.coordinates,
     });
 
     return;
