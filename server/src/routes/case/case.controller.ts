@@ -1,9 +1,11 @@
-import { Body, Controller, ForbiddenException, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
-import { Case, CaseStatus, CaseUser, MediaEvidence, TaggedEvidence, User as PrismaUser } from "@prisma/client";
+import { Body, Controller, ForbiddenException, Get, NotFoundException, Param, Patch, Post, Req } from '@nestjs/common';
+import { Case, CaseStatus, CaseUser, MediaEvidence, TaggedEvidence, User as PrismaUser, Action } from "@prisma/client";
 import { IsEnum, IsOptional, IsString } from "class-validator";
 import { User, UserEntity } from "src/guards/auth.guard";
 import { PrismaService } from 'src/services/prisma.service';
 import { checkCaseVisibility, CasePermission, getAllCasePermissions } from "./permissions";
+import { Request } from "express";
+import { saveToAuditLog } from "src/util/auditlog";
 
 class CaseDto {
   @IsString()
@@ -68,9 +70,10 @@ export class CaseController {
         }
       },
       include: {
-        users: { include: { user: true } },
-        taggedEvidence: true,
-        mediaEvidence: true
+        auditLog: { where: { mediaEvidenceId: null, taggedEvidenceId: null } },
+        users: { include: { auditLog: true, user: true } },
+        taggedEvidence: { include: { auditLog: true } },
+        mediaEvidence: { include: { auditLog: true } },
       }
     }).then(cases =>
       cases.filter(entry =>
@@ -104,7 +107,7 @@ export class CaseController {
   }
 
   @Post()
-  async create(@User() user: UserEntity, @Body() caseData: CaseDto) {
+  async create(@Req() req: Request, @User() user: UserEntity, @Body() caseData: CaseDto) {
 
     const createdCase = await this.prisma.case.create({
       data: {
@@ -127,23 +130,38 @@ export class CaseController {
       }
     });
 
+    await saveToAuditLog(this.prisma, req, {
+      action: Action.create,
+      newData: createdCase,
+      userId: user.id,
+      caseId: createdCase.id,
+    });
+
     return { data: this.caseToCaseData(createdCase) };
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @User() user: UserEntity, @Body() caseData: CaseUpdateDto) {
+  async update(@Req() req: Request, @Param('id') id: string, @User() user: UserEntity, @Body() caseData: CaseUpdateDto) {
     const caseUser = await checkCaseVisibility(this.prisma, id, user.id);
 
     if (!caseUser.hasPermission(CasePermission.manage)) {
       throw new ForbiddenException("Permission denied");
     }
 
-    const data = await this.prisma.case.update({
+    const updatedCase = await this.prisma.case.update({
       where: { id },
       data: caseData,
     });
 
-    return { data };
+    await saveToAuditLog(this.prisma, req, {
+      action: Action.update,
+      oldData: caseUser.case,
+      newData: updatedCase,
+      userId: user.id,
+      caseId: id,
+    });
+
+    return { data: updatedCase };
   }
 
 }
