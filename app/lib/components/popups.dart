@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:coc/components/success_animation.dart'; 
 import 'package:coc/components/failed_animation.dart'; 
 
-void showSuccessDialog(BuildContext context, String message, Case caseItem) {
+void showSuccessDialog(BuildContext context, String message, {Case? caseItem}) {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -28,41 +28,58 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CaseDetailView(caseItem: caseItem),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Go to Case',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                  onPressed: () {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => QRScannerPage(onScan: navigateToEvidenceCreate(caseItem))),);
-                  },
-                  child: const Text(
-                    'Scan More',
-                    textAlign: TextAlign.center,
+              if (caseItem != null) ...[
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CaseDetailView(caseItem: caseItem),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Go to Case',
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onPressed: () {
+                      Navigator.push(context, 
+                      MaterialPageRoute(builder: (context) => QRScannerPage(onScan: navigateToEvidenceCreate(caseItem))),);
+                    },
+                    child: const Text(
+                      'Scan More',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ] else ...[
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onPressed: () {
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                    },
+                    child: const Text(
+                      'Go to Main',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
         ],
@@ -71,7 +88,7 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
   );
 }
 
-void showFailureDialog(BuildContext context, String message, Case caseItem) {
+void showFailureDialog(BuildContext context, String message, {Case? caseItem}) {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -94,26 +111,28 @@ void showFailureDialog(BuildContext context, String message, Case caseItem) {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CaseDetailView(caseItem: caseItem),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Go to Main',
-                    textAlign: TextAlign.center,
+              if (caseItem != null) ...[
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CaseDetailView(caseItem: caseItem),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Go to Main',
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 10),
+                const SizedBox(width: 10),
+              ],
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(

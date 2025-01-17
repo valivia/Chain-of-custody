@@ -21,6 +21,11 @@ class LocalStore {
     await box.put(key, request);
   }
 
+  static Future<void> saveCaseData(String key, Map<String, dynamic> request) async {
+    var box = Hive.box(_boxName);
+    await box.put(key, request);
+  }
+
   // Retrieve API request
   static Future<Map<String, dynamic>> getApiResponse(String key) async {
     var box = Hive.box(_boxName);

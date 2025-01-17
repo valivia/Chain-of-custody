@@ -254,17 +254,17 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                                 showFailureDialog(
                                     context,
                                     'Unauthorized access. Please log in again.',
-                                    widget.caseItem);
+                                    caseItem: widget.caseItem);
                               } else if (response.statusCode == 201) {
                                 showSuccessDialog(
                                     context,
                                     'Evidence submitted successfully',
-                                    widget.caseItem);
+                                    caseItem: widget.caseItem);
                               } else {
                                 showFailureDialog(
                                     context,
                                     'Failed to submit evidence data: ${response.statusCode}',
-                                    widget.caseItem);
+                                    caseItem: widget.caseItem);
                               }
                             } else {
                               // Save evidence locally
@@ -273,7 +273,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                               await LocalStore.saveApiResponse(
                                   evidenceKey, requestData);
                               showSuccessDialog(context,
-                                  'Evidence saved locally', widget.caseItem);
+                                  'Evidence saved locally', caseItem: widget.caseItem);
                             }
                           }
                         },

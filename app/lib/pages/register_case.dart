@@ -3,6 +3,8 @@ import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/enviroment.dart';
 import 'package:flutter/material.dart';
+import 'package:coc/components/local_store.dart';
+import 'package:coc/components/popups.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterCase extends StatefulWidget {
@@ -122,7 +124,13 @@ class RegisterCasePageState extends State<RegisterCase> {
                           if (_formKey.currentState!.validate()) {
                             Map<String, dynamic> result = await submitCaseData();
                             http.Response response = result['response'];
-                            if (response.statusCode == 401) {
+                            if (await LocalStore.hasInternetConnection()) {
+                              LocalStore.saveCaseData('case', {
+                                'title': _titleController.text,
+                                'description': _descriptionController.text,
+                              });
+                              showSuccessDialog(context, 'Case saved locally');
+                            }else if (response.statusCode == 401) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
