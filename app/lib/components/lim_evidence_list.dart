@@ -10,22 +10,6 @@ Widget limEvidenceList(BuildContext context, List<TaggedEvidence> taggedEvidence
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-       Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Tagged Evidence',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'Total: ${taggedEvidence.length}',
-              style: const TextStyle(fontSize: 16),
-            ),
-          ],
-        ),
-      ),
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -80,11 +64,17 @@ Widget limEvidenceList(BuildContext context, List<TaggedEvidence> taggedEvidence
                 ),
               );
             },
-            child: const Row(
+            child: Row(
               children: [
-                Icon(Icons.arrow_forward),
-                SizedBox(width: 10),
-                Text('View All'),
+                const Icon(Icons.arrow_forward),
+                const SizedBox(width: 10),
+                const Text('View All'),
+                const Spacer(),
+                Text(
+                  "${taggedEvidence.length.toString()} total",
+                  style: const TextStyle(fontSize: 12),
+                ),
+                const SizedBox(width: 10),
               ],
             ),
           ),

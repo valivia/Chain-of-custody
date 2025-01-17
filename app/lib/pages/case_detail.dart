@@ -1,4 +1,3 @@
-import 'package:coc/components/button.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/register_evidence.dart';
@@ -30,32 +29,60 @@ class CaseDetailView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Button(
-                title: 'Add evidence',
-                icon: Icons.qr_code,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => QRScannerPage(
-                        onScan: navigateToEvidenceCreate(caseItem),
-                      ),
-                    ),
-                  );
-                },
-              ),
               buildCaseDetails(caseItem),
               const SizedBox(height: 16),
               limCaseUserList(context, caseItem.users),
               const SizedBox(height: 8),
-              limEvidenceList(context, caseItem.taggedEvidence),
+              // Evidence container
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[700],
+                  borderRadius: BorderRadius.circular(8.0),
+                ), 
+                padding: const EdgeInsets.all(8.0),
+                child:  Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            'Evidence',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => QRScannerPage( 
+                                    onScan: navigateToEvidenceCreate(caseItem),
+                                  )
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    limEvidenceList(context, caseItem.taggedEvidence),
+                  ],
+                ),
+
+              ),
               const SizedBox(height: 10),
+              // Media Container
               Container(
                 decoration: BoxDecoration(
                   color: Colors.grey[700],
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                padding: const EdgeInsets.all(8.0),
+                // padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
