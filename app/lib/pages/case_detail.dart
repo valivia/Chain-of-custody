@@ -10,9 +10,9 @@ import 'package:coc/components/lim_evidence_list.dart';
 import 'package:coc/components/lim_media_evidence.dart';
 
 class CaseDetailView extends StatelessWidget {
-  // ignore: prefer_const_constructors_in_immutables
-  CaseDetailView({super.key, required this.caseItem});
+  const CaseDetailView({super.key, required this.caseItem});
   final Case caseItem;
+
   static Future<bool> hasInternetConnection() async {
     return await InternetConnectionChecker().hasConnection;
   }
@@ -31,16 +31,46 @@ class CaseDetailView extends StatelessWidget {
             children: [
               buildCaseDetails(caseItem),
               const SizedBox(height: 16),
-              limCaseUserList(context, caseItem.users),
-              const SizedBox(height: 8),
+              // Handler/caseUser container
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[700],
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            'Handlers',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                    limCaseUserList(context, caseItem.users),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
               // Evidence container
               Container(
                 decoration: BoxDecoration(
                   color: Colors.grey[700],
                   borderRadius: BorderRadius.circular(8.0),
-                ), 
+                ),
                 padding: const EdgeInsets.all(8.0),
-                child:  Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -60,9 +90,9 @@ class CaseDetailView extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => QRScannerPage( 
-                                    onScan: navigateToEvidenceCreate(caseItem),
-                                  )
+                                builder: (context) => QRScannerPage(
+                                  onScan: navigateToEvidenceCreate(caseItem),
+                                ),
                               ),
                             );
                           },
@@ -72,7 +102,6 @@ class CaseDetailView extends StatelessWidget {
                     limEvidenceList(context, caseItem.taggedEvidence),
                   ],
                 ),
-
               ),
               const SizedBox(height: 10),
               // Media Container
@@ -81,7 +110,6 @@ class CaseDetailView extends StatelessWidget {
                   color: Colors.grey[700],
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                // padding: const EdgeInsets.all(8.0),
                 padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -17,7 +17,7 @@ Widget limEvidenceList(BuildContext context, List<TaggedEvidence> taggedEvidence
         itemBuilder: (context, index) {
           final taggedEvidenceItem = displayedEvidenceItems[index];
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0), // Add vertical padding
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.all(10),
