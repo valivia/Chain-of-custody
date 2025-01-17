@@ -21,7 +21,8 @@ class CaseDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(caseItem.title),
+        title: Text("Case: ${caseItem.title}", textAlign: TextAlign.center),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -142,8 +143,7 @@ class CaseDetailView extends StatelessWidget {
                     FutureBuilder<bool>(
                       future: hasInternetConnection(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         } else if (snapshot.hasError || !snapshot.data!) {
                           return const Padding(
