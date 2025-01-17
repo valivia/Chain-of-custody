@@ -53,7 +53,7 @@ class DebugPage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 20), // Add spacing between buttons
-              const LimCaseList(),
+              const LimCaseList(displayedCaseItemsCount: 2),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 onPressed: () async {

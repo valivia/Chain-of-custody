@@ -4,8 +4,8 @@ import 'package:coc/pages/case_detail.dart';
 import 'package:coc/components/full_case_list.dart';
 
 class LimCaseList extends StatelessWidget {
-  const LimCaseList({super.key});
-  final int displayedCaseItemsCount = 2;
+  const LimCaseList({super.key, required this.displayedCaseItemsCount});
+  final int displayedCaseItemsCount;
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +61,29 @@ class LimCaseList extends StatelessWidget {
                                 ),
                               );
                             },
-                            child: Text("Title: ${caseItem.title}, \nID: ${caseItem.id}"),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 12.0),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      caseItem.title,
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                    Text(
+                                      caseItem.id,
+                                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                         );
                       },
                     ),
-                    //view all if more than selected lenght
                     if (caseList.length > displayedCaseItems.length)
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4.0),

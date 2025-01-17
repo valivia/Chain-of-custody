@@ -55,7 +55,25 @@ class CaseList extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Text("Title: ${caseItem.title}, \nID: ${caseItem.id}"),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Align(
+                      alignment: Alignment.centerLeft,
+                        child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            caseItem.title, 
+                            style: const TextStyle(fontSize: 16)
+                          ),
+                          Text(
+                            caseItem.id, 
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300)
+                          ),
+                        ],
+                        ),
+                      ),
+                    ),
                 ),
               );
             },
