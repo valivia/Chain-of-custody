@@ -20,6 +20,14 @@ class User {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'firstName': firstName,
+      'lastName': lastName,
+    };
+  }
+
   bool hasPermission(String permission) {
     throw UnimplementedError();
   }

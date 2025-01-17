@@ -130,7 +130,7 @@ class RegisterCasePageState extends State<RegisterCase> {
                                 'description': _descriptionController.text,
                               });
                               showSuccessDialog(context, 'Case saved locally');
-                            }else if (response.statusCode == 401) {
+                            } else if (response.statusCode == 401) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {

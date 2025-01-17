@@ -1,3 +1,4 @@
+import 'package:coc/controllers/user.dart';
 import 'package:coc/main.dart';
 import 'package:coc/service/enviroment.dart';
 import 'package:http/http.dart' as http;
@@ -23,6 +24,13 @@ class LocalStore {
 
   static Future<void> saveCaseData(String key, Map<String, dynamic> request) async {
     var box = Hive.box(_boxName);
+      // Create an instance of Authentication
+    Authentication auth = await Authentication.create();
+
+    User currentUser = auth.user;
+    request['users'] = [currentUser.toJson()];
+    request['taggedEvidence'] = [];
+    request['mediaEvidence'] = [];
     await box.put(key, request);
   }
 
