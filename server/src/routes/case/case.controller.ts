@@ -74,6 +74,9 @@ export class CaseController {
         users: { include: { auditLog: true, user: true } },
         taggedEvidence: { include: { auditLog: true } },
         mediaEvidence: { include: { auditLog: true } },
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
     }).then(cases =>
       cases.filter(entry =>
@@ -81,7 +84,25 @@ export class CaseController {
       )
     );
 
-    const data = cases.map(this.caseToCaseData);
+    const data = cases
+      .map(this.caseToCaseData)
+      .sort((a, b) => {
+        type Item = { createdAt: Date };
+
+        const aDate = ([] as Item[])
+          .concat(a.taggedEvidence)
+          .concat(a.mediaEvidence)
+          .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0]
+          ?.createdAt ?? a.createdAt;
+
+        const bDate = ([] as Item[])
+          .concat(b.taggedEvidence)
+          .concat(b.mediaEvidence)
+          .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0]
+          ?.createdAt ?? b.createdAt;
+
+        return bDate.getTime() - aDate.getTime();
+      });
 
     return { data };
   }
