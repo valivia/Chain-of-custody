@@ -8,39 +8,27 @@ Widget limCaseUserList(BuildContext context, List<CaseUser> caseUsers) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Handlers on case',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'Total: ${caseUsers.length}',
-              style: const TextStyle(fontSize: 16),
-            ),
-          ],
-        ),
-      ),
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: displayedCaseUsers.length,
         itemBuilder: (context, index) {
           final caseUser = displayedCaseUsers[index];
-          return ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.all(10),
-            ),
-            onPressed: () {},
-            child: Row(
-              children: [
-                const Icon(Icons.person),
-                const SizedBox(width: 10),
-                Text("${caseUser.firstName} ${caseUser.lastName}"),
-              ],
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(10),
+              ),
+              //TODO: Add user to case functions
+              onPressed: () {},
+              child: Row(
+                children: [
+                  const Icon(Icons.person),
+                  const SizedBox(width: 10),
+                  Text("${caseUser.firstName} ${caseUser.lastName}"),
+                ],
+              ),
             ),
           );
         },
@@ -55,7 +43,19 @@ Widget limCaseUserList(BuildContext context, List<CaseUser> caseUsers) {
               ),
             );
           },
-          child: const Text('View All Users'),
+          child: Row(
+            children: [
+              const Icon(Icons.arrow_forward),
+              const SizedBox(width: 10),
+              const Text('View All'),
+              const Spacer(),
+              Text(
+                "${caseUsers.length.toString()} total",
+                style: const TextStyle(fontSize: 12),
+              ),
+              const SizedBox(width: 10),
+            ],
+          ),
         ),
     ],
   );

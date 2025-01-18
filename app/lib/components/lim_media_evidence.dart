@@ -20,7 +20,7 @@ Widget limMediaEvidenceView({
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       const Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.only(left:8.0, right: 8.0, bottom: 8.0),
       ),
       GridView.builder(
         shrinkWrap: true,
@@ -57,7 +57,7 @@ Widget limMediaEvidenceView({
       ),
       if (mediaEvidence.length > displayedMediaItems.length)
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.all(10),

@@ -1,4 +1,3 @@
-import 'package:coc/components/button.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/register_evidence.dart';
@@ -11,9 +10,9 @@ import 'package:coc/components/lim_evidence_list.dart';
 import 'package:coc/components/lim_media_evidence.dart';
 
 class CaseDetailView extends StatelessWidget {
-  // ignore: prefer_const_constructors_in_immutables
-  CaseDetailView({super.key, required this.caseItem});
+  const CaseDetailView({super.key, required this.caseItem});
   final Case caseItem;
+
   static Future<bool> hasInternetConnection() async {
     return await InternetConnectionChecker().hasConnection;
   }
@@ -22,7 +21,8 @@ class CaseDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(caseItem.title),
+        title: Text("Case: ${caseItem.title}", textAlign: TextAlign.center),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -30,32 +30,88 @@ class CaseDetailView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Button(
-                title: 'Add evidence',
-                icon: Icons.qr_code,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => QRScannerPage(
-                        onScan: navigateToEvidenceCreate(caseItem),
-                      ),
-                    ),
-                  );
-                },
-              ),
               buildCaseDetails(caseItem),
               const SizedBox(height: 16),
-              limCaseUserList(context, caseItem.users),
-              const SizedBox(height: 8),
-              limEvidenceList(context, caseItem.taggedEvidence),
-              const SizedBox(height: 10),
+              // Handler/caseUser container
               Container(
                 decoration: BoxDecoration(
                   color: Colors.grey[700],
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            'Handlers',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                    limCaseUserList(context, caseItem.users),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              // Evidence container
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[700],
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            'Evidence',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => QRScannerPage(
+                                  onScan: navigateToEvidenceCreate(caseItem),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    limEvidenceList(context, caseItem.taggedEvidence),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              // Media Container
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[700],
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -87,8 +143,7 @@ class CaseDetailView extends StatelessWidget {
                     FutureBuilder<bool>(
                       future: hasInternetConnection(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         } else if (snapshot.hasError || !snapshot.data!) {
                           return const Padding(
