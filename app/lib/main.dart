@@ -1,5 +1,5 @@
 import 'package:coc/components/button.dart';
-import 'package:coc/components/case_list.dart';
+import 'package:coc/components/lim_case_list.dart';
 import 'package:coc/components/local_store.dart';
 
 import 'package:coc/pages/debug.dart';
@@ -167,7 +167,7 @@ class HomePage extends StatelessWidget {
 
               // Caselist view
               const SizedBox(height: 20),
-              const CaseList(),
+              const LimCaseList(displayedCaseItemsCount: 5),
 
               // Debug page Button
               const SizedBox(height: 20),

@@ -45,7 +45,7 @@ class AuditLog {
       caseUserId: json['caseUserId'],
       mediaEvidenceId: json['mediaEvidenceId'],
       taggedEvidenceId: json['taggedEvidenceId'],
-      action: Action.values[json['action']],
+      action: Action.values.byName(json['action']),
       ip: json['ip'],
       userAgent: json['userAgent'],
       location: json['location'],
