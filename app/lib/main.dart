@@ -167,7 +167,7 @@ class HomePage extends StatelessWidget {
 
               // Caselist view
               const SizedBox(height: 20),
-              const LimCaseList(displayedCaseItemsCount: 5),
+              const LimCaseList(displayedCaseItemsCount: 4),
 
               // Debug page Button
               const SizedBox(height: 20),
