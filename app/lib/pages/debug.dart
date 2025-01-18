@@ -1,3 +1,5 @@
+import 'package:coc/main.dart';
+import 'package:coc/service/data.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/pages/login.dart';
 import 'package:coc/pages/image_gallery.dart';
@@ -22,6 +24,13 @@ class DebugPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Column(
             children: [
+              const SizedBox(height: 20), // Add spacing between buttons
+              ElevatedButton(
+                child: const Text('Sync with API'),
+                onPressed: () {
+                  globalState<DataService>().syncWithApi();
+                },
+              ),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 child: const Text('View Images'),
@@ -53,7 +62,9 @@ class DebugPage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 20), // Add spacing between buttons
-              const LimCaseList(displayedCaseItemsCount: 2),
+              LimCaseList(
+                  caseList: globalState<DataService>().cases,
+                  displayedCaseItemsCount: 2),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 onPressed: () async {
@@ -82,7 +93,7 @@ class DebugPage extends StatelessWidget {
                     },
                   );
                 },
-                child:const Text('Get All Data from Hive'),
+                child: const Text('Get All Data from Hive'),
               ),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
@@ -95,7 +106,8 @@ class DebugPage extends StatelessWidget {
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 onPressed: () async {
-                  List<Map<String, String>> statusList = await LocalStore.sendAllSavedRequests();
+                  List<Map<String, String>> statusList =
+                      await LocalStore.sendAllSavedRequests();
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -107,15 +119,17 @@ class DebugPage extends StatelessWidget {
                               return Row(
                                 children: [
                                   Expanded(
-                                    child: Text(
-                                        status['status'] != 'Success'
-                                            ? '${status['id']}     ${status['type']}     ${status['status']}'
-                                            : '${status['id']}     ${status['type']}'
-                                      ),
-                                    ),
+                                    child: Text(status['status'] != 'Success'
+                                        ? '${status['id']}     ${status['type']}     ${status['status']}'
+                                        : '${status['id']}     ${status['type']}'),
+                                  ),
                                   Icon(
-                                    status['status'] == 'Success' ? Icons.check_circle : Icons.close,
-                                    color: status['status'] == 'Success' ? Colors.green : Colors.red,
+                                    status['status'] == 'Success'
+                                        ? Icons.check_circle
+                                        : Icons.close,
+                                    color: status['status'] == 'Success'
+                                        ? Colors.green
+                                        : Colors.red,
                                   ),
                                 ],
                               );
