@@ -3,6 +3,7 @@ import 'package:coc/pages/case_detail.dart';
 import 'package:coc/controllers/case.dart';
 
 Widget caseButton(BuildContext context, Case caseItem) {
+  TextTheme aTextTheme = Theme.of(context).textTheme;
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 4.0),
     child: ElevatedButton(
@@ -26,11 +27,11 @@ Widget caseButton(BuildContext context, Case caseItem) {
             children: [
               Text(
                 caseItem.title,
-                style: const TextStyle(fontSize: 16),
+                style: aTextTheme.bodyLarge,
               ),
               Text(
                 caseItem.id,
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                style: aTextTheme.bodyMedium,
               ),
             ],
           ),

@@ -8,15 +8,16 @@ class EvidenceListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Evidence List'),
+            Text('Evidence List', style: aTextTheme.headlineMedium,),
             Text(
               'Case ID: ${taggedEvidence.first.caseId}',
-              style: const TextStyle(fontSize: 14),
+              style: aTextTheme.bodySmall,
             ),
           ],
         ),

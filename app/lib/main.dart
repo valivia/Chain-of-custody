@@ -36,6 +36,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
@@ -81,7 +82,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(onPressed: () {}, icon: const Icon(Icons.home,)),
         centerTitle: true,
-        title: Text('Home', style: aTextTheme.headlineMedium,),
+        title: Text('Home', style: aTextTheme.headlineLarge,),
         actions: [
           IconButton(
               onPressed: () {

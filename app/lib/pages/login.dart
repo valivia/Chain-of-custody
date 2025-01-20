@@ -68,8 +68,9 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
+      appBar: AppBar(title: Text("Login", style: aTextTheme.headlineMedium,)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -138,11 +139,11 @@ class LoginPageState extends State<LoginPage> {
                         globalState<Authentication>().logout();
                         Navigator.pop(context);
                       },
-                      child: const Text("Logout"),
+                      child: Text("Logout", style: aTextTheme.bodyMedium,),
                     ),
                     ElevatedButton(
                       onPressed: _isButtonDisabled ? null : submit,
-                      child: const Text('Login'),
+                      child: Text('Login', style: aTextTheme.bodyMedium,),
                     ),
                   ],
                 ),

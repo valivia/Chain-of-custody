@@ -19,9 +19,10 @@ class CaseDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Case: ${caseItem.title}", textAlign: TextAlign.center),
+        title: Text("Case: ${caseItem.title}", style: aTextTheme.headlineMedium,),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

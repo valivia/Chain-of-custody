@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:coc/controllers/tagged_evidence.dart';
 
 Widget evidenceButton(BuildContext context, TaggedEvidence taggedEvidenceItem) {
+  TextTheme aTextTheme = Theme.of(context).textTheme;
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 4.0),
     child: ElevatedButton(
@@ -24,8 +25,8 @@ Widget evidenceButton(BuildContext context, TaggedEvidence taggedEvidenceItem) {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("ID: ${taggedEvidenceItem.id}"),
-              Text("Description: ${taggedEvidenceItem.description.toString()}"),
+              Text("ID: ${taggedEvidenceItem.id}", style: aTextTheme.bodyLarge,),
+              Text("Description: ${taggedEvidenceItem.description.toString()}", style: aTextTheme.bodyMedium,),
             ],
           ),
           const Spacer(),

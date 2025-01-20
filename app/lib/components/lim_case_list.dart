@@ -3,28 +3,26 @@ import 'package:coc/controllers/case.dart';
 import 'package:coc/components/full_case_list.dart';
 import 'package:coc/components/case_button.dart';
 
+
 class LimCaseList extends StatelessWidget {
   const LimCaseList({super.key, required this.displayedCaseItemsCount});
   final int displayedCaseItemsCount;
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Colors.grey[800],
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Cases',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+            style: aTextTheme.headlineMedium,
           ),
           const SizedBox(height: 10),
           FutureBuilder<List<Case>>(
@@ -33,9 +31,9 @@ class LimCaseList extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return Center(child: Text('Error occurred: ${snapshot.error}'));
+                return Center(child: Text('Error occurred: ${snapshot.error}', style: aTextTheme.bodyLarge,));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('No cases found attached to you'));
+                return Center(child: Text('No cases found attached to you', style: aTextTheme.bodyLarge, ));
               } else {
                 final caseList = snapshot.data!;
                 final displayedCaseItems = caseList.take(displayedCaseItemsCount).toList();
@@ -65,11 +63,11 @@ class LimCaseList extends StatelessWidget {
                               ),
                             );
                           },
-                          child: const Row(
+                          child: Row(
                             children: [
-                              Icon(Icons.arrow_forward),
-                              SizedBox(width: 10),
-                              Text('View All'),
+                              const Icon(Icons.arrow_forward),
+                              const SizedBox(width: 10),
+                              Text('View All', style: aTextTheme.bodyMedium,),
                             ],
                           ),
                         ),

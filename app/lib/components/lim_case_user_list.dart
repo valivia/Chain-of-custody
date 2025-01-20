@@ -3,6 +3,7 @@ import 'package:coc/controllers/case_user.dart';
 import 'package:coc/components/full_case_user_list.dart';
 
 Widget limCaseUserList(BuildContext context, List<CaseUser> caseUsers) {
+  TextTheme aTextTheme = Theme.of(context).textTheme;
   const int displayItemCount = 3;
   final displayedCaseUsers = caseUsers.take(displayItemCount).toList();
   return Column(
@@ -26,7 +27,7 @@ Widget limCaseUserList(BuildContext context, List<CaseUser> caseUsers) {
                 children: [
                   const Icon(Icons.person),
                   const SizedBox(width: 10),
-                  Text("${caseUser.firstName} ${caseUser.lastName}"),
+                  Text("${caseUser.firstName} ${caseUser.lastName}", style: aTextTheme.bodyMedium,),
                 ],
               ),
             ),
