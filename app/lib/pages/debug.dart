@@ -1,12 +1,13 @@
 // import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:coc/pages/login.dart';
-import 'package:coc/pages/image_gallery.dart';
+// import 'package:coc/pages/image_gallery.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/pages/nfc.dart';
 import 'package:coc/components/case_list.dart';
 // import 'package:coc/components/evidence_list.dart';
 // import 'dart:math';
+// import 'package:coc/Themes/theme.dart';
 
 class DebugPage extends StatelessWidget {
   const DebugPage({super.key});
@@ -31,11 +32,11 @@ class DebugPage extends StatelessWidget {
               ElevatedButton(
                 child: Text('View Images', style: bTextTheme.bodyMedium,),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ImageGalleryPage()),
-                    //MaterialPageRoute(builder: (context) => QRScannerPage()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => ImageGalleryPage()),
+                  //   //MaterialPageRoute(builder: (context) => QRScannerPage()),
+                  // );
                 },
               ),
               const SizedBox(height: 20), // Add spacing between buttons
@@ -52,11 +53,11 @@ class DebugPage extends StatelessWidget {
               ElevatedButton(
                 child: Text('Take Picture', style: bTextTheme.bodyMedium,),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    // MaterialPageRoute(
-                    //     builder: (context) => const PictureTakingPage()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => const PictureTakingPage()),
+                  // );
                 },
               ),
               const SizedBox(height: 20), // Add spacing between buttons

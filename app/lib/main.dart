@@ -1,4 +1,4 @@
-import 'package:coc/components/button.dart';
+//import 'package:coc/components/button.dart';
 import 'package:coc/components/case_list.dart';
 import 'package:coc/components/local_store.dart';
 
@@ -10,6 +10,8 @@ import 'package:coc/service/authentication.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+
+import 'package:coc/Themes/theme.dart';
 
 final globalState = GetIt.instance;
 
@@ -139,11 +141,9 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 20), // Add spacing between buttons
 
               // Caselist view
-              const SizedBox(height: 20),
               const CaseList(),
 
               // Debug page Button
-              const SizedBox(height: 20),
               if (kDebugMode)
                 // Debug page Button
                 const SizedBox(height: 20), // Add spacing between buttons
@@ -157,7 +157,6 @@ class HomePage extends StatelessWidget {
                 },
               
               ),
-              CaseList(),
             ],
           ),
           
