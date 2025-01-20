@@ -22,7 +22,7 @@ class CaseDetailView extends StatelessWidget {
     TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Case: ${caseItem.title}", style: aTextTheme.headlineMedium,),
+        title: Text("Case: ${caseItem.title}", style: aTextTheme.headlineMedium,), //TODO niet zichtbaar in lightmode, is lichte text
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -36,7 +36,7 @@ class CaseDetailView extends StatelessWidget {
               // Handler/caseUser container
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[700],
+                  color: Theme.of(context).colorScheme.secondary,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 padding: const EdgeInsets.all(8.0),
@@ -68,7 +68,7 @@ class CaseDetailView extends StatelessWidget {
               // Evidence container
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[700],
+                  color: Theme.of(context).colorScheme.secondary,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 padding: const EdgeInsets.all(8.0),
@@ -109,7 +109,7 @@ class CaseDetailView extends StatelessWidget {
               // Media Container
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[700],
+                  color: Theme.of(context).colorScheme.secondary,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 padding: const EdgeInsets.only(top: 8, left: 8, right: 8),

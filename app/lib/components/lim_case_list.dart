@@ -14,7 +14,7 @@ class LimCaseList extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Column(
