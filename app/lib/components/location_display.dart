@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:coc/service/edit_formats.dart';
-import 'package:coc/controllers/case.dart';
+//import 'package:coc/controllers/case.dart';
 
 class MapPointer extends StatelessWidget {
   final LatLng location;

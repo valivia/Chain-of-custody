@@ -63,7 +63,7 @@ class DebugPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => NfcScanPage()),
+                    MaterialPageRoute(builder: (context) => const NfcScanPage()),
                   );
                 },
               ),
@@ -113,7 +113,7 @@ class DebugPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   await LocalStore.clearApiCache();
-                  print('Hive cache cleared');
+                  //print('Hive cache cleared');
                 },
                 child: Text('Clear Cache', style: bTextTheme.bodyMedium,),
               ),

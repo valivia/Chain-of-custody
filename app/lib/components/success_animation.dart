@@ -23,7 +23,7 @@ class SuccessAnimationState extends State<SuccessAnimation>
 
     _controller.addListener(() {
       setState(() {});
-      if (_controller.status == AnimationStatus.completed && widget.onComplete != null) {
+      if (_controller.status == AnimationStatus.completed && widget.onComplete != null) { // kan nooit null zijn, dus gaat altijd de if in
         widget.onComplete();
       }
     });
@@ -63,10 +63,10 @@ class SuccessPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    _paint.color = Colors.greenAccent.withOpacity(.05);
+    _paint.color = const Color.fromARGB(137, 105, 240, 175);
 
     // Draw the circular highlight
-    _paint.color = Colors.greenAccent.withOpacity(0.3);
+    _paint.color = const Color.fromARGB(82, 105, 240, 175);
     _paint.style = PaintingStyle.stroke;
     _paint.strokeWidth = 5.0;
     canvas.drawCircle(Offset(size.width / 2, size.height / 2), size.width / 2, _paint);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:coc/Themes/custom_themes/text_theme.dart';
 import 'package:coc/Themes/custom_themes/eleveted_button_theme.dart';
-import 'package:coc/Themes/custom_themes/appBar_theme.dart';
+import 'package:coc/Themes/custom_themes/appbar_theme.dart';
 import 'package:coc/Themes/custom_themes/snackbar_theme.dart';
 import 'package:coc/Themes/custom_themes/icon_theme.dart';
 
