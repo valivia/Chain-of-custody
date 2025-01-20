@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:coc/controllers/audit_log.dart';
 import 'package:coc/controllers/case_user.dart';
 import 'package:coc/controllers/media_evidence.dart';
 import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
+import 'package:coc/service/enviroment.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,6 +28,7 @@ class Case {
   List<CaseUser> users;
   List<TaggedEvidence> taggedEvidence;
   List<MediaEvidence> mediaEvidence;
+  List<AuditLog> auditLogs;
 
   Case({
     required this.id,
@@ -37,6 +40,7 @@ class Case {
     required this.users,
     required this.taggedEvidence,
     required this.mediaEvidence,
+    required this.auditLogs,
   });
 
   factory Case.fromJson(Map<String, dynamic> json) {
@@ -56,11 +60,14 @@ class Case {
       mediaEvidence: (json['mediaEvidence'] as List)
           .map((evidence) => MediaEvidence.fromJson(evidence))
           .toList(),
+      auditLogs: (json['auditLog'] as List)
+          .map((log) => AuditLog.fromJson(log))
+          .toList(),
     );
   }
 
   static Future<List<Case>> fetchCases() async {
-    final url = Uri.parse("https://coc.hootsifer.com/case");
+    final url = Uri.parse("${EnvironmentConfig.apiUrl}/case");
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': globalState<Authentication>().bearerToken,
@@ -69,7 +76,7 @@ class Case {
       final response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
-        log(" --- Request Succesfulll! --- ");
+        log(" --- Sucessfully fetched cases --- ");
         final caseList = await compute(parseJson, response.body);
         return caseList;
       } else {
@@ -91,7 +98,7 @@ class Case {
         .toList();
   }
 
-  String get caseStatusString { 
+  String get caseStatusString {
     switch (status) {
       case CaseStatus.open:
         return 'Open';
@@ -99,8 +106,12 @@ class Case {
         return 'Closed';
       case CaseStatus.archived:
         return 'Archived';
-      default:
-        return 'Unknown';
     }
-  }  
+  }
+
+  canIUse(CasePermission permission) {
+    final user = users.firstWhere(
+        (user) => user.userId == globalState<Authentication>().user.id);
+    return user.hasPermission(permission);
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:coc/controllers/case.dart';
 import 'package:coc/main.dart';
 import 'package:coc/pages/register_evidence.dart';
+import 'package:coc/service/enviroment.dart';
 import 'package:coc/service/location.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
@@ -98,7 +99,7 @@ class PictureTakingPageState extends State<PictureTakingPage> {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('https://coc.hootsifer.com/evidence/media'),
+        Uri.parse('${EnvironmentConfig.apiUrl}/evidence/media'),
       );
 
       // Add headers including the Bearer token

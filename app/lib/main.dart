@@ -1,9 +1,10 @@
 //import 'package:coc/components/button.dart';
-import 'package:coc/components/case_list.dart';
+import 'package:coc/components/lim_case_list.dart';
 import 'package:coc/components/local_store.dart';
 
 import 'package:coc/pages/debug.dart';
 import 'package:coc/pages/settings.dart';
+import 'package:coc/pages/register_case.dart';
 
 import 'package:coc/service/location.dart';
 import 'package:coc/service/authentication.dart';
@@ -107,7 +108,12 @@ class HomePage extends StatelessWidget {
                   label: Text('Create Case', style: aTextTheme.bodyMedium,),
                   icon: const Icon(Icons.open_in_new),
                   iconAlignment: IconAlignment.end,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>  RegisterCase()),
+                    );
+                },
                 ),
               ),
 
@@ -141,7 +147,8 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 20), // Add spacing between buttons
 
               // Caselist view
-              const CaseList(),
+              const SizedBox(height: 20),
+              const LimCaseList(displayedCaseItemsCount: 4),
 
               // Debug page Button
               if (kDebugMode)
