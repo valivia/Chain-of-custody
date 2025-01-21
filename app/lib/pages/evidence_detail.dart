@@ -1,3 +1,4 @@
+import 'package:coc/components/transfer_history.dart';
 import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:flutter/material.dart';
 import 'package:coc/service/edit_formats.dart';
@@ -71,29 +72,10 @@ class EvidenceDetailView extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Transfer history'),
-                        content: const SingleChildScrollView(
-                          child: ListBody(
-                            children: <Widget>[
-                              Text('Transfer history to be build'),
-                            ],
-                          ),
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Close'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                 Navigator.push(
+                   context,
+                   MaterialPageRoute(builder: (context) => TransferHistoryView(evidenceItem: evidenceItem)),
+                 );
                 },
                 child: const Text('Transfer History'),
               ),
