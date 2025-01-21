@@ -10,7 +10,6 @@ import 'package:http/http.dart' as http;
 
 // Project imports:
 import 'package:coc/main.dart';
-import 'package:coc/pages/login.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/enviroment.dart';
 import 'package:coc/service/location.dart';
@@ -94,22 +93,18 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
 
   void handleResponse(result) {
     http.Response response = result['response'];
-    if (response.statusCode == 401) {
+    if (response.statusCode == 404) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Unauthorized'),
-            content: Text('Check your credentials, please log in again.'),
+            title: const Text('Not found'),
+            content: const Text('This evidence has not been registered yet.'),
             actions: <Widget>[
               ElevatedButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                  );
                 },
               ),
             ],
@@ -121,11 +116,11 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Successful"),
-            content: Text("Transfer submitted successfully"),
+            title: const Text("Successful"),
+            content: const Text("Transfer submitted successfully"),
             actions: <Widget>[
               ElevatedButton(
-                child: Text('Home'),
+                child: const Text('Home'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(
@@ -143,11 +138,11 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Failed'),
-            content: Text('Failed for unknown reason'),
+            title: const Text('Failed'),
+            content: const Text('Failed for unknown reason'),
             actions: <Widget>[
               ElevatedButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(
@@ -167,20 +162,20 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Transfer Evidence'),
+        title: const Text('Transfer Evidence'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Scanned Evidence ID: ${widget.evidenceID}'),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _isFetchingLocation
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : Text('Current Location: $_location'),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
-              child: Text("Submit"),
+              child: const Text("Submit"),
               onPressed: () async {
                 Map<String, dynamic> result = await submitTransferData();
                 handleResponse(result);
