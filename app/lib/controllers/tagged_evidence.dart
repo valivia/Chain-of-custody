@@ -1,3 +1,4 @@
+import 'package:coc/controllers/audit_log.dart';
 import 'package:coc/utility/helpers.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -10,12 +11,14 @@ class TaggedEvidence {
   DateTime updatedAt;
   DateTime madeOn;
 
-  int containerType;
+  String containerType;
   String itemType;
   String? description;
 
   LatLng originCoordinates;
   String originLocationDescription;
+
+  List<AuditLog> auditLogs;
 
   TaggedEvidence({
     required this.id,
@@ -29,6 +32,7 @@ class TaggedEvidence {
     required this.description,
     required this.originCoordinates,
     required this.originLocationDescription,
+    required this.auditLogs,
   });
 
   factory TaggedEvidence.fromJson(Map<String, dynamic> json) {
@@ -39,11 +43,15 @@ class TaggedEvidence {
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       madeOn: DateTime.parse(json['madeOn'] as String),
-      containerType: json['containerType'] as int,
+      containerType: json['containerType'],
       itemType: json['itemType'] as String,
       description: json['description'] as String?,
-      originCoordinates: coordinatesFromString(json['originCoordinates'] as String),
+      originCoordinates:
+          coordinatesFromString(json['originCoordinates'] as String),
       originLocationDescription: json['originLocationDescription'] as String,
+      auditLogs: (json['auditLog'] as List)
+          .map((log) => AuditLog.fromJson(log))
+          .toList(),
     );
   }
 }

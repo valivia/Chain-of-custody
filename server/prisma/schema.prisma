@@ -21,7 +21,7 @@ model Case {
   users          CaseUser[]
   taggedEvidence TaggedEvidence[]
   mediaEvidence  MediaEvidence[]
-  AuditLog       AuditLog[]
+  auditLog       AuditLog[]
 }
 
 enum CaseStatus {
@@ -40,8 +40,9 @@ model CaseUser {
   userId      String
   permissions String @default("0") @db.VarBit
 
-  case Case @relation(fields: [caseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  case     Case       @relation(fields: [caseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  auditLog AuditLog[]
 
   @@unique([caseId, userId])
 }
@@ -70,7 +71,7 @@ model TaggedEvidence {
   updatedAt DateTime @updatedAt
 
   madeOn                    DateTime @default(now())
-  containerType             Int
+  containerType             String
   originCoordinates         String
   originLocationDescription String
 
@@ -112,26 +113,28 @@ model AuditLog {
 
   userId           String
   caseId           String?
+  caseUserId       String?
   mediaEvidenceId  String?
   taggedEvidenceId String?
 
   action    Action
   ip        String
   userAgent String
-  location  String
+  location  String?
 
   oldData String?
   newData String?
 
   user           User            @relation(fields: [userId], references: [id])
   case           Case?           @relation(fields: [caseId], references: [id])
-  MediaEvidence  MediaEvidence?  @relation(fields: [mediaEvidenceId], references: [id])
-  TaggedEvidence TaggedEvidence? @relation(fields: [taggedEvidenceId], references: [id])
+  caseUser       CaseUser?       @relation(fields: [caseUserId], references: [id])
+  mediaEvidence  MediaEvidence?  @relation(fields: [mediaEvidenceId], references: [id])
+  taggedEvidence TaggedEvidence? @relation(fields: [taggedEvidenceId], references: [id])
 }
 
 enum Action {
-  CREATE
-  UPDATE
-  DELETE
-  TRANSFER
+  create
+  update
+  delete
+  transfer
 }
