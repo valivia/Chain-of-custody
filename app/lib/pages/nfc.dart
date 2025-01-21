@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:coc/pages/transfer_evidence.dart';
 
 class NfcScanPage extends StatefulWidget {
   const NfcScanPage({super.key});
@@ -9,43 +10,53 @@ class NfcScanPage extends StatefulWidget {
 }
 
 class NfcScanPageState extends State<NfcScanPage> {
-  ValueNotifier<String> result = ValueNotifier('Scan an NFC tag');
+  ValueNotifier<Map<String, dynamic>> result = ValueNotifier({});
 
   @override
   void initState() {
     super.initState();
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       try {
-        final ndef = Ndef.from(tag);
-        if (ndef == null) {
-          result.value = 'This NFC tag does not support NDEF.';
-          return;
-        }
+        Map<String, dynamic> tagData = {};
+        String evidenceId = '';
 
-        if (ndef.cachedMessage == null) {
-          result.value = 'No NDEF data found on the tag.';
-          return;
-        }
-
-        final ndefMessage = ndef.cachedMessage!;
-        String parsedResult = '';
-
-        for (var record in ndefMessage.records) {
-          if (record.typeNameFormat == NdefTypeNameFormat.nfcWellknown &&
-              record.type.length == 1 &&
-              record.type.first == 0x54) {
-            final languageCodeLength = record.payload.first;
-            final text = String.fromCharCodes(
-                record.payload.sublist(1 + languageCodeLength));
-            parsedResult += '$text\n';
+        final ndef = tag.data['ndef'];
+        if (ndef != null) {
+          final ndefMessage = ndef['cachedMessage'];
+          if (ndefMessage != null) {
+            for (var record in ndefMessage['records']) {
+              if (record['typeNameFormat'] == 'nfcWellknown' &&
+                  record['type'].length == 1 &&
+                  record['type'].first == 0x54) {
+                final languageCodeLength = record['payload'].first;
+                final text = String.fromCharCodes(
+                    record['payload'].sublist(1 + languageCodeLength));
+                evidenceId = text;
+                tagData['text'] = text;
+              }
+            }
+          } else {
+            tagData['message'] = 'No NDEF message found on the tag.';
           }
+        } else {
+          tagData['message'] = 'No NDEF data found on the tag.';
         }
 
-        result.value = parsedResult.isNotEmpty
-            ? parsedResult.trim()
-            : 'No text records found on the tag.';
+        result.value = tagData;
+        if (evidenceId.isNotEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TransferEvidencePage(
+                evidenceID: evidenceId,
+              ),
+            ),
+          );
+        } else {
+          result.value = {'error': 'No evidence ID found on the tag.'};
+        }
       } catch (e) {
-        result.value = 'Error reading NFC tag: $e';
+        result.value = {'error': 'Error reading NFC tag: $e'};
       } finally {
         NfcManager.instance.stopSession();
       }
@@ -64,17 +75,14 @@ class NfcScanPageState extends State<NfcScanPage> {
       appBar: AppBar(title: const Text('Scan NFC Tag')),
       body: SafeArea(
         child: Center(
-          child: ValueListenableBuilder<String>(
+          child: ValueListenableBuilder<Map<String, dynamic>>(
             valueListenable: result,
             builder: (context, value, _) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  value,
-                  style: const TextStyle(fontSize: 16),
-                  textAlign: TextAlign.center,
-                ),
-              );
+              if (value.isEmpty) {
+                return const Text('Scan an NFC tag');
+              } else {
+                  return Text('Error: ${value['error']}');
+              }
             },
           ),
         ),
