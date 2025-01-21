@@ -7,12 +7,12 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 // Project imports:
 import 'package:coc/components/button.dart';
 import 'package:coc/components/case_base_details.dart';
-import 'package:coc/components/lim_case_user_list.dart';
-import 'package:coc/components/lim_evidence_list.dart';
-import 'package:coc/components/lim_media_evidence.dart';
+import 'package:coc/components/lists/lim_case_user_list.dart';
+import 'package:coc/components/lists/lim_evidence_list.dart';
+import 'package:coc/components/lists/media_evidence.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/pictures.dart';
-import 'package:coc/pages/register_evidence.dart';
+import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/scanner.dart';
 
 class CaseDetailView extends StatelessWidget {
@@ -129,7 +129,10 @@ class CaseDetailView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    limEvidenceList(context, caseItem.taggedEvidence),
+                    LimTaggedEvidenceList(
+                      taggedEvidence: caseItem.taggedEvidence,
+                      itemCount: 4,
+                    ),
                   ],
                 ),
               ),
@@ -181,9 +184,9 @@ class CaseDetailView extends StatelessWidget {
                             child: Text('No internet connection'),
                           );
                         } else {
-                          return limMediaEvidenceView(
-                            context: context,
+                          return LimMediaEvidenceList(
                             mediaEvidence: caseItem.mediaEvidence,
+                            itemCount: 4,
                           );
                         }
                       },

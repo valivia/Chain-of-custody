@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
-import 'package:coc/components/case_button.dart';
+import 'package:coc/components/listItems/case_button.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/service/data.dart';
 
@@ -50,7 +50,7 @@ class CaseList extends WatchingWidget {
             itemCount: caseList.length,
             itemBuilder: (context, index) {
               final caseItem = caseList[index];
-              return caseButton(context, caseItem);
+              return CaseButton(caseItem: caseItem);
             },
           ),
         )

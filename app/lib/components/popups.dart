@@ -6,7 +6,7 @@ import 'package:coc/components/failed_animation.dart';
 import 'package:coc/components/success_animation.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/case_detail.dart';
-import 'package:coc/pages/register_evidence.dart';
+import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/scanner.dart';
 
 void showSuccessDialog(BuildContext context, String message, Case caseItem) {

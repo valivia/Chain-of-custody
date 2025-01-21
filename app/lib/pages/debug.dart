@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
-import 'package:coc/components/lim_case_list.dart';
+import 'package:coc/components/lists/lim_case_list.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/pages/image_gallery.dart';
 import 'package:coc/pages/login.dart';

@@ -16,7 +16,7 @@ import 'package:watch_it/watch_it.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/image_gallery.dart';
-import 'package:coc/pages/register_evidence.dart';
+import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/scanner.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/enviroment.dart';

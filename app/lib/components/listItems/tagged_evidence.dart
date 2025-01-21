@@ -5,10 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:coc/pages/evidence_detail.dart';
 
-Widget evidenceButton(BuildContext context, TaggedEvidence taggedEvidenceItem) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4.0),
-    child: ElevatedButton(
+class TaggedEvidenceListItem extends StatelessWidget {
+  final TaggedEvidence taggedEvidenceItem;
+
+  const TaggedEvidenceListItem({
+    super.key,
+    required this.taggedEvidenceItem,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(10),
       ),
@@ -28,14 +35,13 @@ Widget evidenceButton(BuildContext context, TaggedEvidence taggedEvidenceItem) {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("ID: ${taggedEvidenceItem.id}"),
-              Text("Description: ${taggedEvidenceItem.description.toString()}"),
+              Text(taggedEvidenceItem.itemType),
             ],
           ),
           const Spacer(),
           const Icon(Icons.arrow_forward_ios_rounded),
         ],
       ),
-    ),
-  );
+    );
+  }
 }

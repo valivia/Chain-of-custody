@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:coc/components/listItems/case_user.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
@@ -39,19 +40,7 @@ class CaseUserList extends StatelessWidget {
             itemCount: users.length,
             itemBuilder: (context, index) {
               final caseUser = users[index];
-              return ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(10),
-                ),
-                onPressed: () {},
-                child: Row(
-                  children: [
-                    const Icon(Icons.person),
-                    const SizedBox(width: 10),
-                    Text("${caseUser.firstName} ${caseUser.lastName}"),
-                  ],
-                ),
-              );
+              return CaseUserListItem(caseUser: caseUser);
             },
           ),
         ),

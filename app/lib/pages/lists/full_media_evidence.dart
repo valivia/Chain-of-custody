@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
-import 'package:coc/components/media_grid_builder.dart';
+import 'package:coc/components/listItems/media_grid_builder.dart';
 import 'package:coc/controllers/media_evidence.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/enviroment.dart';
@@ -32,10 +32,10 @@ class MediaEvidencePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildMediaGrid(
+              MediaEvidenceGrid(
                 url: url,
                 headers: headers,
-                mediaItems: mediaEvidence,
+                mediaEvidence: mediaEvidence,
               ),
             ],
           ),

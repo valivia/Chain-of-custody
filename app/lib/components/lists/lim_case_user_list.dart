@@ -2,10 +2,11 @@
 import 'dart:math';
 
 // Flutter imports:
+import 'package:coc/components/listItems/case_user.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:coc/components/full_case_user_list.dart';
+import 'package:coc/pages/lists/full_case_user_list.dart';
 import 'package:coc/controllers/case_user.dart';
 
 class LimCaseUserList extends StatelessWidget {
@@ -23,6 +24,7 @@ class LimCaseUserList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // List
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -30,25 +32,11 @@ class LimCaseUserList extends StatelessWidget {
           itemCount: min(itemCount, caseUsers.length),
           itemBuilder: (context, index) {
             final caseUser = caseUsers[index];
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(8),
-                ),
-                //TODO: Add user to case functions
-                onPressed: () {},
-                child: Row(
-                  children: [
-                    const Icon(Icons.person),
-                    const SizedBox(width: 10),
-                    Text("${caseUser.firstName} ${caseUser.lastName}"),
-                  ],
-                ),
-              ),
-            );
+            return CaseUserListItem(caseUser: caseUser);
           },
         ),
+
+        // View All Button
         if (caseUsers.length > itemCount)
           ElevatedButton(
             style: ElevatedButton.styleFrom(

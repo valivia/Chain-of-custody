@@ -2,14 +2,14 @@
 import 'dart:math';
 
 // Flutter imports:
+import 'package:coc/components/listItems/case_button.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
-import 'package:coc/components/full_case_list.dart';
-import 'package:coc/pages/case_detail.dart';
+import 'package:coc/pages/lists/full_case_list.dart';
 import 'package:coc/service/data.dart';
 
 class LimCaseList extends WatchingWidget {
@@ -48,37 +48,7 @@ class LimCaseList extends WatchingWidget {
                 itemCount: min(itemCount, caseList.length),
                 itemBuilder: (context, index) {
                   final caseItem = caseList[index];
-                  return ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(8),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              CaseDetailView(caseItem: caseItem),
-                        ),
-                      );
-                    },
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            caseItem.title,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          Text(
-                            caseItem.id,
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w300),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                  return CaseButton(caseItem: caseItem);
                 },
               ),
               if (caseList.length > itemCount)
@@ -107,6 +77,5 @@ class LimCaseList extends WatchingWidget {
         ],
       ),
     );
-    // });
   }
 }
