@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/case_detail.dart';
 
-class CaseButton extends StatelessWidget {
+class CaseListItem extends StatelessWidget {
   final Case caseItem;
 
-  const CaseButton({
+  const CaseListItem({
     super.key,
     required this.caseItem,
   });

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
-import 'package:coc/components/listItems/case_button.dart';
+import 'package:coc/components/listItems/case.dart';
 import 'package:coc/pages/lists/full_case_list.dart';
 import 'package:coc/service/data.dart';
 
@@ -48,7 +48,7 @@ class LimCaseList extends WatchingWidget {
                 itemCount: min(itemCount, caseList.length),
                 itemBuilder: (context, index) {
                   final caseItem = caseList[index];
-                  return CaseButton(caseItem: caseItem);
+                  return CaseListItem(caseItem: caseItem);
                 },
               ),
               if (caseList.length > itemCount)
