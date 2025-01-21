@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:developer';
+
 import 'package:coc/controllers/case.dart';
 import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
@@ -12,7 +15,7 @@ import 'package:coc/components/popups.dart';
 
 Function(BuildContext, String) navigateToEvidenceCreate(Case caseItem) {
   onscan(BuildContext context, String code) {
-    Navigator.push(
+    Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => RegisterEvidencePage(
@@ -66,14 +69,25 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
       _isFetchingLocation = true;
     });
 
-    // When we reach here, permissions are granted and we can continue
-    Position position = await globalState<LocationService>()
-        .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
-    setState(() {
-      _originCoordinatesController.text =
-          '${position.latitude}, ${position.longitude}';
-      _isFetchingLocation = false;
-    });
+    try {
+      // When we reach here, permissions are granted and we can continue
+      Position position = await globalState<LocationService>()
+          .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
+
+      if (mounted) {
+        setState(() {
+          _originCoordinatesController.text =
+              '${position.latitude}, ${position.longitude}';
+          _isFetchingLocation = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isFetchingLocation = false;
+        });
+      }
+    }
   }
 
   Future<Map<String, dynamic>> submitEvidenceData() async {
