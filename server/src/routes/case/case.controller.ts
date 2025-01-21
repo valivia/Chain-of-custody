@@ -40,6 +40,14 @@ interface CaseUserData {
 
 type CaseData = Case & { users: CaseUserData[], mediaEvidence: MediaEvidence[], taggedEvidence: TaggedEvidence[] };
 
+const caseSelector = {
+  auditLog: { where: { mediaEvidenceId: null, taggedEvidenceId: null } },
+  users: { include: { auditLog: true, user: true } },
+  taggedEvidence: { include: { auditLog: true } },
+  mediaEvidence: { include: { auditLog: true } },
+
+}
+
 @Controller('case')
 export class CaseController {
   constructor(private readonly prisma: PrismaService) { }
@@ -69,12 +77,7 @@ export class CaseController {
           }
         }
       },
-      include: {
-        auditLog: { where: { mediaEvidenceId: null, taggedEvidenceId: null } },
-        users: { include: { auditLog: true, user: true } },
-        taggedEvidence: { include: { auditLog: true } },
-        mediaEvidence: { include: { auditLog: true } },
-      },
+      include: caseSelector,
       orderBy: {
         createdAt: 'desc'
       }
@@ -113,11 +116,7 @@ export class CaseController {
 
     const data = await this.prisma.case.findUnique({
       where: { id },
-      include: {
-        mediaEvidence: true,
-        taggedEvidence: true,
-        users: true
-      }
+      include: caseSelector,
     });
 
     if (!data) {
@@ -144,11 +143,7 @@ export class CaseController {
           }
         }
       },
-      include: {
-        users: { include: { user: true } },
-        taggedEvidence: true,
-        mediaEvidence: true
-      }
+      include: caseSelector,
     });
 
     await saveToAuditLog(this.prisma, req, {
