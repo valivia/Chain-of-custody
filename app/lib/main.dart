@@ -8,7 +8,7 @@ import 'package:watch_it/watch_it.dart';
 
 // Project imports:
 import 'package:coc/components/button.dart';
-import 'package:coc/components/lists/lim_case_list.dart';
+import 'package:coc/components/lists/case.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/pages/debug.dart';
 import 'package:coc/pages/forms/register_case.dart';

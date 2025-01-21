@@ -7,8 +7,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 // Project imports:
 import 'package:coc/components/button.dart';
 import 'package:coc/components/case_base_details.dart';
-import 'package:coc/components/lists/lim_case_user_list.dart';
-import 'package:coc/components/lists/lim_evidence_list.dart';
+import 'package:coc/components/lists/case_user.dart';
+import 'package:coc/components/lists/tagged_evidence.dart';
 import 'package:coc/components/lists/media_evidence.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
