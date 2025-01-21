@@ -39,7 +39,7 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
                       MaterialPageRoute(
                         builder: (context) => CaseDetailView(caseItem: caseItem),
                       )
-                      , (route) => false
+                      , (Route<dynamic> route) => route.isFirst, 
                     );
                   },
                   child: const Text(
@@ -57,7 +57,8 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(context, 
                     MaterialPageRoute(builder: (context) => QRScannerPage(onScan: navigateToEvidenceCreate(caseItem))),
-                    (route) => false);
+                    (Route<dynamic> route) => route.isFirst, 
+                    );
                   },
                   child: const Text(
                     'Scan More',
