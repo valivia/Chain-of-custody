@@ -1,3 +1,4 @@
+import 'package:coc/components/button.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/register_evidence.dart';
@@ -30,6 +31,29 @@ class CaseDetailView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Button(
+                title: 'Add evidence',
+                icon: Icons.qr_code,
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => QRScannerPage(
+                              onScan: navigateToEvidenceCreate(caseItem))));
+                },
+              ),
+              Button(
+                title: "Add media evidence",
+                icon: Icons.camera,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            PictureTakingPage(caseItem: caseItem)),
+                  );
+                },
+              ),
               buildCaseDetails(caseItem),
               const SizedBox(height: 16),
               // Handler/caseUser container

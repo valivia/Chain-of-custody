@@ -11,7 +11,7 @@ class TaggedEvidence {
   DateTime updatedAt;
   DateTime madeOn;
 
-  int containerType;
+  String containerType;
   String itemType;
   String? description;
 
@@ -43,7 +43,7 @@ class TaggedEvidence {
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       madeOn: DateTime.parse(json['madeOn'] as String),
-      containerType: json['containerType'] as int,
+      containerType: json['containerType'],
       itemType: json['itemType'] as String,
       description: json['description'] as String?,
       originCoordinates:
