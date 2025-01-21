@@ -3,8 +3,10 @@ import 'package:coc/components/lim_case_list.dart';
 import 'package:coc/components/local_store.dart';
 
 import 'package:coc/pages/debug.dart';
+import 'package:coc/pages/scanner.dart';
 import 'package:coc/pages/settings.dart';
 import 'package:coc/pages/register_case.dart';
+import 'package:coc/pages/transfer_evidence.dart';
 
 import 'package:coc/service/location.dart';
 import 'package:coc/service/authentication.dart';
@@ -101,6 +103,7 @@ class App extends StatelessWidget {
     );
   }
 }
+
 // TODO:
 // auth check
 // Get token  -> if no token
@@ -122,13 +125,14 @@ class HomePage extends StatelessWidget {
         title: const Text('Home'),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsPage()),
-                );
-              },
-              icon: const Icon(Icons.settings)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsPage()),
+              );
+            },
+            icon: const Icon(Icons.settings),
+          ),
         ],
       ),
       body: Center(
@@ -142,10 +146,10 @@ class HomePage extends StatelessWidget {
                 title: 'Create Case',
                 icon: Icons.open_in_new,
                 onTap: () {
-                    Navigator.push(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) =>  RegisterCase()),
-                    );
+                    MaterialPageRoute(builder: (context) => RegisterCase()),
+                  );
                 },
               ),
 
@@ -162,7 +166,16 @@ class HomePage extends StatelessWidget {
               Button(
                 title: 'Transfer evidence',
                 icon: Icons.photo_camera,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QRScannerPage(
+                        onScan: navigateToEvidenceTransfer(),
+                      ),
+                    ),
+                  );
+                },
               ),
 
               // Caselist view
@@ -178,7 +191,8 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DebugPage()),
+                        builder: (context) => const DebugPage(),
+                      ),
                     );
                   },
                 ),
