@@ -1,7 +1,7 @@
 import { Body, Controller, ForbiddenException, Get, NotFoundException, Param, Post, Req } from '@nestjs/common';
 import { Action } from "@prisma/client";
 import { Type } from "class-transformer";
-import { IsDate, IsLatLong, IsNumber, IsOptional, IsString, MinDate } from "class-validator";
+import { IsDate, IsLatLong, IsOptional, IsString, MinDate } from "class-validator";
 import { Request } from "express";
 import { User, UserEntity } from "src/guards/auth.guard";
 import { checkCaseVisibility, CasePermission } from "src/routes/case/permissions";
@@ -22,8 +22,8 @@ class TaggedEvidenceDto {
   @IsString()
   caseId: string;
 
-  @IsNumber()
-  containerType: number;
+  @IsString()
+  containerType: string;
 
   @IsString()
   itemType: string;
