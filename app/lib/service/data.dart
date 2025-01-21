@@ -7,9 +7,11 @@ import 'package:flutter/foundation.dart';
 
 // Package imports:
 import 'package:localstorage/localstorage.dart';
+import 'package:watch_it/watch_it.dart';
 
 // Project imports:
 import 'package:coc/controllers/case.dart';
+import 'package:coc/service/authentication.dart';
 
 class DataService extends ChangeNotifier {
   Map<String, Case> _cases = {};
@@ -21,6 +23,12 @@ class DataService extends ChangeNotifier {
     instance.loadFromLocalStorage();
     await instance.syncWithApi();
     return instance;
+  }
+
+  clear() {
+    _cases = {};
+    localStorage.removeItem("cases");
+    notifyListeners();
   }
 
   loadFromLocalStorage() {
@@ -45,6 +53,8 @@ class DataService extends ChangeNotifier {
   }
 
   Future<void> syncWithApi() async {
+    if (!di.get<Authentication>().isLoggedIn) return;
+
     try {
       final apiCases = await Case.fetchCases();
       final apiCasesMap = {for (var c in apiCases) c.id: c};

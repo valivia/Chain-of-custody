@@ -24,16 +24,16 @@ class SettingsPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          // Name
           ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Logout'),
-            onTap: () {
-              di<Authentication>().logout();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginPage()),
-              );
-            },
+            leading: const Icon(Icons.person),
+            title: Text(
+                "${di<Authentication>().user.firstName} ${di<Authentication>().user.lastName}"),
+          ),
+          // Email
+          ListTile(
+            leading: const Icon(Icons.email),
+            title: Text(di<Authentication>().user.email),
           ),
           SwitchListTile(
             title: const Text('Toggle light/dark mode'),
@@ -47,6 +47,17 @@ class SettingsPage extends StatelessWidget {
             value: false, // Replace with actual value
             onChanged: (bool value) {
               // Handle offline mode change
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Logout'),
+            onTap: () {
+              di<Authentication>().logout();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
             },
           ),
         ],

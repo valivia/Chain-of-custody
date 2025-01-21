@@ -7,10 +7,13 @@ class User {
   String firstName;
   String lastName;
 
+  String email;
+
   User({
     required this.id,
     required this.firstName,
     required this.lastName,
+    required this.email,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -18,15 +21,8 @@ class User {
       id: json['id'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
+      email: json['email'] as String,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'firstName': firstName,
-      'lastName': lastName,
-    };
   }
 
   bool hasPermission(String permission) {

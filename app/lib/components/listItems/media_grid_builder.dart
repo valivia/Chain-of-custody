@@ -1,6 +1,9 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:coc/controllers/media_evidence.dart';
 import 'package:coc/pages/media_preview.dart';
-import 'package:flutter/material.dart';
 
 class MediaEvidenceGrid extends StatelessWidget {
   final List<MediaEvidence> mediaEvidence;

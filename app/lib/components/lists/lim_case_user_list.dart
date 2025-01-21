@@ -2,12 +2,12 @@
 import 'dart:math';
 
 // Flutter imports:
-import 'package:coc/components/listItems/case_user.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:coc/pages/lists/full_case_user_list.dart';
+import 'package:coc/components/listItems/case_user.dart';
 import 'package:coc/controllers/case_user.dart';
+import 'package:coc/pages/lists/full_case_user_list.dart';
 
 class LimCaseUserList extends StatelessWidget {
   const LimCaseUserList({

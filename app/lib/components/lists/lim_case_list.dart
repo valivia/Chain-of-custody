@@ -2,13 +2,13 @@
 import 'dart:math';
 
 // Flutter imports:
-import 'package:coc/components/listItems/case_button.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
+import 'package:coc/components/listItems/case_button.dart';
 import 'package:coc/pages/lists/full_case_list.dart';
 import 'package:coc/service/data.dart';
 

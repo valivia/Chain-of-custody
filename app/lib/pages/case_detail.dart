@@ -11,8 +11,8 @@ import 'package:coc/components/lists/lim_case_user_list.dart';
 import 'package:coc/components/lists/lim_evidence_list.dart';
 import 'package:coc/components/lists/media_evidence.dart';
 import 'package:coc/controllers/case.dart';
-import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
+import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/scanner.dart';
 
 class CaseDetailView extends StatelessWidget {
@@ -36,17 +36,19 @@ class CaseDetailView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 32),
               Button(
                 title: 'Add evidence',
                 icon: Icons.qr_code,
                 onTap: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => QRScannerPage(
                               onScan: navigateToEvidenceCreate(caseItem))));
                 },
               ),
+              const SizedBox(height: 8),
               Button(
                 title: "Add media evidence",
                 icon: Icons.camera,
@@ -59,8 +61,9 @@ class CaseDetailView extends StatelessWidget {
                   );
                 },
               ),
+              const SizedBox(height: 32),
               CaseDetails(caseItem: caseItem),
-              const SizedBox(height: 16),
+              const SizedBox(height: 10),
               // Handler/caseUser container
               Container(
                 decoration: BoxDecoration(

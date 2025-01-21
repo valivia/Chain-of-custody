@@ -18,29 +18,37 @@ class CaseDetails extends StatelessWidget {
     final updatedAt = caseItem.updatedAt != null
         ? formatTimestamp(caseItem.updatedAt!)
         : 'N/A';
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Case details',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 5),
-        Text("Status: ${caseItem.statusString.toUpperCase()}"),
-        const SizedBox(height: 5),
-        Text("ID: ${caseItem.id}"),
-        const SizedBox(height: 5),
-        Text("Created at: $createdAt"),
-        const SizedBox(height: 5),
-        Text("Updated at: $updatedAt"),
-        const SizedBox(height: 8),
-        const Text(
-          'Description',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 5),
-        Text(caseItem.description),
-      ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[700],
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      padding: const EdgeInsets.all(16),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Case details',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 5),
+          Text("Status: ${caseItem.statusString.toUpperCase()}"),
+          const SizedBox(height: 5),
+          Text("ID: ${caseItem.id}"),
+          const SizedBox(height: 5),
+          Text("Created at: $createdAt"),
+          const SizedBox(height: 5),
+          Text("Updated at: $updatedAt"),
+          const SizedBox(height: 8),
+          const Text(
+            'Description',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 5),
+          Text(caseItem.description),
+        ],
+      ),
     );
   }
 }

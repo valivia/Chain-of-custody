@@ -1,6 +1,8 @@
 // Flutter imports:
-import 'package:coc/controllers/case_user.dart';
 import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:coc/controllers/case_user.dart';
 
 class CaseUserListItem extends StatelessWidget {
   final CaseUser caseUser;

@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:watch_it/watch_it.dart';
 
 // Project imports:
 import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/enviroment.dart';
 import 'package:coc/service/location.dart';
-import 'package:watch_it/watch_it.dart';
 
 Function(BuildContext, String) navigateToEvidenceTransfer() {
   onscan(BuildContext context, String evidenceId) {
