@@ -1,3 +1,4 @@
+import 'package:coc/components/button.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/register_evidence.dart';
