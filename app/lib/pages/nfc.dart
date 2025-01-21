@@ -9,15 +9,46 @@ class NfcScanPage extends StatefulWidget {
 }
 
 class NfcScanPageState extends State<NfcScanPage> {
-  ValueNotifier<Map<String, dynamic>> result = ValueNotifier({});
+  ValueNotifier<String> result = ValueNotifier('Scan an NFC tag');
 
   @override
   void initState() {
     super.initState();
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      Map<String, dynamic> tagData = tag.data;
-      result.value = tagData;
-      NfcManager.instance.stopSession();
+      try {
+        final ndef = Ndef.from(tag);
+        if (ndef == null) {
+          result.value = 'This NFC tag does not support NDEF.';
+          return;
+        }
+
+        if (ndef.cachedMessage == null) {
+          result.value = 'No NDEF data found on the tag.';
+          return;
+        }
+
+        final ndefMessage = ndef.cachedMessage!;
+        String parsedResult = '';
+
+        for (var record in ndefMessage.records) {
+          if (record.typeNameFormat == NdefTypeNameFormat.nfcWellknown &&
+              record.type.length == 1 &&
+              record.type.first == 0x54) {
+            final languageCodeLength = record.payload.first;
+            final text = String.fromCharCodes(
+                record.payload.sublist(1 + languageCodeLength));
+            parsedResult += '$text\n';
+          }
+        }
+
+        result.value = parsedResult.isNotEmpty
+            ? parsedResult.trim()
+            : 'No text records found on the tag.';
+      } catch (e) {
+        result.value = 'Error reading NFC tag: $e';
+      } finally {
+        NfcManager.instance.stopSession();
+      }
     });
   }
 
@@ -33,22 +64,17 @@ class NfcScanPageState extends State<NfcScanPage> {
       appBar: AppBar(title: const Text('Scan NFC Tag')),
       body: SafeArea(
         child: Center(
-          child: ValueListenableBuilder<Map<String, dynamic>>(
+          child: ValueListenableBuilder<String>(
             valueListenable: result,
             builder: (context, value, _) {
-              if (value.isEmpty) {
-                return  const Text('Scan an NFC tag');
-              } else {
-                return ListView(
-                  padding: const EdgeInsets.all(16.0),
-                  children: value.entries.map((entry) {
-                    return ListTile(
-                      title: Text(entry.key),
-                      subtitle: Text(entry.value.toString()),
-                    );
-                  }).toList(),
-                );
-              }
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  value,
+                  style: const TextStyle(fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+              );
             },
           ),
         ),
