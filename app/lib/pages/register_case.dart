@@ -2,8 +2,6 @@
 import 'dart:convert';
 
 // Flutter imports:
-import 'package:coc/controllers/case.dart';
-import 'package:coc/service/data.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -11,8 +9,10 @@ import 'package:http/http.dart' as http;
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
+import 'package:coc/controllers/case.dart';
 import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
+import 'package:coc/service/data.dart';
 import 'package:coc/service/enviroment.dart';
 
 class RegisterCase extends StatefulWidget {

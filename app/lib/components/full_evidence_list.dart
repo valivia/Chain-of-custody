@@ -1,12 +1,9 @@
-// Dart imports:
-import 'dart:developer';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
 // Project imports:
+import 'package:coc/components/evidence_button.dart';
 import 'package:coc/controllers/tagged_evidence.dart';
-import 'package:coc/pages/evidence_detail.dart';
 
 class EvidenceListView extends StatelessWidget {
   const EvidenceListView({super.key, required this.taggedEvidence});
@@ -54,38 +51,7 @@ class EvidenceList extends StatelessWidget {
             itemCount: taggedEvidence.length,
             itemBuilder: (context, index) {
               final evidence = taggedEvidence[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.info),
-                      const SizedBox(width: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("ID: ${evidence.id}"),
-                          Text(
-                              "Description: ${evidence.description.toString()}"),
-                        ],
-                      ),
-                      const Spacer(),
-                      const Icon(Icons.arrow_forward_ios_rounded),
-                    ],
-                  ),
-                  onPressed: () {
-                    log('Clicked on ${evidence.id}');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            EvidenceDetailView(evidenceItem: evidence),
-                      ),
-                    );
-                  },
-                ),
-              );
+              return evidenceButton(context, evidence);
             },
           ),
         ),

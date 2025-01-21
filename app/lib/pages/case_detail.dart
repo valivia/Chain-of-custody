@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 // Project imports:
+import 'package:coc/components/button.dart';
 import 'package:coc/components/case_base_details.dart';
 import 'package:coc/components/lim_case_user_list.dart';
 import 'package:coc/components/lim_evidence_list.dart';
@@ -23,7 +24,7 @@ class CaseDetailView extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Case: ${caseItem.title}", textAlign: TextAlign.center),
@@ -35,6 +36,29 @@ class CaseDetailView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Button(
+                title: 'Add evidence',
+                icon: Icons.qr_code,
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => QRScannerPage(
+                              onScan: navigateToEvidenceCreate(caseItem))));
+                },
+              ),
+              Button(
+                title: "Add media evidence",
+                icon: Icons.camera,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            PictureTakingPage(caseItem: caseItem)),
+                  );
+                },
+              ),
               CaseDetails(caseItem: caseItem),
               const SizedBox(height: 16),
               // Handler/caseUser container

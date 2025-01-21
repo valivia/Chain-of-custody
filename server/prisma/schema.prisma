@@ -71,7 +71,7 @@ model TaggedEvidence {
   updatedAt DateTime @updatedAt
 
   madeOn                    DateTime @default(now())
-  containerType             Int
+  containerType             String
   originCoordinates         String
   originLocationDescription String
 

@@ -36,13 +36,13 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            CaseDetailView(caseItem: caseItem),
-                      ),
-                    );
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CaseDetailView(caseItem: caseItem),
+                        ),
+                        (route) => false);
                   },
                   child: const Text(
                     'Go to Case',
@@ -57,12 +57,12 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => QRScannerPage(
-                              onScan: navigateToEvidenceCreate(caseItem))),
-                    );
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => QRScannerPage(
+                                onScan: navigateToEvidenceCreate(caseItem))),
+                        (route) => false);
                   },
                   child: const Text(
                     'Scan More',

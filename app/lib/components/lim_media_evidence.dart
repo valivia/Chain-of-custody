@@ -6,6 +6,7 @@ import 'package:watch_it/watch_it.dart';
 
 // Project imports:
 import 'package:coc/components/full_media_evidence.dart';
+import 'package:coc/components/media_grid_builder.dart';
 import 'package:coc/controllers/media_evidence.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/enviroment.dart';
@@ -27,39 +28,8 @@ Widget limMediaEvidenceView({
       const Padding(
         padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
       ),
-      GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 4.0,
-        ),
-        itemCount: displayedMediaItems.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MediaPreview(
-                    imageUrl: url.toString() + displayedMediaItems[index].id,
-                  ),
-                ),
-              );
-            },
-            child: ClipRect(
-              child: FittedBox(
-                fit: BoxFit.cover,
-                child: Image.network(
-                  url.toString() + displayedMediaItems[index].id,
-                  headers: headers,
-                ),
-              ),
-            ),
-          );
-        },
-      ),
+      buildMediaGrid(
+          url: url, headers: headers, mediaItems: displayedMediaItems),
       if (mediaEvidence.length > displayedMediaItems.length)
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -94,20 +64,4 @@ Widget limMediaEvidenceView({
         ),
     ],
   );
-}
-
-class MediaPreview extends StatelessWidget {
-  final String imageUrl;
-
-  const MediaPreview({super.key, required this.imageUrl});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Image Preview')),
-      body: Center(
-        child: Image.network(imageUrl),
-      ),
-    );
-  }
 }
