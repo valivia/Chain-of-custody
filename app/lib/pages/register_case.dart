@@ -2,6 +2,8 @@
 import 'dart:convert';
 
 // Flutter imports:
+import 'package:coc/controllers/case.dart';
+import 'package:coc/service/data.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -49,6 +51,10 @@ class RegisterCasePageState extends State<RegisterCase> {
         headers: headers,
         body: jsonEncode(body),
       );
+
+      final caseItem = Case.fromJson(jsonDecode(response.body)["data"]);
+      di<DataService>().upsertCase(caseItem);
+
       return {
         'response': response,
         'request': {'url': url.toString(), 'headers': headers, 'body': body}

@@ -64,7 +64,7 @@ class CaseDetailView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    limCaseUserList(context, caseItem.users),
+                    LimCaseUserList(itemCount: 3, caseUsers: caseItem.users),
                   ],
                 ),
               ),

@@ -52,6 +52,23 @@ class Case {
 
   String get statusString => status.name;
 
+  factory Case.fromForm(
+    String title,
+    String description,
+    CaseStatus status,
+  ) {
+    return Case(
+      id: "",
+      title: title,
+      description: description,
+      status: status,
+      users: [],
+      taggedEvidence: [],
+      mediaEvidence: [],
+      auditLog: [],
+    );
+  }
+
   factory Case.fromJson(Map<String, dynamic> json) {
     final createdAt = json['createdAt'] as String?;
     final updatedAt = json['updatedAt'] as String?;
@@ -76,6 +93,21 @@ class Case {
           .map((log) => AuditLog.fromJson(log))
           .toList(),
     );
+  }
+
+  toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'status': status.name,
+      'users': users.map((user) => user.toJson()).toList(),
+      'taggedEvidence':
+          taggedEvidence.map((evidence) => evidence.toJson()).toList(),
+      'mediaEvidence':
+          mediaEvidence.map((evidence) => evidence.toJson()).toList(),
+      'auditLog': auditLog.map((log) => log.toJson()).toList(),
+    };
   }
 
   static List<Case> parseJson(String responseBody) {
@@ -109,21 +141,6 @@ class Case {
       log(" --- Error occurred with case request: $error --- ");
       return Future.error("Unknown error occurred");
     }
-  }
-
-  toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'description': description,
-      'status': status.name,
-      'users': users.map((user) => user.toJson()).toList(),
-      'taggedEvidence':
-          taggedEvidence.map((evidence) => evidence.toJson()).toList(),
-      'mediaEvidence':
-          mediaEvidence.map((evidence) => evidence.toJson()).toList(),
-      'auditLog': auditLog.map((log) => log.toJson()).toList(),
-    };
   }
 
   // Upload case to API

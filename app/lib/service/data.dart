@@ -14,6 +14,8 @@ import 'package:coc/controllers/case.dart';
 class DataService extends ChangeNotifier {
   Map<String, Case> _cases = {};
 
+  List<Case> get cases => _cases.values.toList();
+
   static Future<DataService> initialize() async {
     final instance = DataService();
     instance.loadFromLocalStorage();
@@ -56,5 +58,15 @@ class DataService extends ChangeNotifier {
     }
   }
 
-  List<Case> get cases => _cases.values.toList();
+  upsertCase(Case c) {
+    _cases[c.id] = c;
+    saveToLocalStorage();
+    notifyListeners();
+  }
+
+  deleteCase(Case c) {
+    _cases.remove(c.id);
+    saveToLocalStorage();
+    notifyListeners();
+  }
 }

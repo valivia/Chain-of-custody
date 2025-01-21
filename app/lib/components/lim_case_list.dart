@@ -13,8 +13,8 @@ import 'package:coc/pages/case_detail.dart';
 import 'package:coc/service/data.dart';
 
 class LimCaseList extends WatchingWidget {
-  const LimCaseList({super.key, required this.displayedCaseItemsCount});
-  final int displayedCaseItemsCount;
+  const LimCaseList({super.key, required this.itemCount});
+  final int itemCount;
 
   @override
   Widget build(BuildContext context) {
@@ -45,49 +45,43 @@ class LimCaseList extends WatchingWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(0),
-                itemCount: min(displayedCaseItemsCount, caseList.length),
+                itemCount: min(itemCount, caseList.length),
                 itemBuilder: (context, index) {
                   final caseItem = caseList[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(8),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                CaseDetailView(caseItem: caseItem),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 12.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                caseItem.title,
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                              Text(
-                                caseItem.id,
-                                style: const TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w300),
-                              ),
-                            ],
-                          ),
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(8),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CaseDetailView(caseItem: caseItem),
                         ),
+                      );
+                    },
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            caseItem.title,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          Text(
+                            caseItem.id,
+                            style: const TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.w300),
+                          ),
+                        ],
                       ),
                     ),
                   );
                 },
               ),
-              if (caseList.length > displayedCaseItemsCount)
+              if (caseList.length > itemCount)
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(10),
@@ -104,8 +98,7 @@ class LimCaseList extends WatchingWidget {
                     children: [
                       const Icon(Icons.arrow_forward),
                       const SizedBox(width: 10),
-                      Text(
-                          'View ${caseList.length - displayedCaseItemsCount} more cases'),
+                      Text('View ${caseList.length - itemCount} more cases'),
                     ],
                   ),
                 ),
