@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:nfc_manager/nfc_manager.dart';
 
 class NfcScanPage extends StatefulWidget {
@@ -17,7 +20,7 @@ class NfcScanPageState extends State<NfcScanPage> {
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       Map<String, dynamic> tagData = tag.data;
       result.value = tagData;
-      NfcManager.instance.stopSession();
+      // NfcManager.instance.stopSession();
     });
   }
 
@@ -37,7 +40,7 @@ class NfcScanPageState extends State<NfcScanPage> {
             valueListenable: result,
             builder: (context, value, _) {
               if (value.isEmpty) {
-                return  const Text('Scan an NFC tag');
+                return const Text('Scan an NFC tag');
               } else {
                 return ListView(
                   padding: const EdgeInsets.all(16.0),

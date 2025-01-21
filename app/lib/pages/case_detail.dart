@@ -1,13 +1,18 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+
+// Project imports:
+import 'package:coc/components/case_base_details.dart';
+import 'package:coc/components/lim_case_user_list.dart';
+import 'package:coc/components/lim_evidence_list.dart';
+import 'package:coc/components/lim_media_evidence.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/register_evidence.dart';
 import 'package:coc/pages/scanner.dart';
-import 'package:flutter/material.dart';
-import 'package:coc/components/case_base_details.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:coc/components/lim_case_user_list.dart';
-import 'package:coc/components/lim_evidence_list.dart';
-import 'package:coc/components/lim_media_evidence.dart';
 
 class CaseDetailView extends StatelessWidget {
   const CaseDetailView({super.key, required this.caseItem});
@@ -30,7 +35,7 @@ class CaseDetailView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildCaseDetails(caseItem),
+              CaseDetails(caseItem: caseItem),
               const SizedBox(height: 16),
               // Handler/caseUser container
               Container(
@@ -143,7 +148,8 @@ class CaseDetailView extends StatelessWidget {
                     FutureBuilder<bool>(
                       future: hasInternetConnection(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         } else if (snapshot.hasError || !snapshot.data!) {
                           return const Padding(

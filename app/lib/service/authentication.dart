@@ -1,10 +1,15 @@
+// Dart imports:
 import 'dart:convert';
 import 'dart:developer';
-import 'package:coc/controllers/user.dart';
-import 'package:coc/service/enviroment.dart';
+
+// Package imports:
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+
+// Project imports:
+import 'package:coc/controllers/user.dart';
+import 'package:coc/service/enviroment.dart';
 
 class Authentication {
   String? _token;
@@ -35,7 +40,6 @@ class Authentication {
   Future<void> _getTokenFromStorage() async {
     var token = await _secureStorage.read(key: "token");
     _updateToken(token);
-    log('Token: $_token');
   }
 
   Future<bool> login(String email, String password) async {

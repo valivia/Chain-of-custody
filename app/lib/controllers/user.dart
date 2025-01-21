@@ -1,3 +1,4 @@
+// Dart imports:
 import 'dart:core';
 
 class User {
@@ -18,6 +19,14 @@ class User {
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'firstName': firstName,
+      'lastName': lastName,
+    };
   }
 
   bool hasPermission(String permission) {

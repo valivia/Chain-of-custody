@@ -1,10 +1,15 @@
-import 'package:coc/main.dart';
-import 'package:coc/service/enviroment.dart';
-import 'package:http/http.dart' as http;
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:coc/service/authentication.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+// Dart imports:
 import 'dart:convert';
+
+// Package imports:
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/service/authentication.dart';
+import 'package:coc/service/enviroment.dart';
 
 class LocalStore {
   static const String _boxName = 'apiCache';
@@ -16,7 +21,8 @@ class LocalStore {
   }
 
   // Save API request
-  static Future<void> saveApiResponse(String key, Map<String, dynamic> request) async {
+  static Future<void> saveApiResponse(
+      String key, Map<String, dynamic> request) async {
     var box = Hive.box(_boxName);
     await box.put(key, request);
   }
@@ -28,16 +34,21 @@ class LocalStore {
   }
 
   // Save picture metadata
-  static Future<void> savePictureMetadata(String filePath, String caseId, String coordinates) async {
+  static Future<void> savePictureMetadata(
+      String filePath, String caseId, String coordinates) async {
     var box = Hive.box(_boxName);
-    await box.add({'filePath': filePath, 'caseId': caseId, 'coordinates': coordinates});
+    await box.add(
+        {'filePath': filePath, 'caseId': caseId, 'coordinates': coordinates});
   }
 
   // Retrieve all pictures
   static List<Map<String, dynamic>> getAllPictures() {
     var box = Hive.box(_boxName);
     return box.values
-        .where((value) => value is Map && value.containsKey('filePath') && value.containsKey('caseId'))
+        .where((value) =>
+            value is Map &&
+            value.containsKey('filePath') &&
+            value.containsKey('caseId'))
         .map((value) => Map<String, dynamic>.from(value))
         .toList();
   }
@@ -70,34 +81,57 @@ class LocalStore {
             body: jsonEncode(request['body']), // Encode the body before sending
           );
           if (response.statusCode == 201 || response.statusCode == 200) {
-            await box.delete(key); // Remove the request from the box if it was successfully sent
-            statusList.add({'id': request['body']['id'], 'status': 'Success', 'type': 'evidence'});
+            await box.delete(
+                key); // Remove the request from the box if it was successfully sent
+            statusList.add({
+              'id': request['body']['id'],
+              'status': 'Success',
+              'type': 'evidence'
+            });
           } else {
-            statusList.add({'id': request['body']['id'], 'status': 'Failed: ${response.statusCode}', 'type': 'evidence'});
+            statusList.add({
+              'id': request['body']['id'],
+              'status': 'Failed: ${response.statusCode}',
+              'type': 'evidence'
+            });
           }
         } catch (e) {
           statusList.add({'id': request['body']['id'], 'status': 'Error: $e'});
         }
-      } else if (value is Map && value.containsKey('filePath') && value.containsKey('caseId')) {
+      } else if (value is Map &&
+          value.containsKey('filePath') &&
+          value.containsKey('caseId')) {
         // Handle picture uploads
         String filePath = value['filePath'];
         String caseId = value['caseId'];
         try {
           var request = http.MultipartRequest(
             'POST',
-            Uri.parse('${EnvironmentConfig.apiUrl}/evidence/media'), /// Replace with your API endpoint
+            Uri.parse('${EnvironmentConfig.apiUrl}/evidence/media'),
+
+            /// Replace with your API endpoint
           );
-          request.headers['Authorization'] = globalState<Authentication>().bearerToken;
+          request.headers['Authorization'] = di<Authentication>().bearerToken;
           request.fields['caseId'] = caseId;
           request.fields['coordinates'] = value['coordinates'];
-          request.files.add(await http.MultipartFile.fromPath('file', filePath));
+          request.files
+              .add(await http.MultipartFile.fromPath('file', filePath));
 
           var response = await request.send();
           if (response.statusCode == 201 || response.statusCode == 200) {
-            await box.delete(key); // Remove the picture metadata from the box if it was successfully sent
-            statusList.add({'id': caseId.substring(0, 5), 'status': 'Success', 'type': 'picture'});
+            await box.delete(
+                key); // Remove the picture metadata from the box if it was successfully sent
+            statusList.add({
+              'id': caseId.substring(0, 5),
+              'status': 'Success',
+              'type': 'picture'
+            });
           } else {
-            statusList.add({'id': caseId.substring(0, 5), 'status': 'Failed: ${response.statusCode}', 'type': 'picure'});
+            statusList.add({
+              'id': caseId.substring(0, 5),
+              'status': 'Failed: ${response.statusCode}',
+              'type': 'picure'
+            });
           }
         } catch (e) {
           statusList.add({'filePath': filePath, 'status': 'Error: $e'});
@@ -120,7 +154,9 @@ class LocalStore {
     // Convert integer keys to strings and filter out picture metadata
     var pictures = <Map<String, dynamic>>[];
     box.toMap().forEach((key, value) {
-      if (value is Map && value.containsKey('filePath') && value.containsKey('caseId')) {
+      if (value is Map &&
+          value.containsKey('filePath') &&
+          value.containsKey('caseId')) {
         pictures.add(Map<String, dynamic>.from(value));
       } else {
         allData[key.toString()] = value;

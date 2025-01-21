@@ -1,3 +1,9 @@
+// Package imports:
+import 'package:latlong2/latlong.dart';
+
+// Project imports:
+import 'package:coc/utility/helpers.dart';
+
 enum Action {
   create,
   update,
@@ -16,7 +22,7 @@ class AuditLog {
   final Action action;
   final String ip;
   final String userAgent;
-  final String? location;
+  final LatLng? location;
   final String? oldData;
   final String? newData;
 
@@ -37,6 +43,10 @@ class AuditLog {
   });
 
   factory AuditLog.fromJson(Map<String, dynamic> json) {
+    final location = json['location'] != null
+        ? coordinatesFromString(json['location'] as String)
+        : null;
+
     return AuditLog(
       id: json['id'],
       createdAt: DateTime.parse(json['createdAt']),
@@ -48,9 +58,27 @@ class AuditLog {
       action: Action.values.byName(json['action']),
       ip: json['ip'],
       userAgent: json['userAgent'],
-      location: json['location'],
+      location: location,
       oldData: json['oldData'],
       newData: json['newData'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'createdAt': createdAt.toIso8601String(),
+      'userId': userId,
+      'caseId': caseId,
+      'caseUserId': caseUserId,
+      'mediaEvidenceId': mediaEvidenceId,
+      'taggedEvidenceId': taggedEvidenceId,
+      'action': action.name,
+      'ip': ip,
+      'userAgent': userAgent,
+      // 'location': location != null ? coordinatesToString(location!) : null,
+      'oldData': oldData,
+      'newData': newData,
+    };
   }
 }

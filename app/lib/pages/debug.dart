@@ -1,11 +1,16 @@
-import 'package:coc/main.dart';
-import 'package:coc/service/data.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:coc/pages/login.dart';
-import 'package:coc/pages/image_gallery.dart';
-import 'package:coc/components/local_store.dart';
-import 'package:coc/pages/nfc.dart';
+
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
 import 'package:coc/components/lim_case_list.dart';
+import 'package:coc/components/local_store.dart';
+import 'package:coc/pages/image_gallery.dart';
+import 'package:coc/pages/login.dart';
+import 'package:coc/pages/nfc.dart';
+import 'package:coc/service/data.dart';
 
 class DebugPage extends StatelessWidget {
   const DebugPage({super.key});
@@ -28,7 +33,7 @@ class DebugPage extends StatelessWidget {
               ElevatedButton(
                 child: const Text('Sync with API'),
                 onPressed: () {
-                  globalState<DataService>().syncWithApi();
+                  di<DataService>().syncWithApi();
                 },
               ),
               const SizedBox(height: 20), // Add spacing between buttons
@@ -62,9 +67,7 @@ class DebugPage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 20), // Add spacing between buttons
-              LimCaseList(
-                  caseList: globalState<DataService>().cases,
-                  displayedCaseItemsCount: 2),
+              const LimCaseList(displayedCaseItemsCount: 2),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 onPressed: () async {

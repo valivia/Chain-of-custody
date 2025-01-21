@@ -1,6 +1,11 @@
+// Dart imports:
 import 'dart:developer';
-import 'package:coc/controllers/tagged_evidence.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:coc/pages/evidence_detail.dart';
 
 class EvidenceListView extends StatelessWidget {
@@ -24,7 +29,7 @@ class EvidenceListView extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-        Navigator.pop(context);
+            Navigator.pop(context);
           },
         ),
       ),
@@ -52,8 +57,7 @@ class EvidenceList extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                  ),
+                  style: ElevatedButton.styleFrom(),
                   child: Row(
                     children: [
                       const Icon(Icons.info),
@@ -62,7 +66,8 @@ class EvidenceList extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("ID: ${evidence.id}"),
-                          Text("Description: ${evidence.description.toString()}"),
+                          Text(
+                              "Description: ${evidence.description.toString()}"),
                         ],
                       ),
                       const Spacer(),
@@ -74,7 +79,8 @@ class EvidenceList extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EvidenceDetailView(evidenceItem: evidence),
+                        builder: (context) =>
+                            EvidenceDetailView(evidenceItem: evidence),
                       ),
                     );
                   },

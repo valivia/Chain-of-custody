@@ -1,10 +1,15 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:coc/components/full_evidence_list.dart';
 import 'package:coc/controllers/tagged_evidence.dart';
-import 'package:flutter/material.dart';
 import 'package:coc/pages/evidence_detail.dart';
 
-Widget limEvidenceList(BuildContext context, List<TaggedEvidence> taggedEvidence) {
-  // TODO: See if sorting is possible 
+Widget limEvidenceList(
+  BuildContext context,
+  List<TaggedEvidence> taggedEvidence,
+) {
   const int displayItemCount = 3;
   final displayedEvidenceItems = taggedEvidence.take(displayItemCount).toList();
   return Column(
@@ -26,7 +31,8 @@ Widget limEvidenceList(BuildContext context, List<TaggedEvidence> taggedEvidence
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EvidenceDetailView(evidenceItem: taggedEvidenceItem),
+                    builder: (context) =>
+                        EvidenceDetailView(evidenceItem: taggedEvidenceItem),
                   ),
                 );
               },
@@ -37,8 +43,9 @@ Widget limEvidenceList(BuildContext context, List<TaggedEvidence> taggedEvidence
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                    Text("ID: ${taggedEvidenceItem.id}"),
-                    Text("Description: ${taggedEvidenceItem.description.toString()}"),
+                      Text("ID: ${taggedEvidenceItem.id}"),
+                      Text(
+                          "Description: ${taggedEvidenceItem.description.toString()}"),
                     ],
                   ),
                   const Spacer(),
@@ -51,7 +58,8 @@ Widget limEvidenceList(BuildContext context, List<TaggedEvidence> taggedEvidence
       ),
       if (taggedEvidence.length > displayedEvidenceItems.length)
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0), // Add vertical padding
+          padding:
+              const EdgeInsets.symmetric(vertical: 4.0), // Add vertical padding
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.all(10),
@@ -60,7 +68,8 @@ Widget limEvidenceList(BuildContext context, List<TaggedEvidence> taggedEvidence
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => EvidenceListView(taggedEvidence: taggedEvidence),
+                  builder: (context) =>
+                      EvidenceListView(taggedEvidence: taggedEvidence),
                 ),
               );
             },
@@ -71,7 +80,7 @@ Widget limEvidenceList(BuildContext context, List<TaggedEvidence> taggedEvidence
                 const Text('View All'),
                 const Spacer(),
                 Text(
-                  "${taggedEvidence.length.toString()} total",
+                  "${taggedEvidence.length} total",
                   style: const TextStyle(fontSize: 12),
                 ),
                 const SizedBox(width: 10),

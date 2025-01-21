@@ -1,21 +1,26 @@
+// Dart imports:
 import 'dart:math';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:coc/controllers/case.dart';
-import 'package:coc/pages/case_detail.dart';
+
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
 import 'package:coc/components/full_case_list.dart';
+import 'package:coc/pages/case_detail.dart';
+import 'package:coc/service/data.dart';
 
-class LimCaseList extends StatelessWidget {
-  const LimCaseList(
-      {super.key,
-      required this.caseList,
-      required this.displayedCaseItemsCount});
-
-  final List<Case> caseList;
+class LimCaseList extends WatchingWidget {
+  const LimCaseList({super.key, required this.displayedCaseItemsCount});
   final int displayedCaseItemsCount;
 
   @override
   Widget build(BuildContext context) {
+    final caseList =
+        watchPropertyValue((DataService dataService) => dataService.cases);
+
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -91,8 +96,7 @@ class LimCaseList extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            CaseListView(caseList: caseList),
+                        builder: (context) => CaseListView(caseList: caseList),
                       ),
                     );
                   },
@@ -110,5 +114,6 @@ class LimCaseList extends StatelessWidget {
         ],
       ),
     );
+    // });
   }
 }

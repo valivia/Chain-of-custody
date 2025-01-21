@@ -1,10 +1,13 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:coc/components/failed_animation.dart';
+import 'package:coc/components/success_animation.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/case_detail.dart';
 import 'package:coc/pages/register_evidence.dart';
 import 'package:coc/pages/scanner.dart';
-import 'package:flutter/material.dart';
-import 'package:coc/components/success_animation.dart'; 
-import 'package:coc/components/failed_animation.dart'; 
 
 void showSuccessDialog(BuildContext context, String message, Case caseItem) {
   showDialog(
@@ -17,8 +20,7 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
           children: <Widget>[
             SuccessAnimation(
               size: 200,
-              onComplete: () {
-              },
+              onComplete: () {},
             ),
             const SizedBox(height: 20),
             Text(message),
@@ -37,7 +39,8 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CaseDetailView(caseItem: caseItem),
+                        builder: (context) =>
+                            CaseDetailView(caseItem: caseItem),
                       ),
                     );
                   },
@@ -54,8 +57,12 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                   onPressed: () {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => QRScannerPage(onScan: navigateToEvidenceCreate(caseItem))),);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => QRScannerPage(
+                              onScan: navigateToEvidenceCreate(caseItem))),
+                    );
                   },
                   child: const Text(
                     'Scan More',
@@ -103,7 +110,8 @@ void showFailureDialog(BuildContext context, String message, Case caseItem) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CaseDetailView(caseItem: caseItem),
+                        builder: (context) =>
+                            CaseDetailView(caseItem: caseItem),
                       ),
                     );
                   },

@@ -1,6 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/case_detail.dart';
+import 'package:coc/service/data.dart';
 
 class CaseListView extends StatelessWidget {
   const CaseListView({super.key, required this.caseList});
@@ -18,20 +25,22 @@ class CaseListView extends StatelessWidget {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: CaseList(caseList: caseList),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: CaseList(),
       ),
     );
   }
 }
 
-class CaseList extends StatelessWidget {
-  const CaseList({super.key, required this.caseList});
-  final List<Case> caseList;
+class CaseList extends WatchingWidget {
+  const CaseList({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final caseList =
+        watchPropertyValue((DataService dataService) => dataService.cases);
+
     return Column(
       children: [
         Expanded(
@@ -51,29 +60,27 @@ class CaseList extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CaseDetailView(caseItem: caseItem),
+                        builder: (context) =>
+                            CaseDetailView(caseItem: caseItem),
                       ),
                     );
                   },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Align(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Align(
                       alignment: Alignment.centerLeft,
-                        child: Column(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            caseItem.title, 
-                            style: const TextStyle(fontSize: 16)
-                          ),
-                          Text(
-                            caseItem.id, 
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300)
-                          ),
+                          Text(caseItem.title,
+                              style: const TextStyle(fontSize: 16)),
+                          Text(caseItem.id,
+                              style: const TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w300)),
                         ],
-                        ),
                       ),
                     ),
+                  ),
                 ),
               );
             },

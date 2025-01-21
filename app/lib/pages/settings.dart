@@ -1,11 +1,16 @@
-// Login 
+// Login
 // Logout
 // Togle light/darkmode?
 // Offlinemode
 
-import 'package:coc/main.dart';
-import 'package:coc/pages/login.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/pages/login.dart';
 import 'package:coc/service/authentication.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -23,11 +28,11 @@ class SettingsPage extends StatelessWidget {
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),
             onTap: () {
-              globalState<Authentication>().logout();
-                Navigator.push(
+              di<Authentication>().logout();
+              Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>  const LoginPage()),
-                );
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
             },
           ),
           SwitchListTile(

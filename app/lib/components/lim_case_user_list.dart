@@ -1,6 +1,9 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:coc/controllers/case_user.dart';
+
+// Project imports:
 import 'package:coc/components/full_case_user_list.dart';
+import 'package:coc/controllers/case_user.dart';
 
 Widget limCaseUserList(BuildContext context, List<CaseUser> caseUsers) {
   const int displayItemCount = 3;

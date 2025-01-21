@@ -1,14 +1,21 @@
+// Dart imports:
+import 'dart:convert';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/components/local_store.dart';
+import 'package:coc/components/popups.dart';
 import 'package:coc/controllers/case.dart';
-import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/enviroment.dart';
 import 'package:coc/service/location.dart';
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:coc/components/local_store.dart';
-import 'package:coc/components/popups.dart';
 
 Function(BuildContext, String) navigateToEvidenceCreate(Case caseItem) {
   onscan(BuildContext context, String code) {
@@ -67,7 +74,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     });
 
     // When we reach here, permissions are granted and we can continue
-    Position position = await globalState<LocationService>()
+    Position position = await di<LocationService>()
         .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
     setState(() {
       _originCoordinatesController.text =
@@ -80,12 +87,12 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     final url = Uri.parse('${EnvironmentConfig.apiUrl}/evidence/tag');
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': globalState<Authentication>().bearerToken,
+      'Authorization': di<Authentication>().bearerToken,
     };
     final body = {
       'id': _idController.text,
       'caseId': widget.caseItem.id,
-      'containerType': 1,
+      'containerType': _containerTypeController.text,
       'itemType': _itemTypeController.text,
       'description': _descriptionController.text,
       'originCoordinates': _originCoordinatesController.text,
