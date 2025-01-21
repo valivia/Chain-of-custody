@@ -85,7 +85,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     final body = {
       'id': _idController.text,
       'caseId': widget.caseItem.id,
-      'containerType': 1,
+      'containerType': _containerTypeController.text,
       'itemType': _itemTypeController.text,
       'description': _descriptionController.text,
       'originCoordinates': _originCoordinatesController.text,
