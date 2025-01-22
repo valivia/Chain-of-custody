@@ -28,17 +28,15 @@ class Authentication {
   }
 
   void _updateToken(String? token) {
-    _token = token;
-
     if (token == null) {
       _user = null;
-      di<DataService>().clear();
       _secureStorage.delete(key: "token");
     } else {
       _user = User.fromJson(JwtDecoder.decode(token));
-      di<DataService>().syncWithApi();
       _secureStorage.write(key: "token", value: token);
     }
+
+    _token = token;
   }
 
   Future<void> _getTokenFromStorage() async {
@@ -66,6 +64,7 @@ class Authentication {
     if (response.statusCode == 200) {
       final token = jsonDecode(response.body)['access_token'];
       _updateToken(token);
+      di<DataService>().syncWithApi();
       log('Logged in');
       return true;
     } else {
@@ -77,6 +76,7 @@ class Authentication {
 
   void logout() {
     _updateToken(null);
+    di<DataService>().clear();
     log('Logged out');
   }
 
