@@ -1,6 +1,9 @@
-import 'package:coc/components/evidence_button.dart';
-import 'package:coc/controllers/tagged_evidence.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:coc/components/listItems/tagged_evidence.dart';
+import 'package:coc/controllers/tagged_evidence.dart';
 
 class EvidenceListView extends StatelessWidget {
   const EvidenceListView({super.key, required this.taggedEvidence});
@@ -47,8 +50,8 @@ class EvidenceList extends StatelessWidget {
           child: ListView.builder(
             itemCount: taggedEvidence.length,
             itemBuilder: (context, index) {
-              final evidence = taggedEvidence[index];
-              return evidenceButton(context, evidence);
+              final item = taggedEvidence[index];
+              return TaggedEvidenceListItem(taggedEvidenceItem: item);
             },
           ),
         ),

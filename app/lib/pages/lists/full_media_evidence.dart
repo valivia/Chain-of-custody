@@ -1,9 +1,14 @@
-import 'package:coc/main.dart';
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/components/listItems/media_evidence_grid.dart';
+import 'package:coc/controllers/media_evidence.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/enviroment.dart';
-import 'package:flutter/material.dart';
-import 'package:coc/controllers/media_evidence.dart';
-import 'package:coc/components/media_grid_builder.dart';
 
 class MediaEvidencePage extends StatelessWidget {
   final List<MediaEvidence> mediaEvidence;
@@ -14,7 +19,7 @@ class MediaEvidencePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final url = Uri.parse("${EnvironmentConfig.apiUrl}/media/evidence/");
     final headers = {
-      'Authorization': globalState<Authentication>().bearerToken,
+      'Authorization': di<Authentication>().bearerToken,
     };
 
     return Scaffold(
@@ -27,10 +32,10 @@ class MediaEvidencePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildMediaGrid(
+              MediaEvidenceGrid(
                 url: url,
                 headers: headers,
-                mediaItems: mediaEvidence,
+                mediaEvidence: mediaEvidence,
               ),
             ],
           ),

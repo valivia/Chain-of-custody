@@ -1,31 +1,37 @@
-import 'package:coc/components/button.dart';
-import 'package:coc/components/lim_case_list.dart';
-import 'package:coc/components/local_store.dart';
-
-import 'package:coc/pages/debug.dart';
-import 'package:coc/pages/scanner.dart';
-import 'package:coc/pages/settings.dart';
-import 'package:coc/pages/register_case.dart';
-import 'package:coc/pages/transfer_evidence.dart';
-
-import 'package:coc/service/location.dart';
-import 'package:coc/service/authentication.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
-final globalState = GetIt.instance;
+// Package imports:
+import 'package:localstorage/localstorage.dart';
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/components/button.dart';
+import 'package:coc/components/lists/case.dart';
+import 'package:coc/components/local_store.dart';
+import 'package:coc/pages/debug.dart';
+import 'package:coc/pages/forms/register_case.dart';
+import 'package:coc/pages/scanner.dart';
+import 'package:coc/pages/settings.dart';
+import 'package:coc/pages/transfer_evidence.dart';
+import 'package:coc/service/authentication.dart';
+import 'package:coc/service/data.dart';
+import 'package:coc/service/location.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive and open the box
   await LocalStore.init();
+  await initLocalStorage();
 
-  var authentication = await Authentication.create();
-  globalState.registerSingleton<Authentication>(authentication);
+  di.registerSingleton<Authentication>(await Authentication.create());
 
-  globalState.registerSingleton<LocationService>(LocationService());
+  di.registerSingleton<LocationService>(LocationService());
+
+  di.registerSingleton<DataService>(await DataService.initialize());
 
   runApp(const App());
 }
@@ -43,6 +49,7 @@ class App extends StatelessWidget {
 
     return MaterialApp(
       title: 'Flutter Demo',
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
@@ -125,14 +132,13 @@ class HomePage extends StatelessWidget {
         title: const Text('Home'),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingsPage()),
-              );
-            },
-            icon: const Icon(Icons.settings),
-          ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                );
+              },
+              icon: const Icon(Icons.settings)),
         ],
       ),
       body: Center(
@@ -148,7 +154,9 @@ class HomePage extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RegisterCase()),
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterCase(),
+                    ),
                   );
                 },
               ),
@@ -178,10 +186,6 @@ class HomePage extends StatelessWidget {
                 },
               ),
 
-              // Caselist view
-              const SizedBox(height: 20),
-              const LimCaseList(displayedCaseItemsCount: 4),
-
               // Debug page Button
               const SizedBox(height: 20),
               if (kDebugMode)
@@ -196,6 +200,10 @@ class HomePage extends StatelessWidget {
                     );
                   },
                 ),
+
+              // Caselist view
+              const SizedBox(height: 20),
+              const LimCaseList(itemCount: 5),
             ],
           ),
         ),

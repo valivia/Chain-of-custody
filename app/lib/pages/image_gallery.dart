@@ -1,5 +1,10 @@
-import 'package:flutter/material.dart';
+// Dart imports:
 import 'dart:io';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:coc/components/local_store.dart';
 
 class ImageGalleryPage extends StatelessWidget {
@@ -15,14 +20,16 @@ class ImageGalleryPage extends StatelessWidget {
         } else if (snapshot.hasError) {
           return const Center(child: Text('Error loading images'));
         } else {
-          var pictures = snapshot.data!['pictures'] as List<Map<String, dynamic>>;
+          var pictures =
+              snapshot.data!['pictures'] as List<Map<String, dynamic>>;
 
           return Scaffold(
             appBar: AppBar(title: const Text('Image Gallery')),
             body: pictures.isEmpty
                 ? const Center(child: Text('No images found'))
                 : GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                     ),
                     itemCount: pictures.length,
@@ -32,16 +39,18 @@ class ImageGalleryPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ImagePreviewPage(imageFile: File(pictures[index]['filePath'])),
+                              builder: (context) => ImagePreviewPage(
+                                  imageFile: File(pictures[index]['filePath'])),
                             ),
                           );
                         },
                         child: ClipRect(
-                            child: FittedBox(
-                              fit: BoxFit.cover,
-                              child: Image.file(File(pictures[index]['filePath'])),
-                            ),
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child:
+                                Image.file(File(pictures[index]['filePath'])),
                           ),
+                        ),
                       );
                     },
                   ),

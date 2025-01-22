@@ -48,6 +48,16 @@ class CaseUser {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'permissions': permissions,
+    };
+  }
+
   bool hasPermission(CasePermission permission) {
     final permissionValue = permission.value;
     final userPermission = int.parse(permissions);

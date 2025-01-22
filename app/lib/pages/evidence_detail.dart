@@ -1,7 +1,10 @@
-import 'package:coc/controllers/tagged_evidence.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:coc/service/edit_formats.dart';
+
+// Project imports:
 import 'package:coc/components/location_display.dart';
+import 'package:coc/controllers/tagged_evidence.dart';
+import 'package:coc/utility/helpers.dart';
 
 class EvidenceDetailView extends StatelessWidget {
   const EvidenceDetailView({super.key, required this.evidenceItem});
@@ -41,14 +44,16 @@ class EvidenceDetailView extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              'Entry created at: ${EditFormats().formatTimestamp(evidenceItem.madeOn).toString()}',
+              'Entry created at: ${formatTimestamp(evidenceItem.madeOn)}',
               style: const TextStyle(fontSize: 16),
             ),
-            const SizedBox(height: 10),
-            Text(
-              'Entry updated at: ${EditFormats().formatTimestamp(evidenceItem.updatedAt).toString()}',
-              style: const TextStyle(fontSize: 16),
-            ),
+            if (evidenceItem.updatedAt != null) ...[
+              const SizedBox(height: 10),
+              Text(
+                'Entry updated at: ${formatTimestamp(evidenceItem.updatedAt!)}',
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
             const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
@@ -58,9 +63,7 @@ class EvidenceDetailView extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return MapPointerBottomSheet(
-                        evidenceItem: evidenceItem, 
-                        title: "Origin"
-                      );
+                          evidenceItem: evidenceItem, title: "Origin");
                     },
                   );
                 },

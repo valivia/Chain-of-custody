@@ -1,9 +1,19 @@
+// Dart imports:
 import 'dart:convert';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:http/http.dart' as http;
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/controllers/case.dart';
 import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
+import 'package:coc/service/data.dart';
 import 'package:coc/service/enviroment.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class RegisterCase extends StatefulWidget {
   const RegisterCase({super.key});
@@ -28,7 +38,7 @@ class RegisterCasePageState extends State<RegisterCase> {
     final url = Uri.parse('${EnvironmentConfig.apiUrl}/case');
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': globalState<Authentication>().bearerToken,
+      'Authorization': di<Authentication>().bearerToken,
     };
     final body = {
       'title': _titleController.text,
@@ -41,6 +51,10 @@ class RegisterCasePageState extends State<RegisterCase> {
         headers: headers,
         body: jsonEncode(body),
       );
+
+      final caseItem = Case.fromJson(jsonDecode(response.body)["data"]);
+      di<DataService>().upsertCase(caseItem);
+
       return {
         'response': response,
         'request': {'url': url.toString(), 'headers': headers, 'body': body}
@@ -120,7 +134,8 @@ class RegisterCasePageState extends State<RegisterCase> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            Map<String, dynamic> result = await submitCaseData();
+                            Map<String, dynamic> result =
+                                await submitCaseData();
                             http.Response response = result['response'];
                             if (response.statusCode == 401) {
                               showDialog(
@@ -128,7 +143,8 @@ class RegisterCasePageState extends State<RegisterCase> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: const Text('Unauthorized'),
-                                    content: const Text('You are not authorized to perform this action, check if your logged in.'),
+                                    content: const Text(
+                                        'You are not authorized to perform this action, check if your logged in.'),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
@@ -146,12 +162,16 @@ class RegisterCasePageState extends State<RegisterCase> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: const Text('Success'),
-                                    content: const Text('Case registered successfully!'),
+                                    content: const Text(
+                                        'Case registered successfully!'),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
-                                          Navigator.of(context).pushAndRemoveUntil(
-                                            MaterialPageRoute(builder: (context) => const HomePage()),
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const HomePage()),
                                             (Route<dynamic> route) => false,
                                           );
                                         },
@@ -167,7 +187,8 @@ class RegisterCasePageState extends State<RegisterCase> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: const Text('Error'),
-                                    content: Text('Failed to register case: ${response.body}'),
+                                    content: Text(
+                                        'Failed to register case: ${response.body}'),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
