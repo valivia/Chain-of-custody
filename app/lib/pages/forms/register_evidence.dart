@@ -21,7 +21,7 @@ import 'package:coc/service/location.dart';
 
 Function(BuildContext, String) navigateToEvidenceCreate(Case caseItem) {
   onscan(BuildContext context, String code) {
-    Navigator.push(
+    Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => RegisterEvidencePage(
@@ -30,7 +30,6 @@ Function(BuildContext, String) navigateToEvidenceCreate(Case caseItem) {
           ),
         ));
   }
-
   return onscan;
 }
 
