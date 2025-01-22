@@ -1,6 +1,14 @@
+// Dart imports:
 import 'dart:developer';
-import 'package:coc/main.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/main.dart';
 import 'package:coc/service/authentication.dart';
 
 class LoginPage extends StatefulWidget {
@@ -47,17 +55,17 @@ class LoginPageState extends State<LoginPage> {
     }
 
     try {
-      bool loginResponse = await globalState<Authentication>().login(
+      bool loginResponse = await di<Authentication>().login(
         _emailInputController.text,
         _passwordInputController.text,
       );
       if (loginResponse) {
-        Navigator.pop(context);
+        Navigator.pop(navigatorKey.currentContext!);
       }
     } catch (error) {
       log(" --- Login failed: $error --- ");
       final snackBar = SnackBar(content: Text("Login Failed: \n$error"));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(snackBar);
 
       // Enable login/submit button after response
       setState(() {
@@ -136,7 +144,7 @@ class LoginPageState extends State<LoginPage> {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        globalState<Authentication>().logout();
+                        di<Authentication>().logout();
                         Navigator.pop(context);
                       },
                       child: Text("Logout", style: aTextTheme.bodyMedium,),

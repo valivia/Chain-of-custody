@@ -1,7 +1,7 @@
-import { Body, Controller, ForbiddenException, Get, NotFoundException, Param, Post, Req } from '@nestjs/common';
+import { BadRequestException, Body, Controller, ForbiddenException, Get, NotFoundException, Param, Post, Req } from '@nestjs/common';
 import { Action } from "@prisma/client";
 import { Type } from "class-transformer";
-import { IsDate, IsLatLong, IsNumber, IsOptional, IsString, MinDate } from "class-validator";
+import { IsDate, IsLatLong, IsOptional, IsString, MinDate } from "class-validator";
 import { Request } from "express";
 import { User, UserEntity } from "src/guards/auth.guard";
 import { checkCaseVisibility, CasePermission } from "src/routes/case/permissions";
@@ -22,8 +22,8 @@ class TaggedEvidenceDto {
   @IsString()
   caseId: string;
 
-  @IsNumber()
-  containerType: number;
+  @IsString()
+  containerType: string;
 
   @IsString()
   itemType: string;
@@ -68,12 +68,23 @@ export class TagController {
 
     const { caseId, ...taggedEvidence } = input;
 
+    // Permission check
     const caseUser = await checkCaseVisibility(this.prisma, caseId, user.id);
     if (!caseUser.hasPermission(CasePermission.addEvidence)) {
       throw new ForbiddenException("Permission denied");
     }
 
-    const data = await this.prisma.taggedEvidence.create({
+    // Duplicate check
+    const existingEvidence = await this.prisma.taggedEvidence.findUnique({
+      where: { id: input.id },
+    });
+
+    if (existingEvidence) {
+      throw new BadRequestException("Evidence already exists");
+    }
+
+    // Create the evidence
+    const createdEvidence = await this.prisma.taggedEvidence.create({
       data: {
         ...taggedEvidence,
         id: undefined,
@@ -84,12 +95,12 @@ export class TagController {
 
     await saveToAuditLog(this.prisma, req, {
       action: Action.create,
-      newData: data,
+      newData: createdEvidence,
       userId: user.id,
-      taggedEvidenceId: data.id,
+      taggedEvidenceId: createdEvidence.id,
     });
 
-    return { data };
+    return { data: createdEvidence };
   }
 
 

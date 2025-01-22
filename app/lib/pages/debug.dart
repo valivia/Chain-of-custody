@@ -1,10 +1,16 @@
-// import 'dart:developer';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:coc/pages/login.dart';
-// import 'package:coc/pages/image_gallery.dart';
+
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/components/lists/case.dart';
 import 'package:coc/components/local_store.dart';
+import 'package:coc/pages/image_gallery.dart';
+import 'package:coc/pages/login.dart';
 import 'package:coc/pages/nfc.dart';
-import 'package:coc/components/lim_case_list.dart';
+import 'package:coc/service/data.dart';
 
 class DebugPage extends StatelessWidget {
   const DebugPage({super.key});
@@ -25,6 +31,20 @@ class DebugPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Column(
             children: [
+              const SizedBox(height: 20), // Add spacing between buttons
+              ElevatedButton(
+                child: Text('Sync with API'),
+                onPressed: () {
+                  di<DataService>().syncWithApi();
+                },
+              ),
+              const SizedBox(height: 20), // Add spacing between buttons
+              ElevatedButton(
+                child: const Text('Sync with API'),
+                onPressed: () {
+                  di<DataService>().syncWithApi();
+                },
+              ),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 child: Text('View Images', style: bTextTheme.bodyMedium,),
@@ -78,7 +98,7 @@ class DebugPage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 20), // Add spacing between buttons
-              const LimCaseList(displayedCaseItemsCount: 2),
+              const LimCaseList(itemCount: 2),
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 onPressed: () async {
@@ -120,7 +140,8 @@ class DebugPage extends StatelessWidget {
               const SizedBox(height: 20), // Add spacing between buttons
               ElevatedButton(
                 onPressed: () async {
-                  List<Map<String, String>> statusList = await LocalStore.sendAllSavedRequests();
+                  List<Map<String, String>> statusList =
+                      await LocalStore.sendAllSavedRequests();
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -132,15 +153,17 @@ class DebugPage extends StatelessWidget {
                               return Row(
                                 children: [
                                   Expanded(
-                                    child: Text(
-                                        status['status'] != 'Success'
-                                            ? '${status['id']}     ${status['type']}     ${status['status']}'
-                                            : '${status['id']}     ${status['type']}'
-                                      ),
-                                    ),
+                                    child: Text(status['status'] != 'Success'
+                                        ? '${status['id']}     ${status['type']}     ${status['status']}'
+                                        : '${status['id']}     ${status['type']}'),
+                                  ),
                                   Icon(
-                                    status['status'] == 'Success' ? Icons.check_circle : Icons.close,
-                                    color: status['status'] == 'Success' ? Colors.green : Colors.red,
+                                    status['status'] == 'Success'
+                                        ? Icons.check_circle
+                                        : Icons.close,
+                                    color: status['status'] == 'Success'
+                                        ? Colors.green
+                                        : Colors.red,
                                   ),
                                 ],
                               );

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, ForbiddenException, NotFoundException, Param, Post, Req } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, ForbiddenException, NotFoundException, Param, Post, Req } from '@nestjs/common';
 import { IsString } from "class-validator";
 import { User, UserEntity } from "src/guards/auth.guard";
 import { PrismaService } from 'src/services/prisma.service';
@@ -6,6 +6,7 @@ import { CasePermission, checkCaseVisibility } from "../permissions";
 import { saveToAuditLog } from "src/util/auditlog";
 import { Request } from "express";
 import { Action } from "@prisma/client";
+import { isValidPermissionString } from "src/util/permissions";
 
 class CaseUserDto {
   @IsString()
@@ -15,12 +16,18 @@ class CaseUserDto {
   permissions: string;
 }
 
+
 @Controller('case/:caseId/user')
 export class CaseUserController {
   constructor(private readonly prisma: PrismaService) { }
 
   @Post()
   async addUser(@Req() req: Request, @Param('caseId') caseId: string, @User() user: UserEntity, @Body() input: CaseUserDto) {
+
+    if (!isValidPermissionString(CasePermission, input.permissions)) {
+      throw new BadRequestException("Invalid permission object");
+    }
+
     // Check if the user has permission to manage the case
     const caseUser = await checkCaseVisibility(this.prisma, caseId, user.id);
     if (!caseUser.hasPermission(CasePermission.manage)) {
@@ -34,6 +41,20 @@ export class CaseUserController {
 
     if (!userToAdd) {
       throw new NotFoundException("User not found");
+    }
+
+    // Check if the user is already added to the case
+    const existingCaseUser = await this.prisma.caseUser.findUnique({
+      where: {
+        caseId_userId: {
+          caseId,
+          userId: input.userId,
+        },
+      },
+    });
+
+    if (existingCaseUser) {
+      throw new BadRequestException("User already added to the case");
     }
 
     // Add user to the case

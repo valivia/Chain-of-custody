@@ -1,31 +1,42 @@
-//import 'package:coc/components/button.dart';
-import 'package:coc/components/lim_case_list.dart';
-import 'package:coc/components/local_store.dart';
-
-import 'package:coc/pages/debug.dart';
-import 'package:coc/pages/settings.dart';
-import 'package:coc/pages/register_case.dart';
-
-import 'package:coc/service/location.dart';
-import 'package:coc/service/authentication.dart';
+//// Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+
+// Package imports:
+import 'package:localstorage/localstorage.dart';
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+//import 'package:coc/components/button.dart';
+import 'package:coc/components/lists/case.dart';
+import 'package:coc/components/local_store.dart';
+import 'package:coc/pages/debug.dart';
+import 'package:coc/pages/forms/register_case.dart';
+import 'package:coc/pages/scanner.dart';
+import 'package:coc/pages/settings.dart';
+import 'package:coc/pages/transfer_evidence.dart';
+import 'package:coc/service/authentication.dart';
+import 'package:coc/service/data.dart';
+import 'package:coc/service/location.dart';
+// import 'package:flutter/foundation.dart';
+// import 'package:flutter/material.dart';
+// import 'package:get_it/get_it.dart';
 
 import 'package:coc/Themes/theme.dart';
 
-final globalState = GetIt.instance;
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive and open the box
   await LocalStore.init();
+  await initLocalStorage();
 
-  var authentication = await Authentication.create();
-  globalState.registerSingleton<Authentication>(authentication);
+  di.registerSingleton<Authentication>(await Authentication.create());
 
-  globalState.registerSingleton<LocationService>(LocationService());
+  di.registerSingleton<LocationService>(LocationService());
+
+  di.registerSingleton<DataService>(await DataService.initialize());
 
   runApp(const App());
 }
@@ -36,6 +47,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Flutter Demo',
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
       theme: TAppTheme.lightTheme,
@@ -64,6 +77,7 @@ class App extends StatelessWidget {
     );
   }
 }
+
 // TODO:
 // auth check
 // Get token  -> if no token
@@ -89,6 +103,7 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const SettingsPage()),
+                  MaterialPageRoute(builder: (context) => const SettingsPage()),
                 );
               },
               icon: const Icon(Icons.settings)),
@@ -101,55 +116,46 @@ class HomePage extends StatelessWidget {
             //mainAxisSize: MainAxisSize.max,
             //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const SizedBox(height: 20), // Add spacing between buttons
-
-    	        SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  label: Text('Create Case', style: aTextTheme.bodyMedium,),
-                  icon: const Icon(Icons.open_in_new),
-                  iconAlignment: IconAlignment.end,
-                  onPressed: () {
-                    Navigator.push(
+              // Create Case Button
+              const SizedBox(height: 20),
+              Button(
+                title: 'Create Case',
+                icon: Icons.open_in_new,
+                onTap: () {
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) =>  const RegisterCase()),
-                    );
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterCase(),
+                    ),
+                  );
                 },
                 ),
               ),
 
-              const SizedBox(height: 20), // Add spacing between buttons
-              // const Spacer(),
-
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  label: Text('Join case', style: aTextTheme.bodyMedium,),
-                  icon: const Icon(Icons.photo_camera),
-                  iconAlignment: IconAlignment.end,
-                  onPressed: () {},
-                ),
-              ),
-
-              const SizedBox(height: 20), // Add spacing between buttons
-              // const Spacer(),
-
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  label: Text('Transfer evidence', style: aTextTheme.bodyMedium,),
-                  icon: const Icon(Icons.photo_camera),
-                  iconAlignment: IconAlignment.end,
-                  onPressed: () {},
-                ),
-              ),
-
-              // const Spacer(),
-              const SizedBox(height: 20), // Add spacing between buttons
-
-              // Caselist view
+              // Join Case Button
               const SizedBox(height: 20),
-              const LimCaseList(displayedCaseItemsCount: 4),
+              Button(
+                title: 'Join case',
+                icon: Icons.photo_camera,
+                onTap: () {},
+              ),
+
+              // Transfer Evidence Button
+              const SizedBox(height: 20),
+              Button(
+                title: 'Transfer evidence',
+                icon: Icons.photo_camera,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QRScannerPage(
+                        onScan: navigateToEvidenceTransfer(),
+                      ),
+                    ),
+                  );
+                },
+              ),
 
               // Debug page Button
               if (kDebugMode)

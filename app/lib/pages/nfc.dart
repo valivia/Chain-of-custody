@@ -1,5 +1,9 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:coc/pages/transfer_evidence.dart';
 
 class NfcScanPage extends StatefulWidget {
   const NfcScanPage({super.key});
@@ -15,9 +19,50 @@ class NfcScanPageState extends State<NfcScanPage> {
   void initState() {
     super.initState();
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      Map<String, dynamic> tagData = tag.data;
-      result.value = tagData;
-      NfcManager.instance.stopSession();
+      try {
+        Map<String, dynamic> tagData = {};
+        String evidenceId = '';
+
+        final ndef = tag.data['ndef'];
+        if (ndef != null) {
+          final ndefMessage = ndef['cachedMessage'];
+          if (ndefMessage != null) {
+            for (var record in ndefMessage['records']) {
+              if (record['typeNameFormat'] == 'nfcWellknown' &&
+                  record['type'].length == 1 &&
+                  record['type'].first == 0x54) {
+                final languageCodeLength = record['payload'].first;
+                final text = String.fromCharCodes(
+                    record['payload'].sublist(1 + languageCodeLength));
+                evidenceId = text;
+                tagData['text'] = text;
+              }
+            }
+          } else {
+            tagData['message'] = 'No NDEF message found on the tag.';
+          }
+        } else {
+          tagData['message'] = 'No NDEF data found on the tag.';
+        }
+
+        result.value = tagData;
+        if (evidenceId.isNotEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TransferEvidencePage(
+                evidenceID: evidenceId,
+              ),
+            ),
+          );
+        } else {
+          result.value = {'error': 'No evidence ID found on the tag.'};
+        }
+      } catch (e) {
+        result.value = {'error': 'Error reading NFC tag: $e'};
+      } finally {
+        NfcManager.instance.stopSession();
+      }
     });
   }
 
@@ -37,17 +82,9 @@ class NfcScanPageState extends State<NfcScanPage> {
             valueListenable: result,
             builder: (context, value, _) {
               if (value.isEmpty) {
-                return  const Text('Scan an NFC tag');
+                return const Text('Scan an NFC tag');
               } else {
-                return ListView(
-                  padding: const EdgeInsets.all(16.0),
-                  children: value.entries.map((entry) {
-                    return ListTile(
-                      title: Text(entry.key),
-                      subtitle: Text(entry.value.toString()),
-                    );
-                  }).toList(),
-                );
+                return Text('Error: ${value['error']}');
               }
             },
           ),

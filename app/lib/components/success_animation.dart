@@ -1,3 +1,4 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 class SuccessAnimation extends StatefulWidget {
@@ -18,12 +19,13 @@ class SuccessAnimationState extends State<SuccessAnimation>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
+    _controller =
+        AnimationController(duration: const Duration(seconds: 1), vsync: this);
     curve = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
 
     _controller.addListener(() {
       setState(() {});
-      if (_controller.status == AnimationStatus.completed && widget.onComplete != null) { // kan nooit null zijn, dus gaat altijd de if in
+      if (_controller.status == AnimationStatus.completed) {
         widget.onComplete();
       }
     });
@@ -63,13 +65,13 @@ class SuccessPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    _paint.color = const Color.fromARGB(137, 105, 240, 175);
-
+    _paint.color = Colors.greenAccent.withValues(alpha: 0.05);
     // Draw the circular highlight
-    _paint.color = const Color.fromARGB(82, 105, 240, 175);
+    _paint.color = Colors.greenAccent.withValues(alpha: 0.3);
     _paint.style = PaintingStyle.stroke;
     _paint.strokeWidth = 5.0;
-    canvas.drawCircle(Offset(size.width / 2, size.height / 2), size.width / 2, _paint);
+    canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2), size.width / 2, _paint);
 
     // Draw the checkmark
     _paint.color = Colors.greenAccent;
@@ -93,7 +95,8 @@ class SuccessPainter extends CustomPainter {
       double y = line1y1 + (line1y2 - line1y1) * (progress / 0.5);
       canvas.drawLine(Offset(line1x1, line1y1), Offset(x, y), _paint);
     } else {
-      canvas.drawLine(Offset(line1x1, line1y1), Offset(line1x2, line1y2), _paint);
+      canvas.drawLine(
+          Offset(line1x1, line1y1), Offset(line1x2, line1y2), _paint);
       double x = line2x1 + (line2x2 - line2x1) * ((progress - 0.5) / 0.5);
       double y = line2y1 + (line2y2 - line2y1) * ((progress - 0.5) / 0.5);
       canvas.drawLine(Offset(line2x1, line2y1), Offset(x, y), _paint);

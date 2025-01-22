@@ -1,5 +1,7 @@
+// Dart imports:
 import 'dart:developer';
 
+// Package imports:
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
@@ -42,7 +44,8 @@ class LocationService {
   }
 
   /// Fetches the current position of the device.
-  Future<Position> getCurrentLocation({required LocationAccuracy desiredAccuracy}) async {
+  Future<Position> getCurrentLocation(
+      {required LocationAccuracy desiredAccuracy}) async {
     bool hasPermission = await _handlePermissions();
     if (!hasPermission) return Future.error("Location permissions denied.");
 
