@@ -1,4 +1,5 @@
 //// Flutter imports:
+import 'package:coc/components/lists/case.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -7,8 +8,8 @@ import 'package:localstorage/localstorage.dart';
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
-//import 'package:coc/components/button.dart';
-import 'package:coc/components/lists/case.dart';
+import 'package:coc/components/button.dart';
+
 import 'package:coc/components/local_store.dart';
 import 'package:coc/pages/debug.dart';
 import 'package:coc/pages/forms/register_case.dart';
@@ -18,9 +19,7 @@ import 'package:coc/pages/transfer_evidence.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 import 'package:coc/service/location.dart';
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
-// import 'package:get_it/get_it.dart';
+
 
 import 'package:coc/Themes/theme.dart';
 
@@ -103,7 +102,6 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const SettingsPage()),
-                  MaterialPageRoute(builder: (context) => const SettingsPage()),
                 );
               },
               icon: const Icon(Icons.settings)),
@@ -130,7 +128,6 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 ),
-              ),
 
               // Join Case Button
               const SizedBox(height: 20),
@@ -158,9 +155,8 @@ class HomePage extends StatelessWidget {
               ),
 
               // Debug page Button
+              const SizedBox(height: 20),
               if (kDebugMode)
-                // Debug page Button
-                const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
                 child: Text('Debug page', style: aTextTheme.bodyMedium,),
                 onPressed: () {
@@ -171,6 +167,11 @@ class HomePage extends StatelessWidget {
                 },
               
               ),
+
+            // Caselist view
+              const SizedBox(height: 20),
+              const LimCaseList(itemCount: 5),
+              
             ],
           ),
           
