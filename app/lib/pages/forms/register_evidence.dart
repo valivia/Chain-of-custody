@@ -2,6 +2,8 @@
 import 'dart:convert';
 
 // Flutter imports:
+import 'package:coc/controllers/tagged_evidence.dart';
+import 'package:coc/main.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -46,20 +48,18 @@ class RegisterEvidencePage extends StatefulWidget {
 class RegisterEvidencePageState extends State<RegisterEvidencePage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _idController;
-  late TextEditingController _containerTypeController;
   late TextEditingController _itemTypeController;
   late TextEditingController _descriptionController;
   late TextEditingController _originCoordinatesController;
   late TextEditingController _originLocationDescriptionController;
-  String? _selectedContainerType;
-  final _containerTypes = ['Box', 'Crate', 'Pallet', 'Other', 'dsjn'];
+  String _selectedContainerType = ContainerType.bag.name;
   bool _isFetchingLocation = false;
+  late Position _position;
 
   @override
   void initState() {
     super.initState();
     _idController = TextEditingController(text: widget.evidenceId);
-    _containerTypeController = TextEditingController();
     _itemTypeController = TextEditingController();
     _descriptionController = TextEditingController();
     _originCoordinatesController = TextEditingController();
@@ -74,11 +74,10 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     });
 
     // When we reach here, permissions are granted and we can continue
-    Position position = await di<LocationService>()
+    _position = await di<LocationService>()
         .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
     setState(() {
-      _originCoordinatesController.text =
-          '${position.latitude}, ${position.longitude}';
+      _position = _position;
       _isFetchingLocation = false;
     });
   }
@@ -92,7 +91,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     final body = {
       'id': _idController.text,
       'caseId': widget.caseItem.id,
-      'containerType': _containerTypeController.text,
+      'containerType': _selectedContainerType,
       'itemType': _itemTypeController.text,
       'description': _descriptionController.text,
       'originCoordinates': _originCoordinatesController.text,
@@ -117,10 +116,51 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     }
   }
 
+  onSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      bool isConnected = await LocalStore.hasInternetConnection();
+      Map<String, dynamic> result = await submitEvidenceData();
+      http.Response response = result['response'];
+      Map<String, dynamic> requestData = result['request'];
+      String evidenceKey = requestData['body']['id'];
+
+      if (isConnected) {
+        // Handle response status code
+        if (response.statusCode == 401) {
+          showFailureDialog(
+            navigatorKey.currentContext!,
+            'Unauthorized access. Please log in again.',
+            widget.caseItem,
+          );
+        } else if (response.statusCode == 201) {
+          showSuccessDialog(
+            navigatorKey.currentContext!,
+            'Evidence submitted successfully',
+            widget.caseItem,
+          );
+        } else {
+          showFailureDialog(
+            navigatorKey.currentContext!,
+            'Failed to submit evidence data: ${response.statusCode}',
+            widget.caseItem,
+          );
+        }
+      } else {
+        // Save evidence locally
+        requestData['body']['madeOn'] = DateTime.now().toIso8601String();
+        await LocalStore.saveApiResponse(evidenceKey, requestData);
+        showSuccessDialog(
+          navigatorKey.currentContext!,
+          'Evidence saved locally',
+          widget.caseItem,
+        );
+      }
+    }
+  }
+
   @override
   void dispose() {
     _idController.dispose();
-    _containerTypeController.dispose();
     _itemTypeController.dispose();
     _descriptionController.dispose();
     _originCoordinatesController.dispose();
@@ -164,16 +204,15 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                   value: _selectedContainerType,
                   decoration:
                       const InputDecoration(labelText: 'Container Type'),
-                  items: _containerTypes.map((String type) {
+                  items: ContainerType.values.map((ContainerType type) {
                     return DropdownMenuItem<String>(
-                      value: type,
-                      child: Text(type),
+                      value: type.name,
+                      child: Text(type.name),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      _selectedContainerType = newValue;
-                      _containerTypeController.text = newValue!;
+                      _selectedContainerType = newValue!;
                     });
                   },
                   validator: (value) {
@@ -244,46 +283,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                     const SizedBox(width: 20),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            bool isConnected =
-                                await LocalStore.hasInternetConnection();
-                            Map<String, dynamic> result =
-                                await submitEvidenceData();
-                            http.Response response = result['response'];
-                            Map<String, dynamic> requestData =
-                                result['request'];
-                            String evidenceKey = requestData['body']['id'];
-
-                            if (isConnected) {
-                              // Handle response status code
-                              if (response.statusCode == 401) {
-                                showFailureDialog(
-                                    context,
-                                    'Unauthorized access. Please log in again.',
-                                    widget.caseItem);
-                              } else if (response.statusCode == 201) {
-                                showSuccessDialog(
-                                    context,
-                                    'Evidence submitted successfully',
-                                    widget.caseItem);
-                              } else {
-                                showFailureDialog(
-                                    context,
-                                    'Failed to submit evidence data: ${response.statusCode}',
-                                    widget.caseItem);
-                              }
-                            } else {
-                              // Save evidence locally
-                              requestData['body']['madeOn'] =
-                                  DateTime.now().toIso8601String();
-                              await LocalStore.saveApiResponse(
-                                  evidenceKey, requestData);
-                              showSuccessDialog(context,
-                                  'Evidence saved locally', widget.caseItem);
-                            }
-                          }
-                        },
+                        onPressed: onSubmit,
                         child: const Text('Submit'),
                       ),
                     ),

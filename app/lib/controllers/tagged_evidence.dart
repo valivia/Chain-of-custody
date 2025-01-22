@@ -5,6 +5,13 @@ import 'package:latlong2/latlong.dart';
 import 'package:coc/controllers/audit_log.dart';
 import 'package:coc/utility/helpers.dart';
 
+enum ContainerType {
+  bag,
+  box,
+  envelope,
+  other,
+}
+
 class TaggedEvidence {
   String id;
 
@@ -12,8 +19,6 @@ class TaggedEvidence {
   String caseId;
 
   DateTime madeOn;
-  DateTime? createdAt;
-  DateTime? updatedAt;
 
   String containerType;
   String itemType;
@@ -25,6 +30,8 @@ class TaggedEvidence {
   List<AuditLog> auditLog;
 
   // Api Only
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   TaggedEvidence({
     required this.id,
@@ -78,5 +85,29 @@ class TaggedEvidence {
       'originLocationDescription': originLocationDescription,
       'auditLog': auditLog.map((log) => log.toJson()).toList(),
     };
+  }
+
+  factory TaggedEvidence.fromForm({
+    required String id,
+    required String userId,
+    required String caseId,
+    required ContainerType containerType,
+    required String itemType,
+    required String description,
+    required LatLng originCoordinates,
+    required String originLocationDescription,
+  }) {
+    return TaggedEvidence(
+      id: id,
+      userId: userId,
+      caseId: caseId,
+      madeOn: DateTime.now(),
+      containerType: containerType.name,
+      itemType: itemType,
+      description: description,
+      originCoordinates: originCoordinates,
+      originLocationDescription: originLocationDescription,
+      auditLog: [],
+    );
   }
 }
