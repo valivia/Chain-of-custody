@@ -8,8 +8,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:coc/components/button.dart';
 import 'package:coc/components/case_base_details.dart';
 import 'package:coc/components/lists/case_user.dart';
-import 'package:coc/components/lists/tagged_evidence.dart';
 import 'package:coc/components/lists/media_evidence.dart';
+import 'package:coc/components/lists/tagged_evidence.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/pictures.dart';
@@ -67,7 +67,7 @@ class CaseDetailView extends StatelessWidget {
               // Handler/caseUser container
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[700],
+                  color: Colors.grey[800],
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 padding: const EdgeInsets.all(8.0),
@@ -99,7 +99,7 @@ class CaseDetailView extends StatelessWidget {
               // Evidence container
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[700],
+                  color: Colors.grey[800],
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 padding: const EdgeInsets.all(8.0),
@@ -143,7 +143,7 @@ class CaseDetailView extends StatelessWidget {
               // Media Container
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[700],
+                  color: Colors.grey[800],
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 padding: const EdgeInsets.only(top: 8, left: 8, right: 8),

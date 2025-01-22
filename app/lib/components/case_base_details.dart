@@ -20,7 +20,7 @@ class CaseDetails extends StatelessWidget {
         : 'N/A';
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[700],
+        color: Colors.grey[800],
         borderRadius: BorderRadius.circular(8.0),
       ),
       padding: const EdgeInsets.all(16),

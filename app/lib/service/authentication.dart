@@ -6,9 +6,11 @@ import 'dart:developer';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:watch_it/watch_it.dart';
 
 // Project imports:
 import 'package:coc/controllers/user.dart';
+import 'package:coc/service/data.dart';
 import 'package:coc/service/enviroment.dart';
 
 class Authentication {
@@ -30,10 +32,12 @@ class Authentication {
 
     if (token == null) {
       _user = null;
+      di<DataService>().clear();
       _secureStorage.delete(key: "token");
     } else {
-      _secureStorage.write(key: "token", value: token);
       _user = User.fromJson(JwtDecoder.decode(token));
+      di<DataService>().syncWithApi();
+      _secureStorage.write(key: "token", value: token);
     }
   }
 
