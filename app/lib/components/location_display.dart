@@ -1,9 +1,13 @@
-import 'package:coc/controllers/tagged_evidence.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:coc/service/edit_formats.dart';
-import 'package:coc/controllers/case.dart';
+
+// Project imports:
+import 'package:coc/controllers/tagged_evidence.dart';
+import 'package:coc/utility/helpers.dart';
 
 class MapPointer extends StatelessWidget {
   final LatLng location;
@@ -14,13 +18,13 @@ class MapPointer extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterMap(
       options: MapOptions(
-        initialCenter: location,
-        initialZoom: 15.0,
-        interactionOptions: const InteractionOptions(
-          flags: InteractiveFlag.all,
-        ),
-        cameraConstraint: CameraConstraint.containCenter(bounds: LatLngBounds(location, location))
-      ),
+          initialCenter: location,
+          initialZoom: 15.0,
+          interactionOptions: const InteractionOptions(
+            flags: InteractiveFlag.all,
+          ),
+          cameraConstraint: CameraConstraint.containCenter(
+              bounds: LatLngBounds(location, location))),
       children: [
         TileLayer(
           urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -45,7 +49,8 @@ class MapPointerBottomSheet extends StatelessWidget {
   final TaggedEvidence evidenceItem;
   final String title;
 
-  const MapPointerBottomSheet({super.key, required this.evidenceItem, required this.title});
+  const MapPointerBottomSheet(
+      {super.key, required this.evidenceItem, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +71,7 @@ class MapPointerBottomSheet extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         automaticallyImplyLeading: false,
-        title:  Text(title),
+        title: Text(title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -84,7 +89,8 @@ class MapPointerBottomSheet extends StatelessWidget {
                 Text(
                   // TODO: Display username of person of interest
                   evidenceItem.userId,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -96,7 +102,7 @@ class MapPointerBottomSheet extends StatelessWidget {
                   "Registered on: ",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                Text(EditFormats().formatTimestamp(evidenceItem.madeOn)),
+                Text(formatTimestamp(evidenceItem.madeOn)),
               ],
             ),
             Row(

@@ -1,20 +1,26 @@
-import 'package:coc/controllers/case.dart';
-import 'package:coc/main.dart';
-import 'package:coc/pages/register_evidence.dart';
-import 'package:coc/service/enviroment.dart';
-import 'package:coc/service/location.dart';
-import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
+// Dart imports:
 import 'dart:developer';
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/components/local_store.dart';
+import 'package:coc/controllers/case.dart';
+import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/image_gallery.dart';
 import 'package:coc/pages/scanner.dart';
-import 'package:coc/components/local_store.dart';
 import 'package:coc/service/authentication.dart';
+import 'package:coc/service/enviroment.dart';
+import 'package:coc/service/location.dart';
 
 class PictureTakingPage extends StatefulWidget {
   final Case caseItem;
@@ -27,7 +33,7 @@ class PictureTakingPage extends StatefulWidget {
 
 class PictureTakingPageState extends State<PictureTakingPage> {
   CameraController? _cameraController;
-  List<CameraDescription>? cameras;
+  late List<CameraDescription> cameras;
   bool _isFlashOn = false;
 
   @override
@@ -38,8 +44,8 @@ class PictureTakingPageState extends State<PictureTakingPage> {
 
   Future<void> initializeCamera() async {
     cameras = await availableCameras();
-    _cameraController = CameraController(cameras![0], ResolutionPreset.high,
-        enableAudio: false);
+    _cameraController =
+        CameraController(cameras[0], ResolutionPreset.high, enableAudio: false);
     await _cameraController!.initialize();
     setState(() {});
   }
@@ -49,48 +55,43 @@ class PictureTakingPageState extends State<PictureTakingPage> {
       return;
     }
 
-    // Check for storage permissions
-    if (await Permission.storage.request().isGranted) {
-      final Directory appDirectory = await getApplicationDocumentsDirectory();
-      final String pictureDirectory = '${appDirectory.path}/Pictures';
-      await Directory(pictureDirectory).create(recursive: true);
-      final String filePath =
-          '$pictureDirectory/${DateTime.now().millisecondsSinceEpoch}.jpg';
+    XFile picture = await _cameraController!.takePicture();
 
-      try {
-        // Set flash mode to auto or always before taking a picture
-        await _cameraController!
-            .setFlashMode(_isFlashOn ? FlashMode.always : FlashMode.off);
+    final Directory appDirectory = await getApplicationDocumentsDirectory();
+    final String pictureDirectory = '${appDirectory.path}/Pictures';
+    await Directory(pictureDirectory).create(recursive: true);
+    final String filePath =
+        '$pictureDirectory/${DateTime.now().millisecondsSinceEpoch}.jpg';
 
-        XFile picture = await _cameraController!.takePicture();
-        await picture.saveTo(filePath);
+    try {
+      // Set flash mode to auto or always before taking a picture
+      _cameraController!
+          .setFlashMode(_isFlashOn ? FlashMode.always : FlashMode.off);
 
-        // Get current coordinates
-        // TODO: check if lowest is good enuff
-        Position position = await LocationService()
-            .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
-        String coordinates = '${position.latitude},${position.longitude}';
+      await picture.saveTo(filePath);
 
-        // Attempt to send the picture to the server
-        bool uploadSuccess =
-            await _uploadPicture(filePath, widget.caseItem.id, coordinates);
-        if (!uploadSuccess) {
-          // Save picture metadata to Hive if upload fails
-          await LocalStore.savePictureMetadata(
-              filePath, widget.caseItem.id, coordinates);
-        }
+      // Get current coordinates
+      Position position = await LocationService()
+          .getCurrentLocation(desiredAccuracy: LocationAccuracy.best);
+      String coordinates = '${position.latitude},${position.longitude}';
 
-        // Show feedback when a picture is taken without flash
-        if (!_isFlashOn) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Picture saved')),
-          );
-        }
-      } catch (e) {
-        log('Error taking picture: $e');
+      // Attempt to send the picture to the server
+      bool uploadSuccess =
+          await _uploadPicture(filePath, widget.caseItem.id, coordinates);
+      if (!uploadSuccess) {
+        // Save picture metadata to Hive if upload fails
+        await LocalStore.savePictureMetadata(
+            filePath, widget.caseItem.id, coordinates);
       }
-    } else {
-      log('Storage permission not granted');
+
+      // Show feedback when a picture is taken without flash
+      if (!_isFlashOn) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Picture saved')),
+        );
+      }
+    } catch (e) {
+      log('Error taking picture: $e');
     }
   }
 
@@ -103,7 +104,7 @@ class PictureTakingPageState extends State<PictureTakingPage> {
       );
 
       // Add headers including the Bearer token
-      request.headers['Authorization'] = globalState<Authentication>().bearerToken;
+      request.headers['Authorization'] = di<Authentication>().bearerToken;
       request.fields['caseId'] = caseId;
       request.fields['coordinates'] = coordinates;
       request.files.add(await http.MultipartFile.fromPath('file', filePath));

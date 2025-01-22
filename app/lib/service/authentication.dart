@@ -1,10 +1,17 @@
+// Dart imports:
 import 'dart:convert';
 import 'dart:developer';
-import 'package:coc/controllers/user.dart';
-import 'package:coc/service/enviroment.dart';
+
+// Package imports:
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/controllers/user.dart';
+import 'package:coc/service/data.dart';
+import 'package:coc/service/enviroment.dart';
 
 class Authentication {
   String? _token;
@@ -21,21 +28,20 @@ class Authentication {
   }
 
   void _updateToken(String? token) {
-    _token = token;
-
     if (token == null) {
       _user = null;
       _secureStorage.delete(key: "token");
     } else {
-      _secureStorage.write(key: "token", value: token);
       _user = User.fromJson(JwtDecoder.decode(token));
+      _secureStorage.write(key: "token", value: token);
     }
+
+    _token = token;
   }
 
   Future<void> _getTokenFromStorage() async {
     var token = await _secureStorage.read(key: "token");
     _updateToken(token);
-    log('Token: $_token');
   }
 
   Future<bool> login(String email, String password) async {
@@ -58,6 +64,7 @@ class Authentication {
     if (response.statusCode == 200) {
       final token = jsonDecode(response.body)['access_token'];
       _updateToken(token);
+      di<DataService>().syncWithApi();
       log('Logged in');
       return true;
     } else {
@@ -69,6 +76,7 @@ class Authentication {
 
   void logout() {
     _updateToken(null);
+    di<DataService>().clear();
     log('Logged out');
   }
 
