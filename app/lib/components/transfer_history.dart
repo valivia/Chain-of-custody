@@ -3,13 +3,8 @@ import 'package:coc/controllers/audit_log.dart' as coc_audit;
 import 'package:flutter/material.dart';
 
 class TransferHistoryView extends StatelessWidget {
-  TransferHistoryView({super.key, required this.evidenceItem});
+  const TransferHistoryView({super.key, required this.evidenceItem});
   final TaggedEvidence evidenceItem;
-  late List<coc_audit.AuditLog> auditLog;
-
-  List<coc_audit.AuditLog> gatherAuditLog() {
-    return evidenceItem.auditLogs;
-  }
 
   List<coc_audit.AuditLog> gatherTransfers(List<coc_audit.AuditLog> auditLog) {
     return auditLog.where((log) => log.action == coc_audit.Action.transfer).toList();
@@ -17,8 +12,7 @@ class TransferHistoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    auditLog = gatherAuditLog();
-    final transferLog = gatherTransfers(auditLog);
+    final transferLog = gatherTransfers(evidenceItem.auditLog);
 
     return Scaffold(
       appBar: AppBar(
