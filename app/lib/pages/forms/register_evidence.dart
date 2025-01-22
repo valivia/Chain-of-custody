@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 // Flutter imports:
+import 'package:coc/components/key_value.dart';
 import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:coc/main.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ Function(BuildContext, String) navigateToEvidenceCreate(Case caseItem) {
           ),
         ));
   }
+
   return onscan;
 }
 
@@ -49,7 +51,6 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
   late TextEditingController _idController;
   late TextEditingController _itemTypeController;
   late TextEditingController _descriptionController;
-  late TextEditingController _originCoordinatesController;
   late TextEditingController _originLocationDescriptionController;
   String _selectedContainerType = ContainerType.bag.name;
   bool _isFetchingLocation = false;
@@ -61,7 +62,6 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     _idController = TextEditingController(text: widget.evidenceId);
     _itemTypeController = TextEditingController();
     _descriptionController = TextEditingController();
-    _originCoordinatesController = TextEditingController();
     _originLocationDescriptionController = TextEditingController();
 
     _getCurrentLocation();
@@ -72,9 +72,9 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
       _isFetchingLocation = true;
     });
 
-    // When we reach here, permissions are granted and we can continue
     _position = await di<LocationService>()
         .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
+
     setState(() {
       _position = _position;
       _isFetchingLocation = false;
@@ -93,7 +93,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
       'containerType': _selectedContainerType,
       'itemType': _itemTypeController.text,
       'description': _descriptionController.text,
-      'originCoordinates': _originCoordinatesController.text,
+      'originCoordinates': "${_position.latitude},${_position.longitude}",
       'originLocationDescription': _originLocationDescriptionController.text,
     };
 
@@ -162,7 +162,6 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     _idController.dispose();
     _itemTypeController.dispose();
     _descriptionController.dispose();
-    _originCoordinatesController.dispose();
     _originLocationDescriptionController.dispose();
     super.dispose();
   }
@@ -188,17 +187,32 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _idController,
-                  decoration: const InputDecoration(labelText: 'ID'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the ID';
-                    }
-                    return null;
-                  },
+                // ID
+                KeyValue(
+                  keyText: 'ID: ',
+                  value: widget.evidenceId,
                 ),
+                const SizedBox(height: 8),
+                // Location
+                if (_isFetchingLocation) ...[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ] else ...[
+                  KeyValue(
+                    keyText: "Latitude: ",
+                    value: _position.latitude.toString(),
+                  ),
+                  KeyValue(
+                    keyText: "Longitude: ",
+                    value: _position.longitude.toString(),
+                  ),
+                ],
+                const SizedBox(height: 20),
+                // Inputs
                 DropdownButtonFormField<String>(
                   value: _selectedContainerType,
                   decoration:
@@ -238,24 +252,6 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                     return null; // Description is optional
                   },
                 ),
-                TextFormField(
-                  controller: _originCoordinatesController,
-                  decoration:
-                      const InputDecoration(labelText: 'Origin Coordinates'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the origin coordinates';
-                    }
-                    return null;
-                  },
-                ),
-                if (_isFetchingLocation)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
                 TextFormField(
                   controller: _originLocationDescriptionController,
                   decoration: const InputDecoration(
