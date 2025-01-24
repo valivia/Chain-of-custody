@@ -1,14 +1,21 @@
 import 'package:coc/controllers/audit_log.dart' as coc_audit;
 import 'package:coc/utility/helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:coc/components/location_display.dart';
+
 
 class TransferHistoryListItem extends StatelessWidget {
-  const TransferHistoryListItem({
-    super.key,
-    required this.log,
-  });
-
   final coc_audit.AuditLog log;
+  final List<Map<String, dynamic>> locationData;
+
+  TransferHistoryListItem({super.key, required this.log})
+      : locationData = [
+          {
+            'createdAt': log.createdAt,
+            'userId': log.userId,
+            'location': log.location,
+          },
+        ];
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,16 @@ class TransferHistoryListItem extends StatelessWidget {
         padding: const EdgeInsets.all(10),
       ),
       onPressed: () {
-        
+        showModalBottomSheet(
+          showDragHandle: true,
+          context: context,
+          builder: (BuildContext context) {
+            return MapPointerBottomSheet(
+              locationData: locationData[0],
+              title: "Transfer",
+            );
+          },
+        );
       },
       child: Row(
         children: [
@@ -26,7 +42,7 @@ class TransferHistoryListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Transfer"),
-                Row(
+              Row(
                 children: [
                   Text(log.id),
                   const SizedBox(width: 4),
@@ -34,7 +50,7 @@ class TransferHistoryListItem extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(log.userId),
                 ],
-                ),
+              ),
               Text(formatTimestamp(log.createdAt)),
             ],
           ),

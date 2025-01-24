@@ -8,7 +8,8 @@ class TransferHistoryView extends StatelessWidget {
   final TaggedEvidence evidenceItem;
 
   List<coc_audit.AuditLog> gatherTransfers(List<coc_audit.AuditLog> auditLog) {
-    return auditLog.where((log) => log.action == coc_audit.Action.transfer).toList();
+    // reversed the list for correct timelines
+    return auditLog.where((log) => log.action == coc_audit.Action.transfer).toList().reversed.toList();
   }
 
   @override
@@ -20,13 +21,11 @@ class TransferHistoryView extends StatelessWidget {
         title: const Text('Transfer History page'),
       ),
       body: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
         itemCount: transferLog.length,
         itemBuilder: (context, index) {
-          final log = transferLog.elementAt(index);
-          return ListTile(
-            title: TransferHistoryListItem(log: log),
-            // subtitle: Text('Date: ${log.id}, User: ${log.userId}, location: ${log.location}'),
-          );
+          final log = transferLog[index];
+          return TransferHistoryListItem(log: log);
         },
       ),
     );

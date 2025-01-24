@@ -8,8 +8,17 @@ import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:coc/utility/helpers.dart';
 
 class EvidenceDetailView extends StatelessWidget {
-  const EvidenceDetailView({super.key, required this.evidenceItem});
   final TaggedEvidence evidenceItem;
+  final List<Map<String, dynamic>> locationData;
+
+  EvidenceDetailView({super.key, required this.evidenceItem})
+      : locationData = [
+          {
+            'createdAt': evidenceItem.createdAt,
+            'userId': evidenceItem.userId,
+            'location': evidenceItem.originCoordinates,
+          },
+        ];
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +73,7 @@ class EvidenceDetailView extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return MapPointerBottomSheet(
-                          evidenceItem: evidenceItem, title: "Origin");
+                          locationData: locationData[0], title: "Origin");
                     },
                   );
                 },
@@ -75,10 +84,12 @@ class EvidenceDetailView extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                 Navigator.push(
-                   context,
-                   MaterialPageRoute(builder: (context) => TransferHistoryView(evidenceItem: evidenceItem)),
-                 );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            TransferHistoryView(evidenceItem: evidenceItem)),
+                  );
                 },
                 child: const Text('Transfer History'),
               ),
