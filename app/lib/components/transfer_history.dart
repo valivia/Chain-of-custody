@@ -1,6 +1,7 @@
 import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:coc/controllers/audit_log.dart' as coc_audit;
 import 'package:flutter/material.dart';
+import 'package:coc/components/listItems/transfer_history.dart';
 
 class TransferHistoryView extends StatelessWidget {
   const TransferHistoryView({super.key, required this.evidenceItem});
@@ -23,7 +24,8 @@ class TransferHistoryView extends StatelessWidget {
         itemBuilder: (context, index) {
           final log = transferLog.elementAt(index);
           return ListTile(
-            subtitle: Text('Date: ${log.id}, User: ${log.userId}, location: ${log.location}'),
+            title: TransferHistoryListItem(log: log),
+            // subtitle: Text('Date: ${log.id}, User: ${log.userId}, location: ${log.location}'),
           );
         },
       ),
