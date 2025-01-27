@@ -1,9 +1,13 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
 // Project imports:
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/case_detail.dart';
+import 'package:coc/service/data.dart';
 
 class CaseListItem extends StatelessWidget {
   final Case caseItem;
@@ -22,10 +26,11 @@ class CaseListItem extends StatelessWidget {
           padding: const EdgeInsets.all(8),
         ),
         onPressed: () {
+          di<DataService>().currentCase = caseItem;
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CaseDetailView(caseItem: caseItem),
+              builder: (context) => const CaseDetailView(),
             ),
           );
         },

@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:watch_it/watch_it.dart';
 
 // Project imports:
-import 'package:coc/controllers/tagged_evidence.dart';
+import 'package:coc/service/data.dart';
 import 'package:coc/utility/helpers.dart';
 
 class MapPointer extends StatelessWidget {
@@ -46,15 +47,21 @@ class MapPointer extends StatelessWidget {
 }
 
 class MapPointerBottomSheet extends StatelessWidget {
-  final Map locationData;
   final String title;
+  final String userId;
+  final DateTime createdAt;
+  final LatLng location;
 
-  const MapPointerBottomSheet(
-      {super.key, required this.locationData, required this.title});
+  const MapPointerBottomSheet({
+    super.key,
+    required this.title,
+    required this.userId,
+    required this.createdAt,
+    required this.location,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final location = locationData['location'];
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -87,8 +94,8 @@ class MapPointerBottomSheet extends StatelessWidget {
                 const Icon(Icons.person, color: Colors.white),
                 const SizedBox(width: 8),
                 Text(
-                  // TODO: Display username of person of interest
-                  locationData['userId'],
+                  di<DataService>().currentCase?.getUser(userId)?.fullName ??
+                      'Unknown',
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.bold),
                 ),
@@ -98,7 +105,7 @@ class MapPointerBottomSheet extends StatelessWidget {
               children: [
                 const Icon(Icons.access_time_outlined, color: Colors.white),
                 const SizedBox(width: 8),
-                Text(formatTimestamp(locationData["createdAt"])),
+                Text(formatTimestamp(createdAt)),
               ],
             ),
             Row(

@@ -5,33 +5,23 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:coc/controllers/tagged_evidence.dart';
-import 'package:coc/controllers/audit_log.dart' as coc_audit;
 import 'package:coc/components/listItems/transfer_history.dart';
+import 'package:coc/controllers/audit_log.dart';
 import 'package:coc/pages/lists/full_transfer_history.dart';
 
 class LimTransferHistoryView extends StatelessWidget {
   const LimTransferHistoryView({
     super.key,
-    required this.evidenceItem,
+    required this.transfers,
     required this.itemCount,
   });
 
-  final TaggedEvidence evidenceItem;
+  final List<AuditLog> transfers;
   final int itemCount;
-
-  List<coc_audit.AuditLog> gatherTransfers(List<coc_audit.AuditLog> auditLog) {
-    // reversed the list for correct timelines
-    return auditLog
-        .where((log) => log.action == coc_audit.Action.transfer)
-        .toList()
-        .reversed
-        .toList();
-  }
 
   @override
   Widget build(BuildContext context) {
-    final transferLog = gatherTransfers(evidenceItem.auditLog);
+    // Display
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -39,10 +29,15 @@ class LimTransferHistoryView extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.all(0),
-          itemCount: min(itemCount, transferLog.length),
+          itemCount: min(itemCount, transfers.length),
           itemBuilder: (context, index) {
-            final log = transferLog[index];
-            return TransferHistoryListItem(log: log);
+            final log = transfers[index];
+            final previousLog =
+                index + 1 < transfers.length ? transfers[index + 1] : null;
+            return TransferHistoryListItem(
+              log: log,
+              previousLog: previousLog,
+            );
           },
           separatorBuilder: (context, index) => const Icon(
             Icons.arrow_drop_up_rounded,
@@ -50,7 +45,7 @@ class LimTransferHistoryView extends StatelessWidget {
           ),
         ),
         // view all
-        if (transferLog.length > itemCount)
+        if (transfers.length > itemCount)
           Column(
             children: [
               const Icon(
@@ -68,7 +63,7 @@ class LimTransferHistoryView extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            TransferHistoryView(transferLog: transferLog),
+                            TransferHistoryView(transfers: transfers),
                       ),
                     );
                   },
@@ -79,7 +74,7 @@ class LimTransferHistoryView extends StatelessWidget {
                       const Text('View All'),
                       const Spacer(),
                       Text(
-                        "${transferLog.length} total",
+                        "${transfers.length} total",
                         style: const TextStyle(fontSize: 12),
                       ),
                       const SizedBox(width: 10),

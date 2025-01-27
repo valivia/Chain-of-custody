@@ -1,8 +1,15 @@
+// Dart imports:
+import 'dart:developer';
+
 // Package imports:
 import 'package:latlong2/latlong.dart';
+import 'package:watch_it/watch_it.dart';
 
 // Project imports:
 import 'package:coc/controllers/audit_log.dart';
+import 'package:coc/controllers/case.dart';
+import 'package:coc/service/api_service.dart';
+import 'package:coc/service/data.dart';
 import 'package:coc/utility/helpers.dart';
 
 enum ContainerType {
@@ -48,6 +55,14 @@ class TaggedEvidence {
     required this.auditLog,
   });
 
+  List<AuditLog> get transfers {
+    final sortedTransfers = auditLog
+        .where((log) => log.action == Action.transfer)
+        .toList()
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return sortedTransfers;
+  }
+
   factory TaggedEvidence.fromJson(Map<String, dynamic> json) {
     final createdAt = json['createdAt'] as String?;
     final updatedAt = json['updatedAt'] as String?;
@@ -64,9 +79,11 @@ class TaggedEvidence {
       originCoordinates:
           coordinatesFromString(json['originCoordinates'] as String),
       originLocationDescription: json['originLocationDescription'] as String,
-      auditLog: (json['auditLog'] as List)
-          .map((log) => AuditLog.fromJson(log))
-          .toList(),
+      auditLog: json['auditLog'] != null
+          ? (json['auditLog'] as List)
+              .map((log) => AuditLog.fromJson(log))
+              .toList()
+          : [],
     );
   }
 
@@ -87,27 +104,56 @@ class TaggedEvidence {
     };
   }
 
-  factory TaggedEvidence.fromForm({
+  static Future<TaggedEvidence> fromForm({
     required String id,
-    required String userId,
-    required String caseId,
+    required Case caseItem,
     required ContainerType containerType,
     required String itemType,
     required String description,
     required LatLng originCoordinates,
     required String originLocationDescription,
-  }) {
-    return TaggedEvidence(
-      id: id,
-      userId: userId,
-      caseId: caseId,
-      madeOn: DateTime.now(),
-      containerType: containerType.name,
-      itemType: itemType,
-      description: description,
-      originCoordinates: originCoordinates,
-      originLocationDescription: originLocationDescription,
-      auditLog: [],
-    );
+  }) async {
+    final body = {
+      'id': id,
+      'caseId': caseItem.id,
+      'containerType': containerType.name,
+      'itemType': itemType,
+      'description': description,
+      'originCoordinates': coordinatesToString(originCoordinates),
+      'originLocationDescription': originLocationDescription,
+    };
+
+    final response = await ApiService.post('/evidence/tag', body);
+    final data = ApiService.parseResponse(response);
+
+    final evidence = TaggedEvidence.fromJson(data);
+
+    caseItem.taggedEvidence.add(evidence);
+
+    return evidence;
+  }
+
+  static Future<void> transfer({
+    required String id,
+    required String coordinates,
+  }) async {
+    final body = {
+      'coordinates': coordinates,
+    };
+
+    final response = await ApiService.post('/evidence/tag/$id/transfer', body);
+    final data = ApiService.parseResponse(response);
+
+    final transfer = AuditLog.fromJson(data);
+
+    log('Transferred evidence $id at $coordinates');
+
+    di<DataService>()
+        .cases
+        .firstWhere((c) => c.taggedEvidence.any((e) => e.id == id))
+        .taggedEvidence
+        .firstWhere((e) => e.id == id)
+        .auditLog
+        .add(transfer);
   }
 }

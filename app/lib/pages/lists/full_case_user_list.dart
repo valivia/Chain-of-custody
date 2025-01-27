@@ -12,7 +12,19 @@ class CaseUserListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CaseUserList(users: users),
+      appBar: AppBar(
+        title: const Text("Handlers"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: CaseUserList(users: users),
+      ),
     );
   }
 }
@@ -25,16 +37,6 @@ class CaseUserList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "caseUsers",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
         Flexible(
           child: ListView.builder(
             itemCount: users.length,

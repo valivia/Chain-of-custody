@@ -33,9 +33,8 @@ class LimCaseList extends WatchingWidget {
           const Text(
             'Cases',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
             ),
           ),
           const SizedBox(height: 10),
@@ -53,9 +52,6 @@ class LimCaseList extends WatchingWidget {
               ),
               if (caseList.length > itemCount)
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(10),
-                  ),
                   onPressed: () {
                     Navigator.push(
                       context,

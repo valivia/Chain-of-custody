@@ -8,24 +8,28 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:watch_it/watch_it.dart';
 
 // Project imports:
 import 'package:coc/components/local_store.dart';
 import 'package:coc/controllers/case.dart';
+import 'package:coc/controllers/media_evidence.dart';
+import 'package:coc/main.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/image_gallery.dart';
 import 'package:coc/pages/scanner.dart';
-import 'package:coc/service/authentication.dart';
-import 'package:coc/service/enviroment.dart';
+import 'package:coc/service/api_service.dart';
 import 'package:coc/service/location.dart';
+import 'package:coc/utility/helpers.dart';
 
 class PictureTakingPage extends StatefulWidget {
   final Case caseItem;
 
-  const PictureTakingPage({super.key, required this.caseItem});
+  const PictureTakingPage({
+    super.key,
+    required this.caseItem,
+  });
 
   @override
   PictureTakingPageState createState() => PictureTakingPageState();
@@ -73,20 +77,26 @@ class PictureTakingPageState extends State<PictureTakingPage> {
       // Get current coordinates
       Position position = await LocationService()
           .getCurrentLocation(desiredAccuracy: LocationAccuracy.best);
-      String coordinates = '${position.latitude},${position.longitude}';
+
+      final LatLng coordinates = LatLng(position.latitude, position.longitude);
 
       // Attempt to send the picture to the server
-      bool uploadSuccess =
-          await _uploadPicture(filePath, widget.caseItem.id, coordinates);
+      bool uploadSuccess = await _uploadPicture(
+        filePath,
+        coordinates,
+      );
       if (!uploadSuccess) {
         // Save picture metadata to Hive if upload fails
         await LocalStore.savePictureMetadata(
-            filePath, widget.caseItem.id, coordinates);
+          filePath,
+          widget.caseItem.id,
+          coordinatesToString(coordinates),
+        );
       }
 
       // Show feedback when a picture is taken without flash
       if (!_isFlashOn) {
-        ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
           const SnackBar(content: Text('Picture saved')),
         );
       }
@@ -95,32 +105,24 @@ class PictureTakingPageState extends State<PictureTakingPage> {
     }
   }
 
-  Future<bool> _uploadPicture(
-      String filePath, String caseId, String coordinates) async {
+  Future<bool> _uploadPicture(String filePath, LatLng coordinates) async {
     try {
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse('${EnvironmentConfig.apiUrl}/evidence/media'),
+      await MediaEvidence.fromForm(
+        filePath: filePath,
+        caseItem: widget.caseItem,
+        originCoordinates: coordinates,
       );
 
-      // Add headers including the Bearer token
-      request.headers['Authorization'] = di<Authentication>().bearerToken;
-      request.fields['caseId'] = caseId;
-      request.fields['coordinates'] = coordinates;
-      request.files.add(await http.MultipartFile.fromPath('file', filePath));
+      ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+        const SnackBar(content: Text('Picture saved to server')),
+      );
 
-      var response = await request.send();
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Picture saved to server')),
-        );
-        return true;
-      } else {
-        log('Failed to upload picture: ${response.statusCode}');
-        return false;
-      }
+      return true;
+    } on ApiException catch (e) {
+      log('Failed to upload picture:\n${e.message}');
+      return false;
     } catch (e) {
-      log('Error uploading picture: $e');
+      log('Error uploading picture:\n$e');
       return false;
     }
   }
