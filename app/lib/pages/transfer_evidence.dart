@@ -1,18 +1,14 @@
-// Dart imports:
-import 'dart:convert';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
+import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:coc/main.dart';
-import 'package:coc/service/authentication.dart';
-import 'package:coc/service/enviroment.dart';
+import 'package:coc/service/api_service.dart';
 import 'package:coc/service/location.dart';
 
 Function(BuildContext, String) navigateToEvidenceTransfer() {
@@ -63,57 +59,15 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
     });
   }
 
-  Future<Map<String, dynamic>> submitTransferData() async {
-    final url = Uri.parse(
-        '${EnvironmentConfig.apiUrl}/evidence/tag/${widget.evidenceID}/transfer');
-    final headers = <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': di<Authentication>().bearerToken,
-    };
-    final body = {
-      'coordinates': _location,
-    };
+  void handleResponse() async {
     try {
-      final response = await http.post(
-        url,
-        headers: headers,
-        body: jsonEncode(body),
+      await TaggedEvidence.transfer(
+        id: widget.evidenceID,
+        coordinates: _location,
       );
-      return {
-        'response': response,
-        'request': {'url': url.toString(), 'headers': headers, 'body': body}
-      };
-    } catch (e) {
-      return {
-        'response': http.Response('Error: $e', 500),
-        'request': {'url': url.toString(), 'headers': headers, 'body': body}
-      };
-    }
-  }
 
-  void handleResponse(result) {
-    http.Response response = result['response'];
-    if (response.statusCode == 404) {
       showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Not found'),
-            content: const Text('This evidence has not been registered yet.'),
-            actions: <Widget>[
-              ElevatedButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    } else if (response.statusCode == 201) {
-      showDialog(
-        context: context,
+        context: navigatorKey.currentContext!,
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("Successful"),
@@ -133,26 +87,44 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
           );
         },
       );
-    } else {
+    } on ApiException catch (error) {
       showDialog(
-        context: context,
+        context: navigatorKey.currentContext!,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Failed'),
-            content: const Text('Failed for unknown reason'),
-            actions: <Widget>[
-              ElevatedButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
-                  );
-                },
-              ),
-            ],
-          );
+          // Not found
+          if (error.code == 404) {
+            return AlertDialog(
+              title: const Text('Not found'),
+              content: const Text('This evidence has not been registered yet.'),
+              actions: <Widget>[
+                ElevatedButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+
+            // Unknown error
+          } else {
+            return AlertDialog(
+              title: const Text('Failed'),
+              content: Text(error.message),
+              actions: <Widget>[
+                ElevatedButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomePage()),
+                    );
+                  },
+                ),
+              ],
+            );
+          }
         },
       );
     }
@@ -175,11 +147,8 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
                 : Text('Current Location: $_location'),
             const SizedBox(height: 20),
             ElevatedButton(
+              onPressed: handleResponse,
               child: const Text("Submit"),
-              onPressed: () async {
-                Map<String, dynamic> result = await submitTransferData();
-                handleResponse(result);
-              },
             ),
           ],
         ),

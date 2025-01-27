@@ -1,10 +1,15 @@
+// Dart imports:
+import 'dart:developer';
+
 // Package imports:
 import 'package:latlong2/latlong.dart';
+import 'package:watch_it/watch_it.dart';
 
 // Project imports:
 import 'package:coc/controllers/audit_log.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/service/api_service.dart';
+import 'package:coc/service/data.dart';
 import 'package:coc/utility/helpers.dart';
 
 enum ContainerType {
@@ -126,5 +131,29 @@ class TaggedEvidence {
     caseItem.taggedEvidence.add(evidence);
 
     return evidence;
+  }
+
+  static Future<void> transfer({
+    required String id,
+    required String coordinates,
+  }) async {
+    final body = {
+      'coordinates': coordinates,
+    };
+
+    final response = await ApiService.post('/evidence/tag/$id/transfer', body);
+    final data = ApiService.parseResponse(response);
+
+    final transfer = AuditLog.fromJson(data);
+
+    log('Transferred evidence $id at $coordinates');
+
+    di<DataService>()
+        .cases
+        .firstWhere((c) => c.taggedEvidence.any((e) => e.id == id))
+        .taggedEvidence
+        .firstWhere((e) => e.id == id)
+        .auditLog
+        .add(transfer);
   }
 }

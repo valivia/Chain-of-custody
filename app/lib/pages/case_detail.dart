@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:coc/pages/transfer_evidence.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -46,7 +47,7 @@ class CaseDetailView extends WatchingWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 32),
+              const SizedBox(height: 16),
               Button(
                 title: 'Add evidence',
                 icon: Icons.qr_code,
@@ -68,6 +69,21 @@ class CaseDetailView extends WatchingWidget {
                     MaterialPageRoute(
                         builder: (context) =>
                             PictureTakingPage(caseItem: caseItem)),
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
+              Button(
+                title: 'Transfer evidence',
+                icon: Icons.qr_code_scanner,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QRScannerPage(
+                        onScan: navigateToEvidenceTransfer(),
+                      ),
+                    ),
                   );
                 },
               ),

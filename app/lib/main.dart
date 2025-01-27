@@ -173,7 +173,7 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 20),
               Button(
                 title: 'Transfer evidence',
-                icon: Icons.photo_camera,
+                icon: Icons.qr_code_scanner,
                 onTap: () {
                   Navigator.push(
                     context,
