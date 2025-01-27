@@ -87,7 +87,6 @@ export class TagController {
     const createdEvidence = await this.prisma.taggedEvidence.create({
       data: {
         ...taggedEvidence,
-        id: undefined,
         createdBy: { connect: { id: user.id } },
         case: { connect: { id: caseId }, },
       },
