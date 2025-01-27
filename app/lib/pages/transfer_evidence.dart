@@ -17,7 +17,7 @@ import 'package:coc/service/location.dart';
 
 Function(BuildContext, String) navigateToEvidenceTransfer() {
   onscan(BuildContext context, String evidenceId) {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => TransferEvidencePage(

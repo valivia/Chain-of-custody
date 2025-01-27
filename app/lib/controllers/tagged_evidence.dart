@@ -1,4 +1,6 @@
 // Package imports:
+import 'package:coc/controllers/case.dart';
+import 'package:coc/service/api_service.dart';
 import 'package:latlong2/latlong.dart';
 
 // Project imports:
@@ -64,9 +66,11 @@ class TaggedEvidence {
       originCoordinates:
           coordinatesFromString(json['originCoordinates'] as String),
       originLocationDescription: json['originLocationDescription'] as String,
-      auditLog: (json['auditLog'] as List)
-          .map((log) => AuditLog.fromJson(log))
-          .toList(),
+      auditLog: json['auditLog'] != null
+          ? (json['auditLog'] as List)
+              .map((log) => AuditLog.fromJson(log))
+              .toList()
+          : [],
     );
   }
 
@@ -87,27 +91,32 @@ class TaggedEvidence {
     };
   }
 
-  factory TaggedEvidence.fromForm({
+  static Future<TaggedEvidence> fromForm({
     required String id,
-    required String userId,
-    required String caseId,
+    required Case caseItem,
     required ContainerType containerType,
     required String itemType,
     required String description,
     required LatLng originCoordinates,
     required String originLocationDescription,
-  }) {
-    return TaggedEvidence(
-      id: id,
-      userId: userId,
-      caseId: caseId,
-      madeOn: DateTime.now(),
-      containerType: containerType.name,
-      itemType: itemType,
-      description: description,
-      originCoordinates: originCoordinates,
-      originLocationDescription: originLocationDescription,
-      auditLog: [],
-    );
+  }) async {
+    final body = {
+      'id': id,
+      'caseId': caseItem.id,
+      'containerType': containerType.name,
+      'itemType': itemType,
+      'description': description,
+      'originCoordinates': coordinatesToString(originCoordinates),
+      'originLocationDescription': originLocationDescription,
+    };
+
+    final response = await ApiService.post('/evidence/tag', body);
+    final data = ApiService.parseResponse(response);
+
+    final evidence = TaggedEvidence.fromJson(data);
+
+    caseItem.taggedEvidence.add(evidence);
+
+    return evidence;
   }
 }

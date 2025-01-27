@@ -14,9 +14,24 @@ import 'package:coc/controllers/case.dart';
 import 'package:coc/service/authentication.dart';
 
 class DataService extends ChangeNotifier {
+  // Cases
   Map<String, Case> _cases = {};
-
   List<Case> get cases => _cases.values.toList();
+
+  // Current case
+  Case? _currentCase;
+  Case? get currentCase => _currentCase;
+  set currentCase(Case? c) {
+    log("set Current case: ${c?.id} ${c == _currentCase}");
+    if (c != null) {
+      _cases[c.id] = c;
+      saveToLocalStorage();
+    } else {
+      log("Current case is null");
+    }
+    _currentCase = c;
+    notifyListeners();
+  }
 
   static Future<DataService> initialize() async {
     final instance = DataService();

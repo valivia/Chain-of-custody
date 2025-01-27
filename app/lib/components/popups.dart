@@ -38,12 +38,14 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                     onPressed: () {
+                      // di<DataService>().currentCase = caseItem;
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CaseDetailView(caseItem: caseItem),
+                          builder: (context) => CaseDetailView(),
                         ),
-                        (Route<dynamic> route) => route.isFirst, // Keep the main page in the stack
+                        (Route<dynamic> route) =>
+                            route.isFirst, // Keep the main page in the stack
                       );
                     },
                     child: const Text(
@@ -62,9 +64,11 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => QRScannerPage(onScan: navigateToEvidenceCreate(caseItem)),
+                          builder: (context) => QRScannerPage(
+                              onScan: navigateToEvidenceCreate(caseItem)),
                         ),
-                        (Route<dynamic> route) => route.isFirst, // Keep the main page in the stack
+                        (Route<dynamic> route) =>
+                            route.isFirst, // Keep the main page in the stack
                       );
                     },
                     child: const Text(
@@ -85,10 +89,10 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
 void showFailureDialog(BuildContext context, String message, Case caseItem) {
   showDialog(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: true,
     builder: (BuildContext context) {
       return PopScope(
-        canPop: false,
+        canPop: true,
         child: AlertDialog(
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -114,9 +118,11 @@ void showFailureDialog(BuildContext context, String message, Case caseItem) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CaseDetailView(caseItem: caseItem),
+                          builder: (context) =>
+                              CaseDetailView(),
                         ),
-                        (Route<dynamic> route) => route.isFirst, // Keep the main page in the stack
+                        (Route<dynamic> route) =>
+                            route.isFirst, // Keep the main page in the stack
                       );
                     },
                     child: const Text(
@@ -135,9 +141,11 @@ void showFailureDialog(BuildContext context, String message, Case caseItem) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => QRScannerPage(onScan: navigateToEvidenceCreate(caseItem)),
+                          builder: (context) => QRScannerPage(
+                              onScan: navigateToEvidenceCreate(caseItem)),
                         ),
-                        (Route<dynamic> route) => route.isFirst, // Keep the main page in the stack
+                        (Route<dynamic> route) =>
+                            route.isFirst, // Keep the main page in the stack
                       );
                     },
                     child: const Text(

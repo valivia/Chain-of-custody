@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:coc/service/data.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -10,14 +11,13 @@ import 'package:coc/components/case_base_details.dart';
 import 'package:coc/components/lists/case_user.dart';
 import 'package:coc/components/lists/media_evidence.dart';
 import 'package:coc/components/lists/tagged_evidence.dart';
-import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/scanner.dart';
+import 'package:watch_it/watch_it.dart';
 
-class CaseDetailView extends StatelessWidget {
-  const CaseDetailView({super.key, required this.caseItem});
-  final Case caseItem;
+class CaseDetailView extends WatchingWidget {
+  const CaseDetailView({super.key});
 
   static Future<bool> hasInternetConnection() async {
     return await InternetConnectionChecker().hasConnection;
@@ -25,6 +25,19 @@ class CaseDetailView extends StatelessWidget {
 
   @override
   build(BuildContext context) {
+    print('-------- rebuild case detail view --------');
+    final caseItem = watchPropertyValue(
+      (DataService dataService) => dataService.currentCase,
+    );
+
+    if (caseItem == null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Case: ${caseItem.title}", textAlign: TextAlign.center),
@@ -175,25 +188,29 @@ class CaseDetailView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    FutureBuilder<bool>(
-                      future: hasInternetConnection(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        } else if (snapshot.hasError || !snapshot.data!) {
-                          return const Padding(
-                            padding: EdgeInsets.only(left: 8.0),
-                            child: Text('No internet connection'),
-                          );
-                        } else {
-                          return LimMediaEvidenceList(
-                            mediaEvidence: caseItem.mediaEvidence,
-                            itemCount: 4,
-                          );
-                        }
-                      },
-                    ),
+                    LimMediaEvidenceList(
+                      mediaEvidence: caseItem.mediaEvidence,
+                      itemCount: 4,
+                    )
+                    // FutureBuilder<bool>(
+                    //   future: hasInternetConnection(),
+                    //   builder: (context, snapshot) {
+                    //     if (snapshot.connectionState ==
+                    //         ConnectionState.waiting) {
+                    //       return const CircularProgressIndicator();
+                    //     } else if (snapshot.hasError || !snapshot.data!) {
+                    //       return const Padding(
+                    //         padding: EdgeInsets.only(left: 8.0),
+                    //         child: Text('No internet connection'),
+                    //       );
+                    //     } else {
+                    //       return LimMediaEvidenceList(
+                    //         mediaEvidence: caseItem.mediaEvidence,
+                    //         itemCount: 4,
+                    //       );
+                    //     }
+                    //   },
+                    // ),
                   ],
                 ),
               ),
