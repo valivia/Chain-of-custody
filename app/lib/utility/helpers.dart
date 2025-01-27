@@ -20,3 +20,10 @@ String formatTimestamp(DateTime timestamp) {
       '${timestamp.month.toString().padLeft(2, '0')}-'
       '${timestamp.year.toString()}';
 }
+
+String? validateField(String? value, String fieldName) {
+  if (value == null || value.isEmpty) {
+    return 'Please enter $fieldName';
+  }
+  return null;
+}

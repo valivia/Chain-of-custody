@@ -1,6 +1,9 @@
-import 'package:coc/pages/evidence_detail.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:coc/controllers/tagged_evidence.dart';
+import 'package:coc/pages/evidence_detail.dart';
 
 Widget evidenceButton(BuildContext context, TaggedEvidence taggedEvidenceItem) {
   return Padding(
@@ -13,7 +16,8 @@ Widget evidenceButton(BuildContext context, TaggedEvidence taggedEvidenceItem) {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EvidenceDetailView(evidenceItem: taggedEvidenceItem),
+            builder: (context) =>
+                EvidenceDetailView(evidence: taggedEvidenceItem),
           ),
         );
       },

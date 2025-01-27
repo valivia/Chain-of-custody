@@ -1,3 +1,6 @@
+// Dart imports:
+import 'dart:math';
+
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -9,12 +12,14 @@ class MediaEvidenceGrid extends StatelessWidget {
   final List<MediaEvidence> mediaEvidence;
   final Uri url;
   final Map<String, String> headers;
+  final int? itemCount;
 
   const MediaEvidenceGrid({
     super.key,
     required this.mediaEvidence,
     required this.url,
     required this.headers,
+    this.itemCount,
   });
 
   @override
@@ -28,16 +33,17 @@ class MediaEvidenceGrid extends StatelessWidget {
         crossAxisSpacing: 4.0,
         mainAxisSpacing: 4.0,
       ),
-      itemCount: mediaEvidence.length,
+      itemCount: itemCount != null
+          ? min(mediaEvidence.length, itemCount!)
+          : mediaEvidence.length,
       itemBuilder: (context, index) {
+        final imageUrl = url.toString() + mediaEvidence[index].id;
         return GestureDetector(
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MediaPreview(
-                  imageUrl: url.toString() + mediaEvidence[index].id,
-                ),
+                builder: (context) => MediaPreview(imageUrl: imageUrl),
               ),
             );
           },
@@ -45,7 +51,7 @@ class MediaEvidenceGrid extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.cover,
               child: Image.network(
-                url.toString() + mediaEvidence[index].id,
+                imageUrl,
                 headers: headers,
               ),
             ),
