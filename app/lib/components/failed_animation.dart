@@ -1,3 +1,4 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 class FailedAnimation extends StatefulWidget {
@@ -83,14 +84,17 @@ class CrossPainter extends CustomPainter {
 
     if (progress < 0.5) {
       final double x = size.width * 0.2 + (size.width * 0.6 * (progress / 0.5));
-      final double y = size.height * 0.2 + (size.height * 0.6 * (progress / 0.5));
+      final double y =
+          size.height * 0.2 + (size.height * 0.6 * (progress / 0.5));
       path.moveTo(size.width * 0.2, size.height * 0.2);
       path.lineTo(x, y);
     } else {
       path.moveTo(size.width * 0.2, size.height * 0.2);
       path.lineTo(size.width * 0.8, size.height * 0.8);
-      final double x = size.width * 0.8 - (size.width * 0.6 * ((progress - 0.5) / 0.5));
-      final double y = size.height * 0.2 + (size.height * 0.6 * ((progress - 0.5) / 0.5));
+      final double x =
+          size.width * 0.8 - (size.width * 0.6 * ((progress - 0.5) / 0.5));
+      final double y =
+          size.height * 0.2 + (size.height * 0.6 * ((progress - 0.5) / 0.5));
       path.moveTo(size.width * 0.8, size.height * 0.2);
       path.lineTo(x, y);
     }

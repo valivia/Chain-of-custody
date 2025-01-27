@@ -1,18 +1,28 @@
-import 'package:coc/controllers/case.dart';
+// Dart imports:
+import 'dart:convert';
+
+// Flutter imports:
+import 'package:coc/components/key_value.dart';
+import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:coc/main.dart';
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/components/local_store.dart';
+import 'package:coc/components/popups.dart';
+import 'package:coc/controllers/case.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/enviroment.dart';
 import 'package:coc/service/location.dart';
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:coc/components/local_store.dart';
-import 'package:coc/components/popups.dart';
 
 Function(BuildContext, String) navigateToEvidenceCreate(Case caseItem) {
   onscan(BuildContext context, String code) {
-    Navigator.push(
+    Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => RegisterEvidencePage(
@@ -39,23 +49,19 @@ class RegisterEvidencePage extends StatefulWidget {
 class RegisterEvidencePageState extends State<RegisterEvidencePage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _idController;
-  late TextEditingController _containerTypeController;
   late TextEditingController _itemTypeController;
   late TextEditingController _descriptionController;
-  late TextEditingController _originCoordinatesController;
   late TextEditingController _originLocationDescriptionController;
-  String? _selectedContainerType;
-  final _containerTypes = ['Box', 'Crate', 'Pallet', 'Other', 'dsjn'];
+  String _selectedContainerType = ContainerType.bag.name;
   bool _isFetchingLocation = false;
+  late Position _position;
 
   @override
   void initState() {
     super.initState();
     _idController = TextEditingController(text: widget.evidenceId);
-    _containerTypeController = TextEditingController();
     _itemTypeController = TextEditingController();
     _descriptionController = TextEditingController();
-    _originCoordinatesController = TextEditingController();
     _originLocationDescriptionController = TextEditingController();
 
     _getCurrentLocation();
@@ -66,12 +72,11 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
       _isFetchingLocation = true;
     });
 
-    // When we reach here, permissions are granted and we can continue
-    Position position = await globalState<LocationService>()
+    _position = await di<LocationService>()
         .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
+
     setState(() {
-      _originCoordinatesController.text =
-          '${position.latitude}, ${position.longitude}';
+      _position = _position;
       _isFetchingLocation = false;
     });
   }
@@ -80,15 +85,15 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     final url = Uri.parse('${EnvironmentConfig.apiUrl}/evidence/tag');
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': globalState<Authentication>().bearerToken,
+      'Authorization': di<Authentication>().bearerToken,
     };
     final body = {
       'id': _idController.text,
       'caseId': widget.caseItem.id,
-      'containerType': _containerTypeController.text,
+      'containerType': _selectedContainerType,
       'itemType': _itemTypeController.text,
       'description': _descriptionController.text,
-      'originCoordinates': _originCoordinatesController.text,
+      'originCoordinates': "${_position.latitude},${_position.longitude}",
       'originLocationDescription': _originLocationDescriptionController.text,
     };
 
@@ -110,13 +115,53 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     }
   }
 
+  onSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      bool isConnected = await LocalStore.hasInternetConnection();
+      Map<String, dynamic> result = await submitEvidenceData();
+      http.Response response = result['response'];
+      Map<String, dynamic> requestData = result['request'];
+      String evidenceKey = requestData['body']['id'];
+
+      if (isConnected) {
+        // Handle response status code
+        if (response.statusCode == 401) {
+          showFailureDialog(
+            navigatorKey.currentContext!,
+            'Unauthorized access. Please log in again.',
+            widget.caseItem,
+          );
+        } else if (response.statusCode == 201) {
+          showSuccessDialog(
+            navigatorKey.currentContext!,
+            'Evidence submitted successfully',
+            widget.caseItem,
+          );
+        } else {
+          showFailureDialog(
+            navigatorKey.currentContext!,
+            'Failed to submit evidence data: ${response.statusCode}',
+            widget.caseItem,
+          );
+        }
+      } else {
+        // Save evidence locally
+        requestData['body']['madeOn'] = DateTime.now().toIso8601String();
+        await LocalStore.saveApiResponse(evidenceKey, requestData);
+        showSuccessDialog(
+          navigatorKey.currentContext!,
+          'Evidence saved locally',
+          widget.caseItem,
+        );
+      }
+    }
+  }
+
   @override
   void dispose() {
     _idController.dispose();
-    _containerTypeController.dispose();
     _itemTypeController.dispose();
     _descriptionController.dispose();
-    _originCoordinatesController.dispose();
     _originLocationDescriptionController.dispose();
     super.dispose();
   }
@@ -142,31 +187,45 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _idController,
-                  decoration: const InputDecoration(labelText: 'ID'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the ID';
-                    }
-                    return null;
-                  },
+                // ID
+                KeyValue(
+                  keyText: 'ID: ',
+                  value: widget.evidenceId,
                 ),
+                const SizedBox(height: 8),
+                // Location
+                if (_isFetchingLocation) ...[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ] else ...[
+                  KeyValue(
+                    keyText: "Latitude: ",
+                    value: _position.latitude.toString(),
+                  ),
+                  KeyValue(
+                    keyText: "Longitude: ",
+                    value: _position.longitude.toString(),
+                  ),
+                ],
+                const SizedBox(height: 20),
+                // Inputs
                 DropdownButtonFormField<String>(
                   value: _selectedContainerType,
                   decoration:
                       const InputDecoration(labelText: 'Container Type'),
-                  items: _containerTypes.map((String type) {
+                  items: ContainerType.values.map((ContainerType type) {
                     return DropdownMenuItem<String>(
-                      value: type,
-                      child: Text(type),
+                      value: type.name,
+                      child: Text(type.name),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      _selectedContainerType = newValue;
-                      _containerTypeController.text = newValue!;
+                      _selectedContainerType = newValue!;
                     });
                   },
                   validator: (value) {
@@ -194,24 +253,6 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                   },
                 ),
                 TextFormField(
-                  controller: _originCoordinatesController,
-                  decoration:
-                      const InputDecoration(labelText: 'Origin Coordinates'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the origin coordinates';
-                    }
-                    return null;
-                  },
-                ),
-                if (_isFetchingLocation)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                TextFormField(
                   controller: _originLocationDescriptionController,
                   decoration: const InputDecoration(
                       labelText: 'Origin Location Description'),
@@ -237,46 +278,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                     const SizedBox(width: 20),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            bool isConnected =
-                                await LocalStore.hasInternetConnection();
-                            Map<String, dynamic> result =
-                                await submitEvidenceData();
-                            http.Response response = result['response'];
-                            Map<String, dynamic> requestData =
-                                result['request'];
-                            String evidenceKey = requestData['body']['id'];
-
-                            if (isConnected) {
-                              // Handle response status code
-                              if (response.statusCode == 401) {
-                                showFailureDialog(
-                                    context,
-                                    'Unauthorized access. Please log in again.',
-                                    widget.caseItem);
-                              } else if (response.statusCode == 201) {
-                                showSuccessDialog(
-                                    context,
-                                    'Evidence submitted successfully',
-                                    widget.caseItem);
-                              } else {
-                                showFailureDialog(
-                                    context,
-                                    'Failed to submit evidence data: ${response.statusCode}',
-                                    widget.caseItem);
-                              }
-                            } else {
-                              // Save evidence locally
-                              requestData['body']['madeOn'] =
-                                  DateTime.now().toIso8601String();
-                              await LocalStore.saveApiResponse(
-                                  evidenceKey, requestData);
-                              showSuccessDialog(context,
-                                  'Evidence saved locally', widget.caseItem);
-                            }
-                          }
-                        },
+                        onPressed: onSubmit,
                         child: const Text('Submit'),
                       ),
                     ),

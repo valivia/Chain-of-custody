@@ -1,11 +1,16 @@
-// Login 
+// Login
 // Logout
 // Togle light/darkmode?
 // Offlinemode
 
-import 'package:coc/main.dart';
-import 'package:coc/pages/login.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/pages/login.dart';
 import 'package:coc/service/authentication.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -19,16 +24,16 @@ class SettingsPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          // Name
           ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Logout'),
-            onTap: () {
-              globalState<Authentication>().logout();
-                Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) =>  const LoginPage()),
-                );
-            },
+            leading: const Icon(Icons.person),
+            title: Text(
+                "${di<Authentication>().user.firstName} ${di<Authentication>().user.lastName}"),
+          ),
+          // Email
+          ListTile(
+            leading: const Icon(Icons.email),
+            title: Text(di<Authentication>().user.email),
           ),
           SwitchListTile(
             title: const Text('Toggle light/dark mode'),
@@ -42,6 +47,17 @@ class SettingsPage extends StatelessWidget {
             value: false, // Replace with actual value
             onChanged: (bool value) {
               // Handle offline mode change
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Logout'),
+            onTap: () {
+              di<Authentication>().logout();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
             },
           ),
         ],

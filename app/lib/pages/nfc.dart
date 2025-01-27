@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:coc/pages/transfer_evidence.dart';
 
@@ -81,7 +84,7 @@ class NfcScanPageState extends State<NfcScanPage> {
               if (value.isEmpty) {
                 return const Text('Scan an NFC tag');
               } else {
-                  return Text('Error: ${value['error']}');
+                return Text('Error: ${value['error']}');
               }
             },
           ),

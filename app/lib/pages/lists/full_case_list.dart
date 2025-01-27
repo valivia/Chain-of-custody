@@ -1,6 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/components/listItems/case.dart';
 import 'package:coc/controllers/case.dart';
-import 'package:coc/components/case_button.dart';
+import 'package:coc/service/data.dart';
 
 class CaseListView extends StatelessWidget {
   const CaseListView({super.key, required this.caseList});
@@ -18,20 +25,22 @@ class CaseListView extends StatelessWidget {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: CaseList(caseList: caseList),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: CaseList(),
       ),
     );
   }
 }
 
-class CaseList extends StatelessWidget {
-  const CaseList({super.key, required this.caseList});
-  final List<Case> caseList;
+class CaseList extends WatchingWidget {
+  const CaseList({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final caseList =
+        watchPropertyValue((DataService dataService) => dataService.cases);
+
     return Column(
       children: [
         Expanded(
@@ -41,7 +50,7 @@ class CaseList extends StatelessWidget {
             itemCount: caseList.length,
             itemBuilder: (context, index) {
               final caseItem = caseList[index];
-              return caseButton(context, caseItem);
+              return CaseListItem(caseItem: caseItem);
             },
           ),
         )
