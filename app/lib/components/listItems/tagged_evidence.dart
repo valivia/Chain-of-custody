@@ -24,7 +24,7 @@ class TaggedEvidenceListItem extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                EvidenceDetailView(evidenceItem: taggedEvidenceItem),
+                EvidenceDetailView(evidence: taggedEvidenceItem),
           ),
         );
       },

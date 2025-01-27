@@ -1,6 +1,9 @@
-import 'package:coc/controllers/media_evidence.dart';
-import 'package:coc/components/media_preview.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:coc/components/media_preview.dart';
+import 'package:coc/controllers/media_evidence.dart';
 
 Widget buildMediaGrid({
   required List<MediaEvidence> mediaItems,

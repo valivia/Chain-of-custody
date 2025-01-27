@@ -91,7 +91,7 @@ class CaseDetailView extends WatchingWidget {
                           child: Text(
                             'Handlers',
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ),
                         const Spacer(),
@@ -123,7 +123,7 @@ class CaseDetailView extends WatchingWidget {
                           child: Text(
                             'Evidence',
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ),
                         const Spacer(),
@@ -167,7 +167,7 @@ class CaseDetailView extends WatchingWidget {
                           child: Text(
                             'Media Evidence',
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ),
                         const Spacer(),

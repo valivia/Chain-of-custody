@@ -17,7 +17,7 @@ Widget evidenceButton(BuildContext context, TaggedEvidence taggedEvidenceItem) {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                EvidenceDetailView(evidenceItem: taggedEvidenceItem),
+                EvidenceDetailView(evidence: taggedEvidenceItem),
           ),
         );
       },

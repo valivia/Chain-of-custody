@@ -12,12 +12,14 @@ class KeyValue extends StatelessWidget {
     return Row(
       children: <Widget>[
         Text(
-          keyText,
+          "$keyText: ",
           style: const TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
           ),
         ),
-        Text(value),
+        Text(
+          value,
+        ),
       ],
     );
   }

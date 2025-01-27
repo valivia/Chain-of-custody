@@ -41,8 +41,10 @@ class TransferHistoryListItem extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return MapPointerBottomSheet(
-              locationData: locationData[0],
               title: "Transfer",
+              userId: log.userId,
+              createdAt: log.createdAt,
+              location: log.location!,
             );
           },
         );

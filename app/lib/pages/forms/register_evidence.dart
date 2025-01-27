@@ -160,7 +160,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
               children: [
                 // ID
                 KeyValue(
-                  keyText: 'ID: ',
+                  keyText: 'ID',
                   value: widget.evidenceId,
                 ),
                 const SizedBox(height: 8),
@@ -174,11 +174,11 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                   ),
                 ] else ...[
                   KeyValue(
-                    keyText: "Latitude: ",
+                    keyText: "Latitude",
                     value: _position.latitude.toString(),
                   ),
                   KeyValue(
-                    keyText: "Longitude: ",
+                    keyText: "Longitude",
                     value: _position.longitude.toString(),
                   ),
                 ],
