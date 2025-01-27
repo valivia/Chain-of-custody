@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, NotFoundException, Param, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, NotFoundException, Param, Patch, Post, Req } from '@nestjs/common';
 import { Case, CaseStatus, CaseUser, MediaEvidence, TaggedEvidence, User as PrismaUser, Action } from "@prisma/client";
 import { IsEnum, IsOptional, IsString } from "class-validator";
 import { User, UserEntity } from "src/guards/auth.guard";
@@ -6,6 +6,7 @@ import { PrismaService } from 'src/services/prisma.service';
 import { checkCaseVisibility, CasePermission, getAllCasePermissions } from "./permissions";
 import { Request } from "express";
 import { saveToAuditLog } from "src/util/auditlog";
+import { rm } from "fs/promises";
 
 class CaseDto {
   @IsString()
@@ -180,4 +181,36 @@ export class CaseController {
     return { data: updatedCase };
   }
 
+  @Delete(':id')
+  async delete(@Req() req: Request, @Param('id') id: string, @User() user: UserEntity) {
+    const caseUser = await checkCaseVisibility(this.prisma, id, user.id);
+
+    if (!caseUser.hasPermission(CasePermission.manage)) {
+      throw new ForbiddenException("Permission denied");
+    }
+
+    await saveToAuditLog(this.prisma, req, {
+      action: Action.delete,
+      oldData: caseUser.case,
+      userId: user.id,
+      caseId: id,
+    });
+
+    const deletedCase = await this.prisma.case.delete({
+      where: { id },
+      include: {
+        mediaEvidence: true,
+      }
+    });
+
+    const deleteQueue = deletedCase.mediaEvidence.map(async media => {
+      return rm(`./data/evidence/${media.id}.jpg`);
+    });
+
+    await Promise.allSettled(deleteQueue);
+
+    console.log("Deleted ", deleteQueue.length, " files");
+
+    return { data: null };
+  }
 }
