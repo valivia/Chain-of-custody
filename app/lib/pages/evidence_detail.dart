@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
+import 'package:coc/components/lists/transfer_history.dart';
 import 'package:coc/components/location_display.dart';
 import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:coc/utility/helpers.dart';
-import 'package:coc/components/lists/transfer_history.dart';
 
 class EvidenceDetailView extends StatelessWidget {
   final TaggedEvidence evidenceItem;
@@ -37,7 +37,8 @@ class EvidenceDetailView extends StatelessWidget {
             children: [
               Text(
                 'Case ID: ${evidenceItem.caseId}',
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text(
@@ -102,7 +103,7 @@ class EvidenceDetailView extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     LimTransferHistoryView(
-                        evidenceItem: evidenceItem, itemCount: 2),
+                        transfers: evidenceItem.transfers, itemCount: 2),
                   ],
                 ),
               ),

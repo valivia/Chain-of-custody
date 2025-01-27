@@ -1,10 +1,10 @@
 // Package imports:
-import 'package:coc/controllers/case.dart';
-import 'package:coc/service/api_service.dart';
 import 'package:latlong2/latlong.dart';
 
 // Project imports:
 import 'package:coc/controllers/audit_log.dart';
+import 'package:coc/controllers/case.dart';
+import 'package:coc/service/api_service.dart';
 import 'package:coc/utility/helpers.dart';
 
 enum ContainerType {
@@ -49,6 +49,14 @@ class TaggedEvidence {
     required this.originLocationDescription,
     required this.auditLog,
   });
+
+  List<AuditLog> get transfers {
+    final sortedTransfers = auditLog
+        .where((log) => log.action == Action.transfer)
+        .toList()
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return sortedTransfers;
+  }
 
   factory TaggedEvidence.fromJson(Map<String, dynamic> json) {
     final createdAt = json['createdAt'] as String?;

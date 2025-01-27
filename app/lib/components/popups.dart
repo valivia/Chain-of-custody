@@ -42,7 +42,7 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CaseDetailView(),
+                          builder: (context) => const CaseDetailView(),
                         ),
                         (Route<dynamic> route) =>
                             route.isFirst, // Keep the main page in the stack
@@ -118,8 +118,7 @@ void showFailureDialog(BuildContext context, String message, Case caseItem) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              CaseDetailView(),
+                          builder: (context) => const CaseDetailView(),
                         ),
                         (Route<dynamic> route) =>
                             route.isFirst, // Keep the main page in the stack

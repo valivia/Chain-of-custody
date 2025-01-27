@@ -1,9 +1,4 @@
 // Flutter imports:
-import 'package:coc/components/key_value.dart';
-import 'package:coc/controllers/tagged_evidence.dart';
-import 'package:coc/main.dart';
-import 'package:coc/service/api_service.dart';
-import 'package:coc/utility/helpers.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -12,10 +7,15 @@ import 'package:latlong2/latlong.dart';
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
+import 'package:coc/components/key_value.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/components/popups.dart';
 import 'package:coc/controllers/case.dart';
+import 'package:coc/controllers/tagged_evidence.dart';
+import 'package:coc/main.dart';
+import 'package:coc/service/api_service.dart';
 import 'package:coc/service/location.dart';
+import 'package:coc/utility/helpers.dart';
 
 Function(BuildContext, String) navigateToEvidenceCreate(Case caseItem) {
   onscan(BuildContext context, String code) {

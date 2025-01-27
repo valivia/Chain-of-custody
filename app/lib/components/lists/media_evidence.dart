@@ -37,7 +37,7 @@ class LimMediaEvidenceList extends StatelessWidget {
         MediaEvidenceGrid(
           url: url,
           headers: headers,
-          mediaEvidence: mediaEvidence,
+          mediaEvidence: mediaEvidence.take(itemCount).toList(),
         ),
         if (mediaEvidence.length > itemCount)
           Padding(

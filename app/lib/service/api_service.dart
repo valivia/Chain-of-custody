@@ -1,9 +1,13 @@
+// Dart imports:
 import 'dart:convert';
 
+// Package imports:
+import 'package:http/http.dart' as http;
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/enviroment.dart';
-import 'package:watch_it/watch_it.dart';
-import 'package:http/http.dart' as http;
 
 class ApiService {
   static Map<String, String> getHeaders() {

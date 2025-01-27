@@ -1,11 +1,13 @@
 // Flutter imports:
-import 'package:coc/service/data.dart';
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:watch_it/watch_it.dart';
 
 // Project imports:
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/case_detail.dart';
-import 'package:watch_it/watch_it.dart';
+import 'package:coc/service/data.dart';
 
 class CaseListItem extends StatelessWidget {
   final Case caseItem;

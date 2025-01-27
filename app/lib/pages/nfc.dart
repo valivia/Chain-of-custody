@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:nfc_manager/nfc_manager.dart';
+
+// Project imports:
 import 'package:coc/pages/transfer_evidence.dart';
 
 class NfcScanPage extends StatefulWidget {

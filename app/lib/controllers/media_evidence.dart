@@ -1,16 +1,16 @@
 // Package imports:
+import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/controllers/audit_log.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/service/api_service.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 import 'package:coc/service/enviroment.dart';
-import 'package:latlong2/latlong.dart';
-
-// Project imports:
-import 'package:coc/controllers/audit_log.dart';
 import 'package:coc/utility/helpers.dart';
-import 'package:http/http.dart' as http;
-import 'package:watch_it/watch_it.dart';
 
 class MediaEvidence {
   String id;

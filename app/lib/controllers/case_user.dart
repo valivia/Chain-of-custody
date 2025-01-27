@@ -38,6 +38,8 @@ class CaseUser {
     required this.permissions,
   });
 
+  get fullName => '$firstName $lastName';
+
   factory CaseUser.fromJson(Map<String, dynamic> json) {
     return CaseUser(
       userId: json['userId'],

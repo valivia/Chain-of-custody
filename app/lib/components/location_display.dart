@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:coc/service/data.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -6,8 +7,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 // Project imports:
-import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:coc/utility/helpers.dart';
+import 'package:watch_it/watch_it.dart';
 
 class MapPointer extends StatelessWidget {
   final LatLng location;
@@ -87,8 +88,11 @@ class MapPointerBottomSheet extends StatelessWidget {
                 const Icon(Icons.person, color: Colors.white),
                 const SizedBox(width: 8),
                 Text(
-                  // TODO: Display username of person of interest
-                  locationData['userId'],
+                  di<DataService>()
+                          .currentCase
+                          ?.getUser(locationData['userId'])
+                          ?.fullName ??
+                      'Unknown',
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.bold),
                 ),

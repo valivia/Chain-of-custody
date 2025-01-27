@@ -181,7 +181,7 @@ class Case {
     }
   }
 
-  getUser(String id) {
+  CaseUser? getUser(String id) {
     return users.firstWhere((user) => user.userId == id);
   }
 

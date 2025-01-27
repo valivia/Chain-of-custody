@@ -1,9 +1,9 @@
 // Flutter imports:
-import 'package:coc/service/data.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:watch_it/watch_it.dart';
 
 // Project imports:
 import 'package:coc/components/button.dart';
@@ -14,7 +14,7 @@ import 'package:coc/components/lists/tagged_evidence.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/scanner.dart';
-import 'package:watch_it/watch_it.dart';
+import 'package:coc/service/data.dart';
 
 class CaseDetailView extends WatchingWidget {
   const CaseDetailView({super.key});
@@ -189,25 +189,6 @@ class CaseDetailView extends WatchingWidget {
                       mediaEvidence: caseItem.mediaEvidence,
                       itemCount: 4,
                     )
-                    // FutureBuilder<bool>(
-                    //   future: hasInternetConnection(),
-                    //   builder: (context, snapshot) {
-                    //     if (snapshot.connectionState ==
-                    //         ConnectionState.waiting) {
-                    //       return const CircularProgressIndicator();
-                    //     } else if (snapshot.hasError || !snapshot.data!) {
-                    //       return const Padding(
-                    //         padding: EdgeInsets.only(left: 8.0),
-                    //         child: Text('No internet connection'),
-                    //       );
-                    //     } else {
-                    //       return LimMediaEvidenceList(
-                    //         mediaEvidence: caseItem.mediaEvidence,
-                    //         itemCount: 4,
-                    //       );
-                    //     }
-                    //   },
-                    // ),
                   ],
                 ),
               ),

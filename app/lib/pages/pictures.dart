@@ -3,10 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 
 // Flutter imports:
-import 'package:coc/controllers/media_evidence.dart';
-import 'package:coc/main.dart';
-import 'package:coc/service/api_service.dart';
-import 'package:coc/utility/helpers.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -18,10 +14,14 @@ import 'package:path_provider/path_provider.dart';
 // Project imports:
 import 'package:coc/components/local_store.dart';
 import 'package:coc/controllers/case.dart';
+import 'package:coc/controllers/media_evidence.dart';
+import 'package:coc/main.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/image_gallery.dart';
 import 'package:coc/pages/scanner.dart';
+import 'package:coc/service/api_service.dart';
 import 'package:coc/service/location.dart';
+import 'package:coc/utility/helpers.dart';
 
 class PictureTakingPage extends StatefulWidget {
   final Case caseItem;

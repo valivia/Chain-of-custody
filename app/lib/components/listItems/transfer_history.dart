@@ -1,14 +1,21 @@
-import 'package:coc/controllers/audit_log.dart' as coc_audit;
-import 'package:coc/utility/helpers.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:coc/components/location_display.dart';
 
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/components/location_display.dart';
+import 'package:coc/controllers/audit_log.dart' as coc_audit;
+import 'package:coc/service/data.dart';
+import 'package:coc/utility/helpers.dart';
 
 class TransferHistoryListItem extends StatelessWidget {
+  final coc_audit.AuditLog? previousLog;
   final coc_audit.AuditLog log;
   final List<Map<String, dynamic>> locationData;
 
-  TransferHistoryListItem({super.key, required this.log})
+  TransferHistoryListItem({super.key, required this.log, this.previousLog})
       : locationData = [
           {
             'createdAt': log.createdAt,
@@ -19,6 +26,11 @@ class TransferHistoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentCaseUser = di<DataService>().currentCase?.getUser(log.userId);
+    final previousCaseUser = previousLog?.userId != null
+        ? di<DataService>().currentCase?.getUser(previousLog!.userId)
+        : null;
+
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(10),
@@ -41,17 +53,21 @@ class TransferHistoryListItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Transfer"),
               Row(
                 children: [
-                  Text(log.id),
-                  const SizedBox(width: 4),
-                  const Icon(Icons.arrow_right),
-                  const SizedBox(width: 4),
-                  Text(log.userId),
+                  if (previousCaseUser != null) ...[
+                    Text(previousCaseUser.firstName),
+                    const SizedBox(width: 4),
+                    const Icon(Icons.arrow_right),
+                    const SizedBox(width: 4),
+                  ],
+                  Text(currentCaseUser?.firstName ?? "Unknown"),
                 ],
               ),
-              Text(formatTimestamp(log.createdAt)),
+              Text(
+                formatTimestamp(log.createdAt),
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
             ],
           ),
         ],
