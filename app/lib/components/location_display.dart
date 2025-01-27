@@ -46,15 +46,15 @@ class MapPointer extends StatelessWidget {
 }
 
 class MapPointerBottomSheet extends StatelessWidget {
-  final TaggedEvidence evidenceItem;
+  final Map locationData;
   final String title;
 
   const MapPointerBottomSheet(
-      {super.key, required this.evidenceItem, required this.title});
+      {super.key, required this.locationData, required this.title});
 
   @override
   Widget build(BuildContext context) {
-    final location = evidenceItem.originCoordinates;
+    final location = locationData['location'];
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -88,7 +88,7 @@ class MapPointerBottomSheet extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   // TODO: Display username of person of interest
-                  evidenceItem.userId,
+                  locationData['userId'],
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.bold),
                 ),
@@ -98,21 +98,13 @@ class MapPointerBottomSheet extends StatelessWidget {
               children: [
                 const Icon(Icons.access_time_outlined, color: Colors.white),
                 const SizedBox(width: 8),
-                const Text(
-                  "Registered on: ",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(formatTimestamp(evidenceItem.madeOn)),
+                Text(formatTimestamp(locationData["createdAt"])),
               ],
             ),
             Row(
               children: [
                 const Icon(Icons.location_on, color: Colors.white),
                 const SizedBox(width: 8),
-                const Text(
-                  'Origin location: ',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
                 Text(
                   '${location.latitude}, ${location.longitude}',
                   style: const TextStyle(fontSize: 16),

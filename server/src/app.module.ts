@@ -10,6 +10,7 @@ import { ConfigModule } from "@nestjs/config";
 import { validationSchema } from "./util/config";
 import { DevmodeProvider } from "./guards/dev.guard";
 import { CaseUserController } from "./routes/case/user/case_user.controller";
+import { UtilController } from "./routes/util/util.controller";
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { CaseUserController } from "./routes/case/user/case_user.controller";
       },
     }),
   ],
-  controllers: [CaseController, CaseUserController, MediaController, TagController, EvidenceController],
+  controllers: [CaseController, UtilController, CaseUserController, MediaController, TagController, EvidenceController],
   providers: [
     PrismaService,
     AuthProvider,
