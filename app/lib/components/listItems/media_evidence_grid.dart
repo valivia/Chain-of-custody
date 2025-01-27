@@ -23,7 +23,6 @@ class MediaEvidenceGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("------------rebuilding media evidence grid-------------------");
     return GridView.builder(
       shrinkWrap: true,
       padding: const EdgeInsets.all(0),

@@ -86,7 +86,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
 
       if (isConnected) {
         try {
-          final evidence = await TaggedEvidence.fromForm(
+          await TaggedEvidence.fromForm(
             id: _idController.text,
             caseItem: widget.caseItem,
             containerType: ContainerType.values.byName(_selectedContainerType),
@@ -97,8 +97,6 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                 _originLocationDescriptionController.text,
           );
 
-          widget.caseItem.taggedEvidence.add(evidence);
-          // di<DataService>;
           showSuccessDialog(
             navigatorKey.currentContext!,
             'Evidence submitted successfully',

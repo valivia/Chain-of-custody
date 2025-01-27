@@ -184,6 +184,7 @@ class Case {
   getUser(String id) {
     return users.firstWhere((user) => user.userId == id);
   }
+
   canIUse(CasePermission permission) {
     final userId = di<Authentication>().user.id;
     final user = users.firstWhere((user) {

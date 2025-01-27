@@ -1,4 +1,5 @@
 // Dart imports:
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -15,22 +16,25 @@ import 'package:coc/service/authentication.dart';
 
 class DataService extends ChangeNotifier {
   // Cases
-  Map<String, Case> _cases = {};
-  List<Case> get cases => _cases.values.toList();
+  List<Case> _cases = [];
+  UnmodifiableListView<Case> get cases => UnmodifiableListView(_cases);
 
   // Current case
   Case? _currentCase;
   Case? get currentCase => _currentCase;
   set currentCase(Case? c) {
-    log("set Current case: ${c?.id} ${c == _currentCase}");
+    log("set Current case: ${c?.id} changed: ${c == _currentCase}");
+
+    if (c == _currentCase) return;
+
+    _currentCase = c;
+
     if (c != null) {
-      _cases[c.id] = c;
-      saveToLocalStorage();
+      upsertCase(c);
     } else {
       log("Current case is null");
+      notifyListeners();
     }
-    _currentCase = c;
-    notifyListeners();
   }
 
   static Future<DataService> initialize() async {
@@ -41,7 +45,7 @@ class DataService extends ChangeNotifier {
   }
 
   clear() {
-    _cases = {};
+    _cases.clear();
     localStorage.removeItem("cases");
     notifyListeners();
   }
@@ -50,7 +54,7 @@ class DataService extends ChangeNotifier {
     final jsonCases = localStorage.getItem("cases");
     if (jsonCases != null) {
       final cases = jsonDecode(jsonCases);
-      _cases = {for (var c in cases) c["id"]: Case.fromJson(c)};
+      _cases = [for (var c in cases) Case.fromJson(c)];
     }
 
     log("Loaded cases from local storage");
@@ -61,7 +65,7 @@ class DataService extends ChangeNotifier {
   saveToLocalStorage() {
     localStorage.setItem(
       "cases",
-      jsonEncode(_cases.values.map((c) => c.toJson()).toList()),
+      jsonEncode(_cases.map((c) => c.toJson()).toList()),
     );
 
     log("Saved cases to local storage");
@@ -72,9 +76,8 @@ class DataService extends ChangeNotifier {
 
     try {
       final apiCases = await Case.fetchCases();
-      final apiCasesMap = {for (var c in apiCases) c.id: c};
 
-      _cases = apiCasesMap;
+      _cases = apiCases;
 
       saveToLocalStorage();
       notifyListeners();
@@ -84,13 +87,20 @@ class DataService extends ChangeNotifier {
   }
 
   upsertCase(Case c) {
-    _cases[c.id] = c;
+    final index = _cases.indexWhere((element) => element.id == c.id);
+
+    if (index == -1) {
+      _cases.add(c);
+    } else {
+      _cases[index] = c;
+    }
+
     saveToLocalStorage();
     notifyListeners();
   }
 
   deleteCase(Case c) {
-    _cases.remove(c.id);
+    _cases.removeWhere((element) => element.id == c.id);
     saveToLocalStorage();
     notifyListeners();
   }

@@ -25,10 +25,7 @@ class CaseDetailView extends WatchingWidget {
 
   @override
   build(BuildContext context) {
-    print('-------- rebuild case detail view --------');
-    final caseItem = watchPropertyValue(
-      (DataService dataService) => dataService.currentCase,
-    );
+    final caseItem = watchIt<DataService>().currentCase;
 
     if (caseItem == null) {
       return const Scaffold(

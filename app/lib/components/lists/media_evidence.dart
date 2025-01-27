@@ -28,7 +28,6 @@ class LimMediaEvidenceList extends StatelessWidget {
       'Authorization': di<Authentication>().bearerToken,
     };
 
-    print("-------------- rebuild media evidence list --------------");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
