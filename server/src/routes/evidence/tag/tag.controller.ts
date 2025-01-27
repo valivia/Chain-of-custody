@@ -113,13 +113,13 @@ export class TagController {
       throw new NotFoundException();
     }
 
-    await saveToAuditLog(this.prisma, req, {
+    const auditLog = await saveToAuditLog(this.prisma, req, {
       action: Action.transfer,
       userId: user.id,
       taggedEvidenceId: id,
       location: body.coordinates,
     });
 
-    return;
+    return { data: auditLog };
   }
 }
