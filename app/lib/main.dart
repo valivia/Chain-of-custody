@@ -12,9 +12,8 @@ import 'package:coc/components/lists/case.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/pages/debug.dart';
 import 'package:coc/pages/forms/register_case.dart';
-import 'package:coc/pages/scanner.dart';
+import 'package:coc/pages/scan_any_tag.dart';
 import 'package:coc/pages/settings.dart';
-import 'package:coc/pages/transfer_evidence.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 import 'package:coc/service/location.dart';
@@ -178,9 +177,7 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => QRScannerPage(
-                        onScan: navigateToEvidenceTransfer(),
-                      ),
+                      builder: (context) => const ScanAnyTagPage(),
                     ),
                   );
                 },
