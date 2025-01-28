@@ -11,6 +11,7 @@ import 'package:coc/pages/image_gallery.dart';
 import 'package:coc/pages/login.dart';
 import 'package:coc/pages/nfc.dart';
 import 'package:coc/service/data.dart';
+import 'package:coc/pages/combo_qr_nfc_scanner.dart';
 
 class DebugPage extends StatelessWidget {
   const DebugPage({super.key});
@@ -53,6 +54,22 @@ class DebugPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => NfcScanPage()),
+                  );
+                },
+              ),
+              const SizedBox(height: 20), // Add spacing between buttons
+              ElevatedButton(
+                child: const Text('Scan QR/NFC Tag'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ComboScannerPage(
+                        onScan: (context, scanData) {
+                          // Handle scan data
+                        },
+                      ),
+                    ),
                   );
                 },
               ),
