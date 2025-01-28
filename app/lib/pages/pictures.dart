@@ -221,6 +221,7 @@ class PictureTakingPageState extends State<PictureTakingPage> {
                   MaterialPageRoute(
                       builder: (context) => QRScannerPage(
                             onScan: navigateToEvidenceCreate(widget.caseItem),
+                            title: 'Scan QR Code',
                           )),
                 );
               },

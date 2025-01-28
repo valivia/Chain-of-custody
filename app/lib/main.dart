@@ -1,4 +1,8 @@
 // Flutter imports:
+import 'dart:convert';
+
+import 'package:coc/controllers/user.dart';
+import 'package:coc/pages/case_detail.dart';
 import 'package:coc/pages/scannable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +111,12 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomePage(),
+      initialRoute: "/",
+      routes: {
+        "/": (context) => const HomePage(),
+        "/case": (context) => const CaseDetailView(),
+        "/settings": (context) => const SettingsPage(),
+      },
     );
   }
 }
@@ -172,7 +181,11 @@ class HomePage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ScannablePage(
-                        data: di<Authentication>().user.id,
+                        data: jsonEncode(
+                          UserScannable.fromUser(di<Authentication>().user)
+                              .toJson(),
+                        ),
+                        title: "Join Case",
                         description:
                             "Let the manager of the case scan this QR code to join the case",
                         onDone: (context) {

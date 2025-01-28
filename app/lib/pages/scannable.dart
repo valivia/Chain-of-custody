@@ -3,22 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ScannablePage extends StatelessWidget {
-  final String data;
+  final String title;
   final String? description;
+  final String data;
   final Function(BuildContext)? onDone;
 
   const ScannablePage({
     super.key,
-    required this.data,
-    this.description,
     this.onDone,
+    required this.data,
+    this.title = "Scannable",
+    this.description,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

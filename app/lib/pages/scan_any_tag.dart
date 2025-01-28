@@ -10,16 +10,16 @@ class ScanAnyTagPage extends StatelessWidget {
   final String title;
 
   const ScanAnyTagPage({
-    super.key, 
-    required this.onScan, 
+    super.key,
+    required this.onScan,
     required this.title,
-    });
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(title),
+        title: Text(title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -47,13 +47,16 @@ class ScanAnyTagPage extends StatelessWidget {
               height: 400, // Set a fixed height for the NFC scan area
               child: NfcScanPage(onScan: onScan),
             ),
-            const SizedBox(height: 20), 
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => QRScannerPage(onScan: onScan),
+                    builder: (context) => QRScannerPage(
+                      onScan: onScan,
+                      title: title,
+                    ),
                   ),
                 );
               },
