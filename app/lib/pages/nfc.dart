@@ -30,7 +30,8 @@ class NfcScanPageState extends State<NfcScanPage> {
           final ndefMessage = ndef['cachedMessage'];
           if (ndefMessage != null) {
             for (var record in ndefMessage['records']) {
-              if (record['typeNameFormat'] == 'nfcWellknown' &&
+              if (
+                (record['typeNameFormat'] == 'nfcWellknown' || record['typeNameFormat'] == 1) &&
                   record['type'].length == 1 &&
                   record['type'].first == 0x54) {
                 final languageCodeLength = record['payload'].first;
@@ -46,7 +47,6 @@ class NfcScanPageState extends State<NfcScanPage> {
         } else {
           tagData['message'] = 'No NDEF data found on the tag.';
         }
-
         result.value = tagData;
         if (evidenceId.isNotEmpty) {
           Navigator.push(
