@@ -1,9 +1,7 @@
-// Flutter imports:
+// Dart imports:
 import 'dart:convert';
 
-import 'package:coc/controllers/user.dart';
-import 'package:coc/pages/case_detail.dart';
-import 'package:coc/pages/scannable.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -15,9 +13,12 @@ import 'package:watch_it/watch_it.dart';
 import 'package:coc/components/button.dart';
 import 'package:coc/components/lists/case.dart';
 import 'package:coc/components/local_store.dart';
+import 'package:coc/controllers/user.dart';
+import 'package:coc/pages/case_detail.dart';
 import 'package:coc/pages/debug.dart';
 import 'package:coc/pages/forms/register_case.dart';
 import 'package:coc/pages/scan_any_tag.dart';
+import 'package:coc/pages/scannable.dart';
 import 'package:coc/pages/settings.dart';
 import 'package:coc/pages/transfer_evidence.dart';
 import 'package:coc/service/authentication.dart';

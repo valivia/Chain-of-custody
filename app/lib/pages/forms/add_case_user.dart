@@ -1,16 +1,17 @@
-// Flutter imports:
+// Dart imports:
 import 'dart:convert';
 import 'dart:developer';
 
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:coc/components/key_value.dart';
+import 'package:coc/controllers/case.dart';
 import 'package:coc/controllers/case_user.dart';
 import 'package:coc/controllers/user.dart';
 import 'package:coc/main.dart';
 import 'package:coc/service/api_service.dart';
-import 'package:flutter/material.dart';
-
-// Project imports:
-import 'package:coc/controllers/case.dart';
 
 Function(BuildContext, String) navigateToCaseUserCreate(Case caseItem) {
   Future<void> onscan(BuildContext context, String code) async {

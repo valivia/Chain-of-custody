@@ -1,8 +1,4 @@
-import 'package:coc/controllers/case_user.dart';
-import 'package:coc/pages/forms/add_case_user.dart';
-import 'package:coc/pages/scanner.dart';
-import 'package:coc/pages/transfer_evidence.dart';
-import 'package:coc/service/authentication.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -15,9 +11,14 @@ import 'package:coc/components/case_base_details.dart';
 import 'package:coc/components/lists/case_user.dart';
 import 'package:coc/components/lists/media_evidence.dart';
 import 'package:coc/components/lists/tagged_evidence.dart';
+import 'package:coc/controllers/case_user.dart';
+import 'package:coc/pages/forms/add_case_user.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/scan_any_tag.dart';
+import 'package:coc/pages/scanner.dart';
+import 'package:coc/pages/transfer_evidence.dart';
+import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 
 class CaseDetailView extends WatchingWidget {

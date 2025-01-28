@@ -1,7 +1,10 @@
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
 import 'package:coc/controllers/case.dart';
 import 'package:coc/service/api_service.dart';
 import 'package:coc/service/data.dart';
-import 'package:watch_it/watch_it.dart';
 
 enum CasePermission {
   view,

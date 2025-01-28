@@ -1,3 +1,4 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 class ThreeDotsWaitIndicator extends StatefulWidget {
@@ -7,7 +8,8 @@ class ThreeDotsWaitIndicator extends StatefulWidget {
   ThreeDotsWaitIndicatorState createState() => ThreeDotsWaitIndicatorState();
 }
 
-class ThreeDotsWaitIndicatorState extends State<ThreeDotsWaitIndicator> with SingleTickerProviderStateMixin {
+class ThreeDotsWaitIndicatorState extends State<ThreeDotsWaitIndicator>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -36,7 +38,7 @@ class ThreeDotsWaitIndicatorState extends State<ThreeDotsWaitIndicator> with Sin
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(3, (index) {
             return Padding(
-                padding: const EdgeInsets.only(left: 4.0, top: 8.0, right: 4.0),
+              padding: const EdgeInsets.only(left: 4.0, top: 8.0, right: 4.0),
               child: Opacity(
                 opacity: _animation.value > (index * 0.3) ? 1.0 : 0.0,
                 child: const Dot(),

@@ -42,7 +42,8 @@ class DebugPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ImageGalleryPage()),
+                      MaterialPageRoute(
+                          builder: (context) => ImageGalleryPage()),
                     );
                   },
                 ),
@@ -52,7 +53,8 @@ class DebugPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const LoginPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
                     );
                   },
                 ),
@@ -99,7 +101,8 @@ class DebugPage extends StatelessWidget {
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
                   onPressed: () async {
-                    List<Map<String, String>> statusList = await LocalStore.sendAllSavedRequests();
+                    List<Map<String, String>> statusList =
+                        await LocalStore.sendAllSavedRequests();
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -116,8 +119,12 @@ class DebugPage extends StatelessWidget {
                                           : '${status['id']}     ${status['type']}'),
                                     ),
                                     Icon(
-                                      status['status'] == 'Success' ? Icons.check_circle : Icons.close,
-                                      color: status['status'] == 'Success' ? Colors.green : Colors.red,
+                                      status['status'] == 'Success'
+                                          ? Icons.check_circle
+                                          : Icons.close,
+                                      color: status['status'] == 'Success'
+                                          ? Colors.green
+                                          : Colors.red,
                                     ),
                                   ],
                                 );
