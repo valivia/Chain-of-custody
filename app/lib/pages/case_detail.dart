@@ -15,6 +15,7 @@ import 'package:coc/components/lists/tagged_evidence.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/scanner.dart';
+import 'package:coc/pages/scan_any_tag.dart';
 import 'package:coc/service/data.dart';
 
 class CaseDetailView extends WatchingWidget {
@@ -53,10 +54,13 @@ class CaseDetailView extends WatchingWidget {
                 icon: Icons.qr_code,
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => QRScannerPage(
-                              onScan: navigateToEvidenceCreate(caseItem))));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QRScannerPage(
+                        onScan: navigateToEvidenceCreate(caseItem),
+                      ),
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 8),
@@ -67,8 +71,8 @@ class CaseDetailView extends WatchingWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            PictureTakingPage(caseItem: caseItem)),
+                      builder: (context) => PictureTakingPage(caseItem: caseItem),
+                    ),
                   );
                 },
               ),
@@ -80,9 +84,7 @@ class CaseDetailView extends WatchingWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => QRScannerPage(
-                        onScan: navigateToEvidenceTransfer(),
-                      ),
+                      builder: (context) => const ScanAnyTagPage(),
                     ),
                   );
                 },
@@ -107,7 +109,9 @@ class CaseDetailView extends WatchingWidget {
                           child: Text(
                             'Handlers',
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const Spacer(),
@@ -139,7 +143,9 @@ class CaseDetailView extends WatchingWidget {
                           child: Text(
                             'Evidence',
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const Spacer(),
@@ -183,7 +189,9 @@ class CaseDetailView extends WatchingWidget {
                           child: Text(
                             'Media Evidence',
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const Spacer(),
@@ -193,8 +201,7 @@ class CaseDetailView extends WatchingWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    PictureTakingPage(caseItem: caseItem),
+                                builder: (context) => PictureTakingPage(caseItem: caseItem),
                               ),
                             );
                           },
@@ -204,7 +211,7 @@ class CaseDetailView extends WatchingWidget {
                     LimMediaEvidenceList(
                       mediaEvidence: caseItem.mediaEvidence,
                       itemCount: 4,
-                    )
+                    ),
                   ],
                 ),
               ),
