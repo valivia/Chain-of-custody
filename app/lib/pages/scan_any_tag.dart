@@ -28,7 +28,7 @@ class ScanAnyTagPage extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Tap the tag to the top of the phone',
+              'Hold the tag close to the device\'s NFC scanner',
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 10),
