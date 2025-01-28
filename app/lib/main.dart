@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:coc/pages/scannable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -166,7 +167,22 @@ class HomePage extends StatelessWidget {
               Button(
                 title: 'Join case',
                 icon: Icons.photo_camera,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ScannablePage(
+                        data: di<Authentication>().user.id,
+                        description:
+                            "Let the manager of the case scan this QR code to join the case",
+                        onDone: (context) {
+                          Navigator.pop(context);
+                          di<DataService>().syncWithApi();
+                        },
+                      ),
+                    ),
+                  );
+                },
               ),
 
               // Transfer Evidence Button
@@ -178,10 +194,10 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>  ScanAnyTagPage(
+                      builder: (context) => ScanAnyTagPage(
                         onScan: navigateToEvidenceTransfer(),
                         title: "Transfer Evidence",
-                        ),
+                      ),
                     ),
                   );
                 },
