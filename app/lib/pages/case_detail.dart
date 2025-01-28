@@ -14,7 +14,6 @@ import 'package:coc/components/lists/media_evidence.dart';
 import 'package:coc/components/lists/tagged_evidence.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/pictures.dart';
-import 'package:coc/pages/scanner.dart';
 import 'package:coc/pages/scan_any_tag.dart';
 import 'package:coc/service/data.dart';
 
@@ -56,8 +55,9 @@ class CaseDetailView extends WatchingWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => QRScannerPage(
+                      builder: (context) => ScanAnyTagPage(
                         onScan: navigateToEvidenceCreate(caseItem),
+                        title: "Register Evidende",
                       ),
                     ),
                   );
@@ -84,7 +84,10 @@ class CaseDetailView extends WatchingWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ScanAnyTagPage(onScan: navigateToEvidenceTransfer()),
+                      builder: (context) => ScanAnyTagPage(
+                        onScan: navigateToEvidenceTransfer(), 
+                        title: "Transfer Evidence",
+                        ),
                     ),
                   );
                 },
@@ -155,8 +158,9 @@ class CaseDetailView extends WatchingWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => QRScannerPage(
+                                builder: (context) => ScanAnyTagPage(
                                   onScan: navigateToEvidenceCreate(caseItem),
+                                  title: "Register Evidence",
                                 ),
                               ),
                             );

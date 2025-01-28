@@ -7,14 +7,19 @@ import 'package:coc/pages/scanner.dart';
 
 class ScanAnyTagPage extends StatelessWidget {
   final Function(BuildContext, String) onScan;
+  final String title;
 
-  const ScanAnyTagPage({super.key, required this.onScan});
+  const ScanAnyTagPage({
+    super.key, 
+    required this.onScan, 
+    required this.title,
+    });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Transfer Evidence'),
+        title:  Text(title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

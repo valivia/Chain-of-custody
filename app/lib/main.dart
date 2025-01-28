@@ -14,6 +14,7 @@ import 'package:coc/pages/debug.dart';
 import 'package:coc/pages/forms/register_case.dart';
 import 'package:coc/pages/scan_any_tag.dart';
 import 'package:coc/pages/settings.dart';
+import 'package:coc/pages/transfer_evidence.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 import 'package:coc/service/location.dart';
@@ -177,7 +178,10 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ScanAnyTagPage(),
+                      builder: (context) =>  ScanAnyTagPage(
+                        onScan: navigateToEvidenceTransfer(),
+                        title: "Transfer Evidence",
+                        ),
                     ),
                   );
                 },
