@@ -141,7 +141,7 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Form Page'),
+        title: const Text('Register Evidence'),
         backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         elevation: 10,
         shape: const RoundedRectangleBorder(

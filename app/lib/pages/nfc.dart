@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 // Project imports:
-import 'package:coc/pages/transfer_evidence.dart';
+import 'package:coc/components/dot_wait_indicator.dart';
 
 class NfcScanPage extends StatefulWidget {
-  const NfcScanPage({super.key});
+  final Function(BuildContext, String) onScan;
+  const NfcScanPage({super.key, required this.onScan});
 
   @override
   NfcScanPageState createState() => NfcScanPageState();
@@ -30,7 +31,8 @@ class NfcScanPageState extends State<NfcScanPage> {
           final ndefMessage = ndef['cachedMessage'];
           if (ndefMessage != null) {
             for (var record in ndefMessage['records']) {
-              if (record['typeNameFormat'] == 'nfcWellknown' &&
+              if ((record['typeNameFormat'] == 'nfcWellknown' ||
+                      record['typeNameFormat'] == 1) &&
                   record['type'].length == 1 &&
                   record['type'].first == 0x54) {
                 final languageCodeLength = record['payload'].first;
@@ -46,17 +48,9 @@ class NfcScanPageState extends State<NfcScanPage> {
         } else {
           tagData['message'] = 'No NDEF data found on the tag.';
         }
-
         result.value = tagData;
         if (evidenceId.isNotEmpty) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TransferEvidencePage(
-                evidenceID: evidenceId,
-              ),
-            ),
-          );
+          widget.onScan(context, evidenceId);
         } else {
           result.value = {'error': 'No evidence ID found on the tag.'};
         }
@@ -77,14 +71,20 @@ class NfcScanPageState extends State<NfcScanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Scan NFC Tag')),
+      // appBar: AppBar(title: const Text('Scan NFC Tag')),
       body: SafeArea(
         child: Center(
           child: ValueListenableBuilder<Map<String, dynamic>>(
             valueListenable: result,
             builder: (context, value, _) {
               if (value.isEmpty) {
-                return const Text('Scan an NFC tag');
+                return const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:  [
+                  Text('Waiting for scan '),
+                  ThreeDotsWaitIndicator(),
+                  ],
+                );
               } else {
                 return Text('Error: ${value['error']}');
               }
