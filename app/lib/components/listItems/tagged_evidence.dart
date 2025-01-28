@@ -30,7 +30,10 @@ class TaggedEvidenceListItem extends StatelessWidget {
       },
       child: Row(
         children: [
-          const Icon(Icons.info),
+          Icon(
+            taggedEvidenceItem.containerType.icon,
+            color: Colors.white,
+          ),
           const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

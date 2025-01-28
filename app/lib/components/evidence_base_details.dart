@@ -35,7 +35,7 @@ class EvidenceDetails extends StatelessWidget {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 5),
-          KeyValue(keyText: "Container", value: evidence.containerType),
+          KeyValue(keyText: "Container", value: evidence.containerType.name),
           const SizedBox(height: 5),
           KeyValue(keyText: "Item Type", value: evidence.itemType),
           const SizedBox(height: 5),
