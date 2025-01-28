@@ -84,7 +84,7 @@ class CaseDetailView extends WatchingWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ScanAnyTagPage(),
+                      builder: (context) => ScanAnyTagPage(onScan: navigateToEvidenceTransfer()),
                     ),
                   );
                 },

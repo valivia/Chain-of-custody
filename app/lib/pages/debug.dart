@@ -79,7 +79,7 @@ class DebugPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ScanAnyTagPage(),
+                        builder: (context) => ScanAnyTagPage(onScan: navigateToEvidenceTransfer()),
                       ),
                     );
                   },

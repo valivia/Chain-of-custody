@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 // Project imports:
 import 'package:coc/pages/nfc.dart';
 import 'package:coc/pages/scanner.dart';
-import 'package:coc/pages/transfer_evidence.dart';
 
 class ScanAnyTagPage extends StatelessWidget {
-  const ScanAnyTagPage({super.key});
+  final Function(BuildContext, String) onScan;
+
+  const ScanAnyTagPage({super.key, required this.onScan});
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +27,20 @@ class ScanAnyTagPage extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'Hold the tag close to the device\'s NFC scanner',
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'Or tap the button below to use QR scanner to scan the tag instead.',
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             SizedBox(
               height: 400, // Set a fixed height for the NFC scan area
-              child: NfcScanPage(onScan: navigateToEvidenceTransfer()),
+              child: NfcScanPage(onScan: onScan),
             ),
             const SizedBox(height: 20), 
             ElevatedButton(
@@ -47,9 +48,7 @@ class ScanAnyTagPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => QRScannerPage(
-                      onScan: navigateToEvidenceTransfer(),
-                    ),
+                    builder: (context) => QRScannerPage(onScan: onScan),
                   ),
                 );
               },
