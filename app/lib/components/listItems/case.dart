@@ -39,11 +39,6 @@ class CaseListItem extends StatelessWidget {
                   caseItem.title,
                   style: const TextStyle(fontSize: 16),
                 ),
-                Text(
-                  caseItem.id,
-                  style: const TextStyle(
-                      fontSize: 12, fontWeight: FontWeight.w300),
-                ),
               ],
             ),
           ),
