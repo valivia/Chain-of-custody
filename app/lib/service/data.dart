@@ -42,7 +42,6 @@ class DataService extends ChangeNotifier {
   static Future<DataService> initialize() async {
     final instance = DataService();
     instance.loadFromLocalStorage();
-    await instance.syncWithApi();
     return instance;
   }
 
@@ -75,6 +74,8 @@ class DataService extends ChangeNotifier {
 
   Future<void> syncWithApi() async {
     if (!di.get<Authentication>().isLoggedIn) return;
+
+    log("Syncing with API");
 
     isLoading = true;
     notifyListeners();

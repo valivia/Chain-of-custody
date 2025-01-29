@@ -39,9 +39,14 @@ void main() async {
 
   di.registerSingleton<LocationService>(LocationService());
 
-  di.registerSingletonAsync<DataService>(DataService.initialize);
+  di.registerSingletonAsync<DataService>(
+    DataService.initialize,
+    dependsOn: [Authentication],
+  );
 
   await di.allReady();
+
+  di<DataService>().syncWithApi();
 
   runApp(const App());
 }
