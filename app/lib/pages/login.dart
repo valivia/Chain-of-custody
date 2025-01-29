@@ -139,18 +139,12 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        di<Authentication>().logout();
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Logout"),
-                    ),
-                    ElevatedButton(
-                      onPressed: _isButtonDisabled ? null : submit,
-                      child: const Text('Login'),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _isButtonDisabled ? null : submit,
+                        child: const Text('Login'),
+                      ),
                     ),
                   ],
                 ),
