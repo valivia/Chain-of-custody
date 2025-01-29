@@ -1,5 +1,4 @@
 // Flutter imports:
-import 'package:coc/pages/transfer_evidence.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -12,9 +11,14 @@ import 'package:coc/components/case_base_details.dart';
 import 'package:coc/components/lists/case_user.dart';
 import 'package:coc/components/lists/media_evidence.dart';
 import 'package:coc/components/lists/tagged_evidence.dart';
+import 'package:coc/controllers/case_user.dart';
+import 'package:coc/pages/forms/add_case_user.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
 import 'package:coc/pages/pictures.dart';
 import 'package:coc/pages/scan_any_tag.dart';
+import 'package:coc/pages/scanner.dart';
+import 'package:coc/pages/transfer_evidence.dart';
+import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 
 class CaseDetailView extends WatchingWidget {
@@ -36,6 +40,15 @@ class CaseDetailView extends WatchingWidget {
       );
     }
 
+    CaseUser? caseUser;
+    try {
+      caseUser = caseItem.users.firstWhere(
+        (user) => user.userId == di<Authentication>().user.id,
+      );
+    } catch (e) {
+      caseUser = null;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Case: ${caseItem.title}", textAlign: TextAlign.center),
@@ -47,7 +60,10 @@ class CaseDetailView extends WatchingWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
+
+              // Add evidence
+              const SizedBox(height: 8),
               Button(
                 title: 'Add evidence',
                 icon: Icons.qr_code,
@@ -63,6 +79,8 @@ class CaseDetailView extends WatchingWidget {
                   );
                 },
               ),
+
+              // Add media evidence
               const SizedBox(height: 8),
               Button(
                 title: "Add media evidence",
@@ -71,11 +89,14 @@ class CaseDetailView extends WatchingWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PictureTakingPage(caseItem: caseItem),
+                      builder: (context) =>
+                          PictureTakingPage(caseItem: caseItem),
                     ),
                   );
                 },
               ),
+
+              // Transfer evidence
               const SizedBox(height: 8),
               Button(
                 title: 'Transfer evidence',
@@ -85,17 +106,20 @@ class CaseDetailView extends WatchingWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ScanAnyTagPage(
-                        onScan: navigateToEvidenceTransfer(), 
+                        onScan: navigateToEvidenceTransfer(),
                         title: "Transfer Evidence",
-                        ),
+                      ),
                     ),
                   );
                 },
               ),
+
+              // Case details
               const SizedBox(height: 32),
               CaseDetails(caseItem: caseItem),
-              const SizedBox(height: 10),
+
               // Handler/caseUser container
+              const SizedBox(height: 10),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.grey[800],
@@ -118,18 +142,31 @@ class CaseDetailView extends WatchingWidget {
                           ),
                         ),
                         const Spacer(),
-                        IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: () {},
-                        ),
+                        if (caseUser != null &&
+                            caseUser.hasPermission(CasePermission.manage))
+                          IconButton(
+                            icon: const Icon(Icons.add),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => QRScannerPage(
+                                    onScan: navigateToCaseUserCreate(caseItem),
+                                    title: "Register Case User",
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                       ],
                     ),
                     LimCaseUserList(itemCount: 3, caseUsers: caseItem.users),
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
+
               // Evidence container
+              const SizedBox(height: 10),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.grey[800],
@@ -175,8 +212,9 @@ class CaseDetailView extends WatchingWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
+
               // Media Container
+              const SizedBox(height: 10),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.grey[800],
@@ -205,7 +243,8 @@ class CaseDetailView extends WatchingWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PictureTakingPage(caseItem: caseItem),
+                                builder: (context) =>
+                                    PictureTakingPage(caseItem: caseItem),
                               ),
                             );
                           },

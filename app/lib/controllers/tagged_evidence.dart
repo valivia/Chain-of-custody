@@ -1,8 +1,10 @@
 // Dart imports:
 import 'dart:developer';
 
-// Package imports:
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:latlong2/latlong.dart';
 import 'package:watch_it/watch_it.dart';
 

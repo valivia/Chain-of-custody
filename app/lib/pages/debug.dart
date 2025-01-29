@@ -9,10 +9,6 @@ import 'package:coc/components/lists/case.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/pages/image_gallery.dart';
 import 'package:coc/pages/login.dart';
-import 'package:coc/pages/nfc.dart';
-import 'package:coc/pages/scan_any_tag.dart';
-import 'package:coc/pages/scanner.dart';
-import 'package:coc/pages/transfer_evidence.dart';
 import 'package:coc/service/data.dart';
 
 class DebugPage extends StatelessWidget {
@@ -46,44 +42,8 @@ class DebugPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ImageGalleryPage()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20), // Add spacing between buttons
-                ElevatedButton(
-                  child: const Text('Scan NFC Tag'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => NfcScanPage(onScan: navigateToEvidenceTransfer())),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20), // Add spacing between buttons
-                ElevatedButton(
-                  child: const Text('Scan QR Code'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
                       MaterialPageRoute(
-                        builder: (context) =>  QRScannerPage(onScan: navigateToEvidenceTransfer()),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20), // Add spacing between buttons
-                ElevatedButton(
-                  child: const Text('Scan QR/NFC Tag'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ScanAnyTagPage(
-                          onScan: navigateToEvidenceTransfer(), 
-                          title: "Transfer Evidence",
-                          ),
-                      ),
+                          builder: (context) => ImageGalleryPage()),
                     );
                   },
                 ),
@@ -93,7 +53,8 @@ class DebugPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const LoginPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
                     );
                   },
                 ),
@@ -140,7 +101,8 @@ class DebugPage extends StatelessWidget {
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
                   onPressed: () async {
-                    List<Map<String, String>> statusList = await LocalStore.sendAllSavedRequests();
+                    List<Map<String, String>> statusList =
+                        await LocalStore.sendAllSavedRequests();
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -157,8 +119,12 @@ class DebugPage extends StatelessWidget {
                                           : '${status['id']}     ${status['type']}'),
                                     ),
                                     Icon(
-                                      status['status'] == 'Success' ? Icons.check_circle : Icons.close,
-                                      color: status['status'] == 'Success' ? Colors.green : Colors.red,
+                                      status['status'] == 'Success'
+                                          ? Icons.check_circle
+                                          : Icons.close,
+                                      color: status['status'] == 'Success'
+                                          ? Colors.green
+                                          : Colors.red,
                                     ),
                                   ],
                                 );

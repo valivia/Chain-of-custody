@@ -80,9 +80,9 @@ class NfcScanPageState extends State<NfcScanPage> {
               if (value.isEmpty) {
                 return const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children:  [
-                  Text('Waiting for scan '),
-                  ThreeDotsWaitIndicator(),
+                  children: [
+                    Text('Waiting for scan '),
+                    ThreeDotsWaitIndicator(),
                   ],
                 );
               } else {

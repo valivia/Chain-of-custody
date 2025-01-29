@@ -28,6 +28,7 @@ dependencies:
   watch_it: ^1.6.2
   import_sorter: ^4.6.0
   localstorage: ^5.0.0
+  qr_flutter: ^4.1.0
 
 dev_dependencies:
   flutter_test:

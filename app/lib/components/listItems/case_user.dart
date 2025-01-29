@@ -22,9 +22,12 @@ class CaseUserListItem extends StatelessWidget {
       onPressed: () {},
       child: Row(
         children: [
-          const Icon(Icons.person),
+          const Icon(
+            Icons.person,
+            color: Colors.white,
+          ),
           const SizedBox(width: 10),
-          Text("${caseUser.firstName} ${caseUser.lastName}"),
+          Text(caseUser.fullName),
         ],
       ),
     );
