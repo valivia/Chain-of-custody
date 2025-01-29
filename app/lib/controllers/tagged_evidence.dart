@@ -2,22 +2,16 @@
 import 'dart:developer';
 
 // Package imports:
+import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
-import 'package:coc/controllers/audit_log.dart';
+import 'package:coc/controllers/audit_log.dart' as audit_log;
 import 'package:coc/controllers/case.dart';
 import 'package:coc/service/api_service.dart';
 import 'package:coc/service/data.dart';
 import 'package:coc/utility/helpers.dart';
-
-enum ContainerType {
-  bag,
-  box,
-  envelope,
-  other,
-}
 
 class TaggedEvidence {
   String id;
@@ -27,14 +21,14 @@ class TaggedEvidence {
 
   DateTime madeOn;
 
-  String containerType;
+  ContainerType containerType;
   String itemType;
   String? description;
 
   LatLng originCoordinates;
   String originLocationDescription;
 
-  List<AuditLog> auditLog;
+  List<audit_log.AuditLog> auditLog;
 
   // Api Only
   DateTime? createdAt;
@@ -55,9 +49,9 @@ class TaggedEvidence {
     required this.auditLog,
   });
 
-  List<AuditLog> get transfers {
+  List<audit_log.AuditLog> get transfers {
     final sortedTransfers = auditLog
-        .where((log) => log.action == Action.transfer)
+        .where((log) => log.action == audit_log.Action.transfer)
         .toList()
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
     return sortedTransfers;
@@ -66,6 +60,7 @@ class TaggedEvidence {
   factory TaggedEvidence.fromJson(Map<String, dynamic> json) {
     final createdAt = json['createdAt'] as String?;
     final updatedAt = json['updatedAt'] as String?;
+
     return TaggedEvidence(
       id: json['id'] as String,
       userId: json['userId'] as String,
@@ -73,7 +68,8 @@ class TaggedEvidence {
       createdAt: createdAt == null ? null : DateTime.parse(createdAt),
       updatedAt: updatedAt == null ? null : DateTime.parse(updatedAt),
       madeOn: DateTime.parse(json['madeOn'] as String),
-      containerType: json['containerType'],
+      containerType:
+          ContainerType.values.byName(json['containerType'] as String),
       itemType: json['itemType'] as String,
       description: json['description'] as String?,
       originCoordinates:
@@ -81,7 +77,7 @@ class TaggedEvidence {
       originLocationDescription: json['originLocationDescription'] as String,
       auditLog: json['auditLog'] != null
           ? (json['auditLog'] as List)
-              .map((log) => AuditLog.fromJson(log))
+              .map((log) => audit_log.AuditLog.fromJson(log))
               .toList()
           : [],
     );
@@ -95,7 +91,7 @@ class TaggedEvidence {
       'madeOn': madeOn.toIso8601String(),
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
-      'containerType': containerType,
+      'containerType': containerType.name,
       'itemType': itemType,
       'description': description,
       'originCoordinates': coordinatesToString(originCoordinates),
@@ -144,7 +140,7 @@ class TaggedEvidence {
     final response = await ApiService.post('/evidence/tag/$id/transfer', body);
     final data = ApiService.parseResponse(response);
 
-    final transfer = AuditLog.fromJson(data);
+    final transfer = audit_log.AuditLog.fromJson(data);
 
     log('Transferred evidence $id at $coordinates');
 
@@ -155,5 +151,33 @@ class TaggedEvidence {
         .firstWhere((e) => e.id == id)
         .auditLog
         .add(transfer);
+  }
+}
+
+enum ContainerType {
+  bag,
+  box,
+  envelope,
+  other,
+}
+
+extension ContainerTypeExtension on ContainerType {
+  IconData get icon {
+    switch (this) {
+      case ContainerType.bag:
+        return Icons.shopping_bag;
+      case ContainerType.box:
+        return Icons.archive;
+      case ContainerType.envelope:
+        return Icons.mail;
+      case ContainerType.other:
+        return Icons.help;
+    }
+  }
+}
+
+extension ContainerTypeList on List<ContainerType> {
+  ContainerType byName(String name) {
+    return firstWhere((e) => e.name == name, orElse: () => ContainerType.other);
   }
 }

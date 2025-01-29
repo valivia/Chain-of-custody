@@ -57,13 +57,16 @@ class TransferHistoryListItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  if (previousCaseUser != null) ...[
-                    Text(previousCaseUser.firstName),
-                    const SizedBox(width: 4),
-                    const Icon(Icons.arrow_right),
-                    const SizedBox(width: 4),
-                  ],
                   Text(currentCaseUser?.firstName ?? "Unknown"),
+                  if (previousCaseUser != null) ...[
+                    const SizedBox(width: 4),
+                    const Icon(
+                      Icons.arrow_left,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(previousCaseUser.firstName),
+                  ],
                 ],
               ),
               Text(
