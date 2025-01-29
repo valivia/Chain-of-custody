@@ -153,10 +153,13 @@ class PictureTakingPageState extends State<PictureTakingPage> {
           ),
         ],
       ),
-      body: Center(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 1,
-          child: CameraPreview(_cameraController!),
+      body:   Center(
+        child: Transform.rotate(
+          angle: -90 * 3.1415926535897932 / 180, // Convert degrees to radians
+          child: AspectRatio(
+            aspectRatio: _cameraController!.value.aspectRatio,
+            child: CameraPreview(_cameraController!),
+          ),
         ),
       ),
       bottomNavigationBar: Container(
