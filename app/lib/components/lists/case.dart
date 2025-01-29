@@ -18,6 +18,9 @@ class LimCaseList extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading =
+        watchPropertyValue((DataService dataService) => dataService.isLoading);
+
     final caseList =
         watchPropertyValue((DataService dataService) => dataService.cases);
 
@@ -40,6 +43,7 @@ class LimCaseList extends WatchingWidget {
           const SizedBox(height: 10),
           Column(
             children: [
+              if (isLoading) const CircularProgressIndicator(),
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

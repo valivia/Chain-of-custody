@@ -129,7 +129,6 @@ class Case {
       final response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
-        log(" --- Sucessfully fetched cases --- ");
         final caseList = await compute(parseJson, response.body);
         return caseList;
       } else {

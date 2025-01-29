@@ -17,6 +17,7 @@ import 'package:coc/controllers/user.dart';
 import 'package:coc/pages/case_detail.dart';
 import 'package:coc/pages/debug.dart';
 import 'package:coc/pages/forms/register_case.dart';
+import 'package:coc/pages/login.dart';
 import 'package:coc/pages/scan_any_tag.dart';
 import 'package:coc/pages/scannable.dart';
 import 'package:coc/pages/settings.dart';
@@ -33,11 +34,18 @@ void main() async {
   await LocalStore.init();
   await initLocalStorage();
 
-  di.registerSingleton<Authentication>(await Authentication.create());
+  di.registerSingletonAsync<Authentication>(Authentication.create);
 
   di.registerSingleton<LocationService>(LocationService());
 
-  di.registerSingleton<DataService>(await DataService.initialize());
+  di.registerSingletonAsync<DataService>(
+    DataService.initialize,
+    dependsOn: [Authentication],
+  );
+
+  await di.allReady();
+
+  di<DataService>().syncWithApi();
 
   runApp(const App());
 }
@@ -122,19 +130,17 @@ class App extends StatelessWidget {
   }
 }
 
-// TODO:
-// auth check
-// Get token  -> if no token
-//            -> check connection
-// -> if no connection continue
-//            -> login page
-//          -> else -> continue
-
-class HomePage extends StatelessWidget {
+class HomePage extends WatchingWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isLoggedIn = watchPropertyValue((Authentication a) => a.isLoggedIn);
+
+    if (!isLoggedIn) {
+      return const LoginPage();
+    }
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(45, 45, 45, 1),
       appBar: AppBar(
