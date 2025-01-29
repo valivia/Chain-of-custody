@@ -5,7 +5,7 @@ import { PrismaService } from 'src/services/prisma.service';
 import { CasePermission, checkCaseVisibility } from "../permissions";
 import { saveToAuditLog } from "src/util/auditlog";
 import { Request } from "express";
-import { Action } from "@prisma/client";
+import { Action, CaseUser, User as PrismaUser } from "@prisma/client";
 import { isValidPermissionString } from "src/util/permissions";
 
 class CaseUserDto {
@@ -14,6 +14,16 @@ class CaseUserDto {
 
   @IsString()
   permissions: string;
+}
+
+export function userToCaseUser(user: (CaseUser & { user: PrismaUser })) {
+  return {
+    userId: user.userId,
+    firstName: user.user.firstName,
+    lastName: user.user.lastName,
+    email: user.user.email,
+    permissions: user.permissions
+  }
 }
 
 
@@ -59,6 +69,7 @@ export class CaseUserController {
 
     // Add user to the case
     const newCaseUser = await this.prisma.caseUser.create({
+      include: { user: true },
       data: {
         case: { connect: { id: caseId } },
         user: { connect: { id: input.userId } },
@@ -74,7 +85,7 @@ export class CaseUserController {
       caseUserId: newCaseUser.id,
     });
 
-    return { data: newCaseUser };
+    return { data: userToCaseUser(newCaseUser) };
   }
 
   @Delete('/:userId')
@@ -96,6 +107,7 @@ export class CaseUserController {
 
     // Remove user from the case
     const deletedCaseUser = await this.prisma.caseUser.delete({
+      include: { user: true },
       where: {
         caseId_userId: {
           caseId,
@@ -112,7 +124,7 @@ export class CaseUserController {
       caseUserId: deletedCaseUser.id,
     });
 
-    return { data: deletedCaseUser };
+    return { data: userToCaseUser(deletedCaseUser) };
   }
 
 }

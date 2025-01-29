@@ -7,6 +7,7 @@ import { checkCaseVisibility, CasePermission, getAllCasePermissions } from "./pe
 import { Request } from "express";
 import { saveToAuditLog } from "src/util/auditlog";
 import { rm } from "fs/promises";
+import { userToCaseUser } from "./user/case_user.controller";
 
 class CaseDto {
   @IsString()
@@ -56,15 +57,7 @@ export class CaseController {
   private caseToCaseData(data: Case & { users: (CaseUser & { user: PrismaUser })[], mediaEvidence: MediaEvidence[], taggedEvidence: TaggedEvidence[] }): CaseData {
     return {
       ...data,
-      users: data.users.map(u => {
-        return {
-          userId: u.userId,
-          firstName: u.user.firstName,
-          lastName: u.user.lastName,
-          email: u.user.email,
-          permissions: u.permissions
-        }
-      })
+      users: data.users.map(userToCaseUser),
     }
   }
 
