@@ -19,6 +19,8 @@ class DataService extends ChangeNotifier {
   List<Case> _cases = [];
   UnmodifiableListView<Case> get cases => UnmodifiableListView(_cases);
 
+  bool isLoading = false;
+
   // Current case
   Case? _currentCase;
   Case? get currentCase => _currentCase;
@@ -74,15 +76,20 @@ class DataService extends ChangeNotifier {
   Future<void> syncWithApi() async {
     if (!di.get<Authentication>().isLoggedIn) return;
 
+    isLoading = true;
+    notifyListeners();
+
     try {
       final apiCases = await Case.fetchCases();
 
       _cases = apiCases;
 
       saveToLocalStorage();
-      notifyListeners();
     } catch (e) {
       log(e.toString());
+    } finally {
+      isLoading = false;
+      notifyListeners();
     }
   }
 

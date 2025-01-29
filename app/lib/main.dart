@@ -1,7 +1,9 @@
 // Dart imports:
 import 'dart:convert';
+import 'dart:developer';
 
 // Flutter imports:
+import 'package:coc/pages/login.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -33,11 +35,13 @@ void main() async {
   await LocalStore.init();
   await initLocalStorage();
 
-  di.registerSingleton<Authentication>(await Authentication.create());
+  di.registerSingletonAsync<Authentication>(Authentication.create);
 
   di.registerSingleton<LocationService>(LocationService());
 
-  di.registerSingleton<DataService>(await DataService.initialize());
+  di.registerSingletonAsync<DataService>(DataService.initialize);
+
+  await di.allReady();
 
   runApp(const App());
 }
@@ -122,19 +126,17 @@ class App extends StatelessWidget {
   }
 }
 
-// TODO:
-// auth check
-// Get token  -> if no token
-//            -> check connection
-// -> if no connection continue
-//            -> login page
-//          -> else -> continue
-
-class HomePage extends StatelessWidget {
+class HomePage extends WatchingWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isLoggedIn = watchPropertyValue((Authentication a) => a.isLoggedIn);
+    log('isLoggedIn: $isLoggedIn');
+    if (!isLoggedIn) {
+      return const LoginPage();
+    }
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(45, 45, 45, 1),
       appBar: AppBar(

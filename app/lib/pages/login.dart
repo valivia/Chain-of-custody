@@ -55,13 +55,10 @@ class LoginPageState extends State<LoginPage> {
     }
 
     try {
-      bool loginResponse = await di<Authentication>().login(
+      await di<Authentication>().login(
         _emailInputController.text,
         _passwordInputController.text,
       );
-      if (loginResponse) {
-        Navigator.pop(navigatorKey.currentContext!);
-      }
     } catch (error) {
       log(" --- Login failed: $error --- ");
       final snackBar = SnackBar(content: Text("Login Failed: \n$error"));
