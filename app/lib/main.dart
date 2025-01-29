@@ -1,9 +1,7 @@
 // Dart imports:
 import 'dart:convert';
-import 'dart:developer';
 
 // Flutter imports:
-import 'package:coc/pages/login.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +17,7 @@ import 'package:coc/controllers/user.dart';
 import 'package:coc/pages/case_detail.dart';
 import 'package:coc/pages/debug.dart';
 import 'package:coc/pages/forms/register_case.dart';
+import 'package:coc/pages/login.dart';
 import 'package:coc/pages/scan_any_tag.dart';
 import 'package:coc/pages/scannable.dart';
 import 'package:coc/pages/settings.dart';
@@ -137,7 +136,7 @@ class HomePage extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     final isLoggedIn = watchPropertyValue((Authentication a) => a.isLoggedIn);
-    log('isLoggedIn: $isLoggedIn');
+
     if (!isLoggedIn) {
       return const LoginPage();
     }
