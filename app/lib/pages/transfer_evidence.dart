@@ -37,12 +37,13 @@ class TransferEvidencePage extends StatefulWidget {
 
 class TransferEvidencePageState extends State<TransferEvidencePage> {
   bool _isFetchingLocation = false;
-  String _location = "Unknown";
+  // String _location = "Unknown";
+  String _location = "52.163106, 4.5325065";
 
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
+    // _getCurrentLocation();
   }
 
   Future<void> _getCurrentLocation() async {
@@ -51,12 +52,12 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
     });
 
     // When we reach here, permissions are granted and we can continue
-    Position position = await di<LocationService>()
-        .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
-    setState(() {
-      _location = '${position.latitude}, ${position.longitude}';
-      _isFetchingLocation = false;
-    });
+    // Position position = await di<LocationService>()
+    //     .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
+    // setState(() {
+    //   _location = '${position.latitude}, ${position.longitude}';
+    //   _isFetchingLocation = false;
+    // });
   }
 
   void handleResponse() async {
