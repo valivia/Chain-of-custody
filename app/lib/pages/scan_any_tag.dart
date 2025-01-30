@@ -27,8 +27,8 @@ class ScanAnyTagPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Scan NFC tag to transfer evidence',
+            Text(
+              'Scan NFC tag to read the tag\'s ID',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
@@ -39,7 +39,7 @@ class ScanAnyTagPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              'Or tap the button below to use QR scanner to scan the tag instead.',
+              'Or tap the button below to use QR scanner to scan the tag\'s ID instead.',
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
