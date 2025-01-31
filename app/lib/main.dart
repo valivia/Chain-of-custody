@@ -52,26 +52,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
-      //     surface: tertiaryColor,
-      //     onSurface: textColor,
-      //     // primary,
-      //     primary: primaryColor,
-      //     onPrimary: textColor,
-      //     primaryContainer: tertiaryColor,
-      //     onPrimaryContainer: textColor,
-      //     // secondary
-      //     secondary: secondaryColor,
-      //     onSecondary: textColor,
-      //     secondaryContainer: secondaryColor,
-      //     onSecondaryContainer: textColor,
-      //     // tertiary
-      //     tertiary: tertiaryColor,
-      //     onTertiary: textColor,
-      //     tertiaryContainer: primaryColor,
-      //     onTertiaryContainer: textColor,
-      //   ),
-      // ),
-      
+
       home: const HomePage(),
     );
   }
