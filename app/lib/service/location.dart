@@ -49,7 +49,11 @@ class LocationService {
     bool hasPermission = await _handlePermissions();
     if (!hasPermission) return Future.error("Location permissions denied.");
 
-    Position position = await Geolocator.getCurrentPosition();
+    Position position = await Geolocator.getCurrentPosition(
+      locationSettings: LocationSettings(
+        accuracy: desiredAccuracy,
+      ),
+    );
     return position;
   }
 }

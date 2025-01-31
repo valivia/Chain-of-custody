@@ -74,10 +74,10 @@ export class MediaController {
       mediaEvidenceId: evidence.id,
     });
 
-      // save to disk
-      await writeFile(`./data/evidence/${evidence.id}.jpg`, file.buffer);
+    // save to disk
+    await writeFile(`./data/evidence/${evidence.id}.jpg`, file.buffer);
 
 
-      return { evidence };
-    }
+    return { data: evidence };
+  }
 }

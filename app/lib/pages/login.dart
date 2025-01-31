@@ -55,13 +55,10 @@ class LoginPageState extends State<LoginPage> {
     }
 
     try {
-      bool loginResponse = await di<Authentication>().login(
+      await di<Authentication>().login(
         _emailInputController.text,
         _passwordInputController.text,
       );
-      if (loginResponse) {
-        Navigator.pop(navigatorKey.currentContext!);
-      }
     } catch (error) {
       log(" --- Login failed: $error --- ");
       final snackBar = SnackBar(content: Text("Login Failed: \n$error"));
@@ -140,18 +137,12 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        di<Authentication>().logout();
-                        Navigator.pop(context);
-                      },
-                      child: Text("Logout", style: aTextTheme.bodyMedium,),
-                    ),
-                    ElevatedButton(
-                      onPressed: _isButtonDisabled ? null : submit,
-                      child: Text('Login', style: aTextTheme.bodyMedium,),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _isButtonDisabled ? null : submit,
+                        child: Text('Login', style: aTextTheme.bodyMedium,),
+                      ),
                     ),
                   ],
                 ),

@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:coc/pages/scan_any_tag.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
@@ -7,7 +8,6 @@ import 'package:coc/components/success_animation.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/case_detail.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
-import 'package:coc/pages/scanner.dart';
 
 void showSuccessDialog(BuildContext context, String message, Case caseItem) {
   showDialog(
@@ -38,12 +38,14 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                     onPressed: () {
+                      // di<DataService>().currentCase = caseItem;
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CaseDetailView(caseItem: caseItem),
+                          builder: (context) => const CaseDetailView(),
                         ),
-                        (Route<dynamic> route) => route.isFirst, // Keep the main page in the stack
+                        (Route<dynamic> route) =>
+                            route.isFirst, // Keep the main page in the stack
                       );
                     },
                     child: const Text(
@@ -62,9 +64,13 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => QRScannerPage(onScan: navigateToEvidenceCreate(caseItem)),
+                          builder: (context) => ScanAnyTagPage(
+                            onScan: navigateToEvidenceCreate(caseItem),
+                            title: "Register evidence",
+                          ),
                         ),
-                        (Route<dynamic> route) => route.isFirst, // Keep the main page in the stack
+                        (Route<dynamic> route) =>
+                            route.isFirst, // Keep the main page in the stack
                       );
                     },
                     child: const Text(
@@ -85,10 +91,10 @@ void showSuccessDialog(BuildContext context, String message, Case caseItem) {
 void showFailureDialog(BuildContext context, String message, Case caseItem) {
   showDialog(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: true,
     builder: (BuildContext context) {
       return PopScope(
-        canPop: false,
+        canPop: true,
         child: AlertDialog(
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -114,9 +120,10 @@ void showFailureDialog(BuildContext context, String message, Case caseItem) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CaseDetailView(caseItem: caseItem),
+                          builder: (context) => const CaseDetailView(),
                         ),
-                        (Route<dynamic> route) => route.isFirst, // Keep the main page in the stack
+                        (Route<dynamic> route) =>
+                            route.isFirst, // Keep the main page in the stack
                       );
                     },
                     child: const Text(
@@ -135,9 +142,12 @@ void showFailureDialog(BuildContext context, String message, Case caseItem) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => QRScannerPage(onScan: navigateToEvidenceCreate(caseItem)),
-                        ),
-                        (Route<dynamic> route) => route.isFirst, // Keep the main page in the stack
+                            builder: (context) => ScanAnyTagPage(
+                                  onScan: navigateToEvidenceCreate(caseItem),
+                                  title: "Register evidence",
+                                )),
+                        (Route<dynamic> route) =>
+                            route.isFirst, // Keep the main page in the stack
                       );
                     },
                     child: const Text(

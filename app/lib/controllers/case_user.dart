@@ -1,3 +1,11 @@
+// Package imports:
+import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/controllers/case.dart';
+import 'package:coc/service/api_service.dart';
+import 'package:coc/service/data.dart';
+
 enum CasePermission {
   view,
   manage,
@@ -23,6 +31,12 @@ extension CasePermissionValue on CasePermission {
   }
 }
 
+int allPermissions() {
+  return CasePermission.values.fold<int>(0, (int previousValue, element) {
+    return previousValue | element.value;
+  });
+}
+
 class CaseUser {
   final String userId;
   final String firstName;
@@ -37,6 +51,8 @@ class CaseUser {
     required this.email,
     required this.permissions,
   });
+
+  get fullName => '$firstName $lastName';
 
   factory CaseUser.fromJson(Map<String, dynamic> json) {
     return CaseUser(
@@ -56,6 +72,29 @@ class CaseUser {
       'email': email,
       'permissions': permissions,
     };
+  }
+
+  static Future<CaseUser> fromForm({
+    required String userId,
+    required String permissions,
+    required Case caseItem,
+  }) async {
+    final body = {
+      'userId': userId,
+      'permissions': permissions,
+    };
+
+    final response = await ApiService.post('/case/${caseItem.id}/user', body);
+    final data = ApiService.parseResponse(response);
+
+    final caseUser = CaseUser.fromJson(data);
+
+    caseItem.users.add(caseUser);
+
+    di<DataService>().currentCase = caseItem;
+    di<DataService>().syncWithApi();
+
+    return caseUser;
   }
 
   bool hasPermission(CasePermission permission) {
