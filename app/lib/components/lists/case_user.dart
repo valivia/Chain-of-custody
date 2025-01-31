@@ -46,7 +46,7 @@ class LimCaseUserList extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CaseUserList(users: caseUsers),
+                  builder: (context) => CaseUserListView(users: caseUsers),
                 ),
               );
             },

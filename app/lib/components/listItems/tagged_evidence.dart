@@ -24,13 +24,16 @@ class TaggedEvidenceListItem extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                EvidenceDetailView(evidenceItem: taggedEvidenceItem),
+                EvidenceDetailView(evidence: taggedEvidenceItem),
           ),
         );
       },
       child: Row(
         children: [
-          const Icon(Icons.info),
+          Icon(
+            taggedEvidenceItem.containerType.icon,
+            color: Colors.white,
+          ),
           const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -129,7 +129,6 @@ class Case {
       final response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
-        log(" --- Sucessfully fetched cases --- ");
         final caseList = await compute(parseJson, response.body);
         return caseList;
       } else {
@@ -179,6 +178,10 @@ class Case {
       log(" --- Error occurred with case upload request: $error --- ");
       return Future.error("Unknown error occurred");
     }
+  }
+
+  CaseUser? getUser(String id) {
+    return users.firstWhere((user) => user.userId == id);
   }
 
   canIUse(CasePermission permission) {

@@ -3,22 +3,23 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:coc/components/key_value.dart';
-import 'package:coc/controllers/case.dart';
+import 'package:coc/controllers/tagged_evidence.dart';
 import 'package:coc/utility/helpers.dart';
 
-class CaseDetails extends StatelessWidget {
-  final Case caseItem;
+class EvidenceDetails extends StatelessWidget {
+  final TaggedEvidence evidence;
 
-  const CaseDetails({super.key, required this.caseItem});
+  const EvidenceDetails({super.key, required this.evidence});
 
   @override
   Widget build(BuildContext context) {
-    final createdAt = caseItem.createdAt != null
-        ? formatTimestamp(caseItem.createdAt!)
+    final createdAt = evidence.createdAt != null
+        ? formatTimestamp(evidence.createdAt!)
         : 'N/A';
-    final updatedAt = caseItem.updatedAt != null
-        ? formatTimestamp(caseItem.updatedAt!)
+    final updatedAt = evidence.updatedAt != null
+        ? formatTimestamp(evidence.updatedAt!)
         : 'N/A';
+    // View
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[800],
@@ -34,21 +35,36 @@ class CaseDetails extends StatelessWidget {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 5),
-          KeyValue(
-              keyText: "Status", value: caseItem.statusString.toUpperCase()),
+          KeyValue(keyText: "Container", value: evidence.containerType.name),
           const SizedBox(height: 5),
-          KeyValue(keyText: "ID", value: caseItem.id),
+          KeyValue(keyText: "Item Type", value: evidence.itemType),
+          const SizedBox(height: 5),
+          KeyValue(keyText: "id", value: evidence.id),
           const SizedBox(height: 5),
           KeyValue(keyText: "Created At", value: createdAt),
           const SizedBox(height: 5),
           KeyValue(keyText: "Updated At", value: updatedAt),
+
+          // Description
+          if (evidence.description != null &&
+              evidence.description!.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            const Text(
+              'Description',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 5),
+            Text(evidence.description!),
+          ],
+
+          // Location
           const SizedBox(height: 8),
           const Text(
-            'Description',
+            'Location Description',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 5),
-          Text(caseItem.description),
+          Text(evidence.originLocationDescription),
         ],
       ),
     );

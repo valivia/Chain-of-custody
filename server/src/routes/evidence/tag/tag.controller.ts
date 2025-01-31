@@ -87,7 +87,6 @@ export class TagController {
     const createdEvidence = await this.prisma.taggedEvidence.create({
       data: {
         ...taggedEvidence,
-        id: undefined,
         createdBy: { connect: { id: user.id } },
         case: { connect: { id: caseId }, },
       },
@@ -103,7 +102,6 @@ export class TagController {
     return { data: createdEvidence };
   }
 
-
   @Post(':id/transfer')
   async transfer(@Req() req: Request, @User() user: UserEntity, @Param('id') id: string, @Body() body: TransferDto) {
 
@@ -115,13 +113,13 @@ export class TagController {
       throw new NotFoundException();
     }
 
-    await saveToAuditLog(this.prisma, req, {
+    const auditLog = await saveToAuditLog(this.prisma, req, {
       action: Action.transfer,
       userId: user.id,
       taggedEvidenceId: id,
       location: body.coordinates,
     });
 
-    return;
+    return { data: auditLog };
   }
 }

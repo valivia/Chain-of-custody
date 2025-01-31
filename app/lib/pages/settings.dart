@@ -54,10 +54,10 @@ class SettingsPage extends StatelessWidget {
             title: const Text('Logout'),
             onTap: () {
               di<Authentication>().logout();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginPage()),
-              );
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  (Route<dynamic> route) => false);
             },
           ),
         ],
