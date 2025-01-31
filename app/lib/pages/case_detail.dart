@@ -1,4 +1,5 @@
 // Flutter imports:
+// import 'package:coc/controllers/case.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -22,7 +23,7 @@ import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 
 class CaseDetailView extends WatchingWidget {
-  const CaseDetailView({super.key});
+  const CaseDetailView({super.key,});
 
   static Future<bool> hasInternetConnection() async {
     return await InternetConnectionChecker().hasConnection;
