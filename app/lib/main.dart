@@ -2,12 +2,15 @@
 import 'dart:convert';
 
 // Flutter imports:
+import 'package:coc/Themes/theme.dart';
+import 'package:coc/Themes/theme_manager.dart';
 import 'package:coc/components/lists/case.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:localstorage/localstorage.dart';
+import 'package:provider/provider.dart';
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
@@ -28,9 +31,10 @@ import 'package:coc/service/data.dart';
 import 'package:coc/service/location.dart';
 
 
-import 'package:coc/Themes/theme.dart';
+// import 'package:coc/Themes/theme.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
+// ThemeManager _themeManager = ThemeManager();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,28 +55,42 @@ void main() async {
 
   di<DataService>().syncWithApi();
 
-  runApp(const App());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeManager(),
+      child: const App()));
 }
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system,
-      theme: TAppTheme.lightTheme,
-      darkTheme: TAppTheme.darkTheme,
+  State<App> createState() => _AppState();
+}
 
-      initialRoute: "/",
-      routes: {
-        "/": (context) => const HomePage(),
-        "/case": (context) => const CaseDetailView(),
-        "/settings": (context) => const SettingsPage(),
-      },
+class _AppState extends State<App> {
+
+  @override
+  Widget build(BuildContext context) {
+    final themeManager = Provider.of<ThemeManager>(context);
+
+    return NotificationListener<Notification>(
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: themeManager.themeMode,
+      
+        initialRoute: "/",
+        routes: {
+          "/": (context) => const HomePage(),
+          "/case": (context) => const CaseDetailView(),
+          "/settings": (context) => const SettingsPage(),
+        },
+
+      ),
     );
   }
 }

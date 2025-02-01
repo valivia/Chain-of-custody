@@ -4,6 +4,8 @@
 // Offlinemode
 
 // Flutter imports:
+// import 'package:coc/Themes/theme.dart';
+import 'package:coc/Themes/theme_manager.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -13,8 +15,37 @@ import 'package:watch_it/watch_it.dart';
 import 'package:coc/pages/login.dart';
 import 'package:coc/service/authentication.dart';
 
-class SettingsPage extends StatelessWidget {
+ThemeManager _themeManager = ThemeManager();
+
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
+
+  @override
+  State<SettingsPage> createState() => SettingsPageState();
+}
+
+class SettingsPageState extends State<SettingsPage> {
+
+  bool isDark = false;
+  @override
+  void dispose(){
+    _themeManager.removeListener(themeListeren);
+    super.dispose();
+  }
+
+  @override
+  void initState(){
+    _themeManager.addListener(themeListeren);
+    super.initState();
+  }
+
+  themeListeren(){
+    if(mounted){
+      setState(() {
+        
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +68,9 @@ class SettingsPage extends StatelessWidget {
           ),
           SwitchListTile(
             title: const Text('Toggle light/dark mode'),
-            value: false, // Replace with actual value
-            onChanged: (bool value) {
-              // Handle theme change
+            value: _themeManager.themeMode == ThemeMode.dark, // Replace with actual value
+            onChanged: (bool newValue) {
+              _themeManager.toggleTheme(newValue);
             },
           ),
           SwitchListTile(

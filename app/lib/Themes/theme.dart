@@ -5,10 +5,7 @@ import 'package:coc/Themes/custom_themes/appbar_theme.dart';
 import 'package:coc/Themes/custom_themes/snackbar_theme.dart';
 import 'package:coc/Themes/custom_themes/icon_theme.dart';
 
-class TAppTheme{
-  TAppTheme._();
-
-  static ThemeData lightTheme = ThemeData(
+ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     colorScheme: const ColorScheme(
       brightness: Brightness.light,
@@ -26,9 +23,10 @@ class TAppTheme{
     elevatedButtonTheme: TElevetedButtonTheme.lightElevatedButtonTheme,
     snackBarTheme: TSnackbarTheme.lightSnackBarTheme,
     iconButtonTheme: TIconTheme.iconButtonTheme,
+    iconTheme: TIconTheme.iconTheme,
     
   );
-  static ThemeData darkTheme = ThemeData(
+ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     colorScheme: const ColorScheme(
       brightness: Brightness.light,
@@ -47,4 +45,3 @@ class TAppTheme{
     snackBarTheme: TSnackbarTheme.darkSnackBarTheme,
     iconButtonTheme: TIconTheme.iconButtonTheme,
   );
-}
