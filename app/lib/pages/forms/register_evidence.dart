@@ -139,9 +139,11 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register Evidence'),
+        centerTitle: true,
+        title: Text('Register Evidence', style: aTextTheme.headlineLarge,),
         backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         elevation: 10,
         shape: const RoundedRectangleBorder(
@@ -236,14 +238,14 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('Back'),
+                        child: Text('Back', style: aTextTheme.bodyLarge,),
                       ),
                     ),
                     const SizedBox(width: 20),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: _onSubmit,
-                        child: const Text('Submit'),
+                        child: Text('Submit', style: aTextTheme.bodyLarge,),
                       ),
                     ),
                   ],

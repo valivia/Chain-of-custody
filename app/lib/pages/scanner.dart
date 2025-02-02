@@ -35,9 +35,11 @@ class QRScannerPageState extends State<QRScannerPage> {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        centerTitle: true,
+        title: Text(widget.title, style: aTextTheme.headlineMedium,),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

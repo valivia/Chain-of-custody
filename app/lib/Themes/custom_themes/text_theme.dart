@@ -14,7 +14,7 @@ class TTextTheme {
     headlineSmall: const TextStyle().copyWith(fontSize: 18.0, fontWeight: FontWeight.w600, color: lightTextColor),
 
     displayLarge: const TextStyle().copyWith(fontSize: 32.0, fontWeight: FontWeight.bold, color: darkTextColor), //used on lightbackground colors, same style as headline
-    displayMedium: const TextStyle().copyWith(fontSize: 24.0, fontWeight: FontWeight.bold, color: halfdarkTextColor),
+    displayMedium: const TextStyle().copyWith(fontSize: 20.0, fontWeight: FontWeight.bold, color: halfdarkTextColor),
     displaySmall: const TextStyle().copyWith(fontSize: 18.0, fontWeight: FontWeight.w600, color: darkTextColor), //used on lightbackground colors, same style as headline
 
     titleLarge: const TextStyle().copyWith(fontSize: 16.0, fontWeight: FontWeight.w600, color: lightTextColor),
@@ -34,7 +34,7 @@ class TTextTheme {
     headlineSmall: const TextStyle().copyWith(fontSize: 18.0, fontWeight: FontWeight.w600, color: lightTextColor),
 
     displayLarge: const TextStyle().copyWith(fontSize: 32.0, fontWeight: FontWeight.bold, color: lightTextColor),
-    displayMedium: const TextStyle().copyWith(fontSize: 24.0, fontWeight: FontWeight.bold, color: lightTextColor),
+    displayMedium: const TextStyle().copyWith(fontSize: 20.0, fontWeight: FontWeight.bold, color: lightTextColor),
     displaySmall: const TextStyle().copyWith(fontSize: 18.0, fontWeight: FontWeight.w600, color: lightTextColor),
 
     titleLarge: const TextStyle().copyWith(fontSize: 16.0, fontWeight: FontWeight.w600, color: lightTextColor),

@@ -106,9 +106,13 @@ class RegisterCasePageState extends State<RegisterCaseUser> {
 
   @override
   Widget build(BuildContext context) {
+
+    TextTheme aTextTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Register Case User"),
+        centerTitle: true,
+        title: Text("Register Case User", style: aTextTheme.headlineLarge,),
         backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         elevation: 10,
         shape: const RoundedRectangleBorder(

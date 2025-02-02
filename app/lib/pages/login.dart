@@ -146,7 +146,7 @@ class LoginPageState extends State<LoginPage> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: _isButtonDisabled ? null : submit,
-                        child: Text('Login', style: aTextTheme.bodyMedium,),
+                        child: Text('Login', style: aTextTheme.bodyLarge,),
                       ),
                     ),
                   ],

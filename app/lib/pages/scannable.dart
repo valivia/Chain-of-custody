@@ -20,9 +20,11 @@ class ScannablePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        centerTitle: true,
+        title: Text(title, style: aTextTheme.headlineMedium,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -55,7 +57,7 @@ class ScannablePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text("Go back"),
+                  child: Text("Go back", style: aTextTheme.bodyLarge,),
                 ),
                 ElevatedButton(
                   onPressed: onDone != null
@@ -63,7 +65,7 @@ class ScannablePage extends StatelessWidget {
                       : () {
                           Navigator.pop(context);
                         },
-                  child: const Text("Done"),
+                  child: Text("Done", style: aTextTheme.bodyLarge,),
                 ),
               ],
             ),
