@@ -15,6 +15,7 @@ class TaggedEvidenceListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(10),
@@ -38,7 +39,7 @@ class TaggedEvidenceListItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(taggedEvidenceItem.itemType),
+              Text(taggedEvidenceItem.itemType, style: aTextTheme.bodyMedium,),
             ],
           ),
           const Spacer(),

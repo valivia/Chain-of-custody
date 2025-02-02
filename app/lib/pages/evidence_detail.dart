@@ -15,10 +15,12 @@ class EvidenceDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
-          evidence.itemType,
+          evidence.itemType, style: aTextTheme.headlineMedium,
         ),
       ),
       body: SingleChildScrollView(
@@ -36,6 +38,7 @@ class EvidenceDetailView extends StatelessWidget {
                   context: context,
                   builder: (BuildContext context) {
                     return MapPointerBottomSheet(
+                      // title: Text("Origin", style: aTextTheme.displaySmall,),
                       title: "Origin",
                       userId: evidence.userId,
                       createdAt: evidence.createdAt!,
@@ -50,7 +53,7 @@ class EvidenceDetailView extends StatelessWidget {
             const SizedBox(height: 20),
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey[800],
+                color: Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(8.0),
               ),
               padding: const EdgeInsets.all(8.0),

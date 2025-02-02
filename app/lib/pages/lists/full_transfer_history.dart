@@ -11,9 +11,11 @@ class TransferHistoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Transfer History page'),
+        centerTitle: true,
+        title: Text('Transfer History page', style: aTextTheme.headlineMedium,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -14,6 +14,7 @@ class CaseUserListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(8),
@@ -27,7 +28,7 @@ class CaseUserListItem extends StatelessWidget {
             color: Colors.white,
           ),
           const SizedBox(width: 10),
-          Text(caseUser.fullName),
+          Text(caseUser.fullName, style: aTextTheme.bodyMedium,),
         ],
       ),
     );
