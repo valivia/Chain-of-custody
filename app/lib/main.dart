@@ -4,6 +4,7 @@ import 'dart:convert';
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 // Package imports:
 import 'package:localstorage/localstorage.dart';
@@ -30,6 +31,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  LocationService().startPeriodicLocationUpdates(LocationAccuracy.low);
 
   await LocalStore.init();
   await initLocalStorage();

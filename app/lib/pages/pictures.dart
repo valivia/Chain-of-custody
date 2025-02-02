@@ -69,7 +69,7 @@ class PictureTakingPageState extends State<PictureTakingPage> {
 
       // Get current coordinates
       Position position = await LocationService()
-          .getCurrentLocation(desiredAccuracy: LocationAccuracy.best);
+          .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
 
       final LatLng coordinates = LatLng(position.latitude, position.longitude);
 

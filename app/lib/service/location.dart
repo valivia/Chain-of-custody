@@ -1,7 +1,5 @@
-// Dart imports:
+import 'dart:async';
 import 'dart:developer';
-
-// Package imports:
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
@@ -9,6 +7,9 @@ class LocationService {
   static final LocationService _instance = LocationService._internal();
   factory LocationService() => _instance;
   LocationService._internal();
+
+  Position? _currentPosition;
+  Timer? _locationUpdateTimer;
 
   /// Requests location permissions and checks if location services are enabled.
   Future<bool> _handlePermissions() async {
@@ -18,15 +19,12 @@ class LocationService {
     // Check if location services are enabled
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled
       log("Location services are disabled.");
       return false;
     }
 
-    // Check location permissions
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
-      // Request location permissions
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         log("Location permissions are denied.");
@@ -49,11 +47,55 @@ class LocationService {
     bool hasPermission = await _handlePermissions();
     if (!hasPermission) return Future.error("Location permissions denied.");
 
+    // Try to get the last known position first
+    Position? lastKnownPosition = await Geolocator.getLastKnownPosition();
+    if (lastKnownPosition != null) {
+      _currentPosition = lastKnownPosition;
+      _startPeriodicLocationUpdates(desiredAccuracy);
+      return lastKnownPosition;
+    }
+
+    // If no last known position, get the current position with a timeout
     Position position = await Geolocator.getCurrentPosition(
       locationSettings: LocationSettings(
         accuracy: desiredAccuracy,
+        timeLimit: const Duration(seconds: 10), // Set a timeout
       ),
     );
+    _currentPosition = position;
+    _startPeriodicLocationUpdates(desiredAccuracy);
     return position;
+  }
+
+  void _startPeriodicLocationUpdates(LocationAccuracy desiredAccuracy) {
+    _locationUpdateTimer?.cancel(); // Cancel any existing timer
+
+    _locationUpdateTimer = Timer.periodic(const Duration(seconds: 30), (timer) async {
+      try {
+        Position position = await Geolocator.getCurrentPosition(
+          locationSettings: LocationSettings(
+            accuracy: desiredAccuracy,
+            timeLimit: const Duration(seconds: 10), // Set a timeout
+          ),
+        );
+        _currentPosition = position;
+        log('Location updated: ${position.latitude}, ${position.longitude}');
+      } catch (e) {
+        log('Error updating location: $e');
+      }
+    });
+  }
+
+  void startPeriodicLocationUpdates(LocationAccuracy desiredAccuracy) async {
+    bool hasPermission = await _handlePermissions();
+    if (hasPermission) {
+      _startPeriodicLocationUpdates(desiredAccuracy);
+    }
+  }
+
+  Position? get currentPosition => _currentPosition;
+
+  void dispose() {
+    _locationUpdateTimer?.cancel();
   }
 }
