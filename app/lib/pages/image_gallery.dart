@@ -12,6 +12,9 @@ class ImageGalleryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    TextTheme aTextTheme = Theme.of(context).textTheme;
+
     return FutureBuilder<Map<String, dynamic>>(
       future: LocalStore.getAllData(),
       builder: (context, snapshot) {
@@ -24,9 +27,11 @@ class ImageGalleryPage extends StatelessWidget {
               snapshot.data!['pictures'] as List<Map<String, dynamic>>;
 
           return Scaffold(
-            appBar: AppBar(title: const Text('Image Gallery')),
+            appBar: AppBar(
+              centerTitle: true,
+              title:Text('Image Gallery', style: aTextTheme.headlineMedium,)),
             body: pictures.isEmpty
-                ? const Center(child: Text('No images found'))
+                ? Center(child: Text('No images found', style: aTextTheme.displayMedium,))
                 : GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(

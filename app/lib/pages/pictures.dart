@@ -135,13 +135,17 @@ class PictureTakingPageState extends State<PictureTakingPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    TextTheme aTextTheme = Theme.of(context).textTheme;
+
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
       return const Center(child: CircularProgressIndicator());
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Take a Picture'),
+        centerTitle: true,
+        title: Text('Take a Picture', style: aTextTheme.headlineMedium,),
         actions: [
           IconButton(
             icon: Icon(_isFlashOn ? Icons.flash_on : Icons.flash_off),

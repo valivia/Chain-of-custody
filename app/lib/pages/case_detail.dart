@@ -144,7 +144,7 @@ class CaseDetailView extends WatchingWidget {
                         if (caseUser != null &&
                             caseUser.hasPermission(CasePermission.manage))
                           IconButton(
-                            icon: const Icon(Icons.add),
+                            icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondaryContainer,),
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -186,7 +186,7 @@ class CaseDetailView extends WatchingWidget {
                         ),
                         const Spacer(),
                         IconButton(
-                          icon: const Icon(Icons.add),
+                          icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondaryContainer,),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -231,7 +231,7 @@ class CaseDetailView extends WatchingWidget {
                         ),
                         const Spacer(),
                         IconButton(
-                          icon: const Icon(Icons.add),
+                          icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondaryContainer,),
                           onPressed: () {
                             Navigator.push(
                               context,

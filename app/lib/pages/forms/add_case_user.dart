@@ -91,7 +91,7 @@ class RegisterCasePageState extends State<RegisterCaseUser> {
                 // remove till back on case page
                 Navigator.popUntil(context, ModalRoute.withName('/case'));
               },
-              child: const Text('OK'),
+              child: const Text('OK',),
             ),
           ],
         );
@@ -113,7 +113,7 @@ class RegisterCasePageState extends State<RegisterCaseUser> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("Register Case User", style: aTextTheme.headlineLarge,),
-        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+        // backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         elevation: 10,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -147,7 +147,7 @@ class RegisterCasePageState extends State<RegisterCaseUser> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text('Back'),
+                    child: Text('Back', style: aTextTheme.bodyLarge),
                   ),
                 ),
                 if (user != null) ...[
@@ -157,7 +157,7 @@ class RegisterCasePageState extends State<RegisterCaseUser> {
                       onPressed: () async {
                         await submit();
                       },
-                      child: const Text('Submit'),
+                      child: Text('Submit', style: aTextTheme.bodyLarge,),
                     ),
                   ),
                 ],

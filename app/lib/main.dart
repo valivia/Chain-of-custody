@@ -116,7 +116,7 @@ class HomePage extends WatchingWidget {
                   MaterialPageRoute(builder: (context) => const SettingsPage()),
                 );
               },
-              icon: const Icon(Icons.settings)),
+              icon: const Icon(Icons.settings,)),
         ],
       ),
       body: Center(
