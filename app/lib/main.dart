@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:localstorage/localstorage.dart';
-import 'package:provider/provider.dart';
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
@@ -30,11 +29,7 @@ import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 import 'package:coc/service/location.dart';
 
-
-// import 'package:coc/Themes/theme.dart';
-
 final navigatorKey = GlobalKey<NavigatorState>();
-// ThemeManager _themeManager = ThemeManager();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,19 +46,16 @@ void main() async {
     dependsOn: [Authentication],
   );
 
+  di.registerSingleton<SettingManager>(SettingManager());
+
   await di.allReady();
 
   di<DataService>().syncWithApi();
 
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeManager(),
-      child: const App())
-    // const App()
-      );
+  runApp(const App());
 }
 
-class App extends StatefulWidget {
+class App extends WatchingStatefulWidget {
   const App({super.key});
 
   @override
@@ -71,31 +63,23 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   @override
   Widget build(BuildContext context) {
-    final themeManager = Provider.of<ThemeManager>(context);
+    final themeMode = watchPropertyValue((SettingManager a) => a.theme);
 
-    return 
-    // NotificationListener<Notification>(
-    //   child: 
-      MaterialApp(
-        title: 'Flutter Demo',
-        navigatorKey: navigatorKey,
-        debugShowCheckedModeBanner: false,
-        theme: TAppTheme.lightTheme,
-        darkTheme: TAppTheme.darkTheme,
-        // themeMode: ThemeMode.system,
-        themeMode: themeManager.themeMode,
-      
-        initialRoute: "/",
-        routes: {
-          "/": (context) => const HomePage(),
-          "/case": (context) => const CaseDetailView(),
-          "/settings": (context) => const SettingsPage(),
-        },
-
-      // ),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      theme: TAppTheme.lightTheme,
+      darkTheme: TAppTheme.darkTheme,
+      themeMode: themeMode,
+      initialRoute: "/",
+      routes: {
+        "/": (context) => const HomePage(),
+        "/case": (context) => const CaseDetailView(),
+        "/settings": (context) => const SettingsPage(),
+      },
     );
   }
 }
@@ -114,9 +98,16 @@ class HomePage extends WatchingWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.home,)),
+        leading: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.home,
+            )),
         centerTitle: true,
-        title: Text('Home', style: aTextTheme.headlineLarge,),
+        title: Text(
+          'Home',
+          style: aTextTheme.headlineLarge,
+        ),
         actions: [
           IconButton(
               onPressed: () {
@@ -148,7 +139,7 @@ class HomePage extends WatchingWidget {
                     ),
                   );
                 },
-                ),
+              ),
 
               // Join Case Button
               const SizedBox(height: 20),
@@ -199,25 +190,25 @@ class HomePage extends WatchingWidget {
               const SizedBox(height: 20),
               if (kDebugMode)
                 ElevatedButton(
-                child: Text('Debug page', style: aTextTheme.bodyMedium,),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const DebugPage()),
-                  );
-                },
-              
-              ),
+                  child: Text(
+                    'Debug page',
+                    style: aTextTheme.bodyMedium,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DebugPage()),
+                    );
+                  },
+                ),
 
-            // Caselist view
+              // Caselist view
               const SizedBox(height: 20),
               const LimCaseList(itemCount: 5),
-              
             ],
           ),
-          
         ),
-        
       ),
     );
   }

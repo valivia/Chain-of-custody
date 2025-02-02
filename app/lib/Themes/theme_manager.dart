@@ -1,20 +1,12 @@
-// import 'package:coc/Themes/theme.dart';
-// import 'dart:math';
-// import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
-
 import 'package:flutter/material.dart';
 
-class ThemeManager with ChangeNotifier {
+class SettingManager with ChangeNotifier {
+  ThemeMode _theme = ThemeMode.system;
 
-  // ThemeData _themeData = TAppTheme.lightTheme;
-  ThemeMode _themeMode = ThemeMode.system;
+  get theme => _theme;
 
-  // get themeData => _themeData;
-  get themeMode => _themeMode;
-
-  toggleTheme(bool isDark){
-    _themeMode = isDark?ThemeMode.dark:ThemeMode.light;
-    // _themeMode = ThemeMode.system;
+  setTheme(ThemeMode themeMode) {
+    _theme = themeMode;
     notifyListeners();
   }
 }

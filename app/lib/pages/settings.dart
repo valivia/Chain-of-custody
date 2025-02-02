@@ -7,7 +7,6 @@
 // import 'package:coc/Themes/theme.dart';
 import 'package:coc/Themes/theme_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 // Package imports:
 import 'package:watch_it/watch_it.dart';
@@ -16,13 +15,12 @@ import 'package:watch_it/watch_it.dart';
 import 'package:coc/pages/login.dart';
 import 'package:coc/service/authentication.dart';
 
-
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends WatchingWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final themeManager = Provider.of<ThemeManager>(context);
+    final themeMode = watchPropertyValue((SettingManager a) => a.theme);
 
     return Scaffold(
       appBar: AppBar(
@@ -43,16 +41,17 @@ class SettingsPage extends StatelessWidget {
           ),
           SwitchListTile(
             title: const Text('Toggle light/dark mode'),
-            value: themeManager.themeMode == ThemeMode.dark, // Replace with actual value
-            onChanged: (bool newValue) {
-              themeManager.toggleTheme(newValue);
+            value: themeMode == ThemeMode.dark,
+            onChanged: (bool mode) {
+              di<SettingManager>()
+                  .setTheme(mode ? ThemeMode.dark : ThemeMode.light);
             },
           ),
           SwitchListTile(
             title: const Text('Offline mode'),
-            value: false, // Replace with actual value
+            value: false, // TODO: Replace with actual value
             onChanged: (bool value) {
-              // Handle offline mode change
+              // TODO: Handle offline mode change
             },
           ),
           ListTile(
