@@ -7,6 +7,7 @@
 // import 'package:coc/Themes/theme.dart';
 import 'package:coc/Themes/theme_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // Package imports:
 import 'package:watch_it/watch_it.dart';
@@ -15,40 +16,14 @@ import 'package:watch_it/watch_it.dart';
 import 'package:coc/pages/login.dart';
 import 'package:coc/service/authentication.dart';
 
-ThemeManager _themeManager = ThemeManager();
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
-  State<SettingsPage> createState() => SettingsPageState();
-}
-
-class SettingsPageState extends State<SettingsPage> {
-
-  bool isDark = false;
-  @override
-  void dispose(){
-    _themeManager.removeListener(themeListeren);
-    super.dispose();
-  }
-
-  @override
-  void initState(){
-    _themeManager.addListener(themeListeren);
-    super.initState();
-  }
-
-  themeListeren(){
-    if(mounted){
-      setState(() {
-        
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final themeManager = Provider.of<ThemeManager>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -68,9 +43,9 @@ class SettingsPageState extends State<SettingsPage> {
           ),
           SwitchListTile(
             title: const Text('Toggle light/dark mode'),
-            value: _themeManager.themeMode == ThemeMode.dark, // Replace with actual value
+            value: themeManager.themeMode == ThemeMode.dark, // Replace with actual value
             onChanged: (bool newValue) {
-              _themeManager.toggleTheme(newValue);
+              themeManager.toggleTheme(newValue);
             },
           ),
           SwitchListTile(

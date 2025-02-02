@@ -58,7 +58,9 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeManager(),
-      child: const App()));
+      child: const App())
+    // const App()
+      );
 }
 
 class App extends StatefulWidget {
@@ -74,13 +76,16 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
 
-    return NotificationListener<Notification>(
-      child: MaterialApp(
+    return 
+    // NotificationListener<Notification>(
+    //   child: 
+      MaterialApp(
         title: 'Flutter Demo',
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
-        theme: lightTheme,
-        darkTheme: darkTheme,
+        theme: TAppTheme.lightTheme,
+        darkTheme: TAppTheme.darkTheme,
+        // themeMode: ThemeMode.system,
         themeMode: themeManager.themeMode,
       
         initialRoute: "/",
@@ -90,7 +95,7 @@ class _AppState extends State<App> {
           "/settings": (context) => const SettingsPage(),
         },
 
-      ),
+      // ),
     );
   }
 }
