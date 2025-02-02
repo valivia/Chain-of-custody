@@ -1,23 +1,16 @@
-// Dart imports:
 import 'dart:developer';
 import 'dart:io';
-
-// Flutter imports:
 import 'package:flutter/material.dart';
-
-// Package imports:
 import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:path_provider/path_provider.dart';
-
-// Project imports:
 import 'package:coc/components/local_store.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/controllers/media_evidence.dart';
 import 'package:coc/main.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
-import 'package:coc/pages/image_gallery.dart';
+import 'package:coc/pages/lists/full_media_evidence.dart';
 import 'package:coc/pages/scanner.dart';
 import 'package:coc/service/api_service.dart';
 import 'package:coc/service/location.dart';
@@ -153,9 +146,9 @@ class PictureTakingPageState extends State<PictureTakingPage> {
           ),
         ],
       ),
-      body:   Center(
-        child: Transform.rotate(
-          angle: -90 * 3.1415926535897932 / 180, // Convert degrees to radians
+      body: Center(
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.75,
           child: AspectRatio(
             aspectRatio: _cameraController!.value.aspectRatio,
             child: CameraPreview(_cameraController!),
@@ -175,7 +168,8 @@ class PictureTakingPageState extends State<PictureTakingPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ImageGalleryPage()),
+                    builder: (context) => MediaEvidencePage(mediaEvidence: widget.caseItem.mediaEvidence),
+                  ),
                 );
               },
             ),
@@ -222,10 +216,11 @@ class PictureTakingPageState extends State<PictureTakingPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => QRScannerPage(
-                            onScan: navigateToEvidenceCreate(widget.caseItem),
-                            title: 'Scan QR Code',
-                          )),
+                    builder: (context) => QRScannerPage(
+                      onScan: navigateToEvidenceCreate(widget.caseItem),
+                      title: 'Scan QR Code',
+                    ),
+                  ),
                 );
               },
             ),
