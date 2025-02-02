@@ -18,6 +18,7 @@ class CaseListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: ElevatedButton(
@@ -37,7 +38,7 @@ class CaseListItem extends StatelessWidget {
               children: [
                 Text(
                   caseItem.title,
-                  style: const TextStyle(fontSize: 16),
+                  style: aTextTheme.bodyLarge,
                 ),
               ],
             ),

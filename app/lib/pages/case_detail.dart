@@ -133,14 +133,11 @@ class CaseDetailView extends WatchingWidget {
                   children: [
                     Row(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             'Handlers',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: aTextTheme.displayMedium,
                           ),
                         ),
                         const Spacer(),
@@ -180,14 +177,11 @@ class CaseDetailView extends WatchingWidget {
                   children: [
                     Row(
                       children: [
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(left: 8.0),
                           child: Text(
                             'Evidence',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: aTextTheme.displayMedium,
                           ),
                         ),
                         const Spacer(),
@@ -228,14 +222,11 @@ class CaseDetailView extends WatchingWidget {
                   children: [
                     Row(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             'Media Evidence',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: aTextTheme.displayMedium,
                           ),
                         ),
                         const Spacer(),

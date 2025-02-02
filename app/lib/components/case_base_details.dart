@@ -13,6 +13,7 @@ class CaseDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     final createdAt = caseItem.createdAt != null
         ? formatTimestamp(caseItem.createdAt!)
         : 'N/A';
@@ -21,7 +22,7 @@ class CaseDetails extends StatelessWidget {
         : 'N/A';
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[800],
+        color: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(8.0),
       ),
       padding: const EdgeInsets.all(16),
@@ -29,9 +30,9 @@ class CaseDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Case details',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: aTextTheme.displayMedium,
           ),
           const SizedBox(height: 5),
           KeyValue(
@@ -43,9 +44,9 @@ class CaseDetails extends StatelessWidget {
           const SizedBox(height: 5),
           KeyValue(keyText: "Updated At", value: updatedAt),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Description',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: aTextTheme.displaySmall,
           ),
           const SizedBox(height: 5),
           Text(caseItem.description),
