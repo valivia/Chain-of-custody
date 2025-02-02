@@ -34,7 +34,7 @@ import 'package:coc/service/location.dart';
 // import 'package:coc/Themes/theme.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
-// ThemeManager _themeManager = ThemeManager();
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -24,9 +24,12 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
 
+    TextTheme aTextTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        centerTitle: true,
+        title: Text('Settings', style: aTextTheme.headlineLarge,),
       ),
       body: ListView(
         children: <Widget>[
