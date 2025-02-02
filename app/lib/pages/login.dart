@@ -75,7 +75,10 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(title: Text("Login", style: aTextTheme.headlineMedium,)),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Login", style: aTextTheme.headlineMedium,)
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -88,6 +91,7 @@ class LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _emailInputController,
+                  style: aTextTheme.displaySmall,
                   decoration: const InputDecoration(
                     labelText: "email",
                     hintText: "Enter your email",
@@ -107,6 +111,7 @@ class LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordInputController,
+                  style: aTextTheme.displaySmall,
                   decoration: InputDecoration(
                       labelText: "password",
                       hintText: "Enter your password",
@@ -116,7 +121,7 @@ class LoginPageState extends State<LoginPage> {
                           _passwordInvisible
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Theme.of(context).primaryColorDark,
+                          color: Theme.of(context).colorScheme.tertiary,
                         ),
                         onPressed: () {
                           setState(() {
