@@ -53,7 +53,7 @@ class CaseDetailView extends WatchingWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Case: ${caseItem.title}", style: aTextTheme.headlineMedium,), //TODO niet zichtbaar in lightmode, is lichte text
+        title: Text("Case: ${caseItem.title}", style: aTextTheme.headlineMedium,), 
         centerTitle: true,
       ),
       body: SingleChildScrollView(

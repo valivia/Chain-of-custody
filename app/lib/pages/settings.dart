@@ -22,9 +22,12 @@ class SettingsPage extends WatchingWidget {
   Widget build(BuildContext context) {
     final themeMode = watchPropertyValue((SettingManager a) => a.theme);
 
+    TextTheme aTextTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        centerTitle: true,
+        title: Text('Settings', style: aTextTheme.headlineLarge,),
       ),
       body: ListView(
         children: <Widget>[
