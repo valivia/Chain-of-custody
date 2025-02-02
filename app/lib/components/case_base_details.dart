@@ -32,7 +32,7 @@ class CaseDetails extends StatelessWidget {
         children: [
           Text(
             'Case details',
-            style: aTextTheme.displayMedium,
+            style: aTextTheme.displayLarge,
           ),
           const SizedBox(height: 5),
           KeyValue(
@@ -46,10 +46,10 @@ class CaseDetails extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'Description',
-            style: aTextTheme.displaySmall,
+            style: aTextTheme.displayMedium,
           ),
           const SizedBox(height: 5),
-          Text(caseItem.description),
+          Text(caseItem.description, style: aTextTheme.displaySmall,),
         ],
       ),
     );

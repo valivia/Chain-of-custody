@@ -38,7 +38,7 @@ class LimCaseList extends WatchingWidget {
         children: [
           Text(
             'Cases',
-            style: aTextTheme.displayMedium,
+            style: aTextTheme.displayLarge,
           ),
           const SizedBox(height: 10),
           Column(

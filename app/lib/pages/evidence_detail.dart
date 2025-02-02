@@ -60,12 +60,9 @@ class EvidenceDetailView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      'Transfers',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text('Transfers', style: aTextTheme.displayLarge,
                     ),
                   ),
                   const SizedBox(height: 10),

@@ -137,7 +137,7 @@ class CaseDetailView extends WatchingWidget {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             'Handlers',
-                            style: aTextTheme.displayMedium,
+                            style: aTextTheme.displayLarge,
                           ),
                         ),
                         const Spacer(),
@@ -178,10 +178,10 @@ class CaseDetailView extends WatchingWidget {
                     Row(
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 8.0),
+                          padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             'Evidence',
-                            style: aTextTheme.displayMedium,
+                            style: aTextTheme.displayLarge,
                           ),
                         ),
                         const Spacer(),
@@ -226,7 +226,7 @@ class CaseDetailView extends WatchingWidget {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             'Media Evidence',
-                            style: aTextTheme.displayMedium,
+                            style: aTextTheme.displayLarge,
                           ),
                         ),
                         const Spacer(),
