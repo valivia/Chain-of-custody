@@ -102,4 +102,14 @@ class CaseUser {
     final userPermission = int.parse(permissions);
     return (userPermission & permissionValue) == permissionValue;
   }
+
+  // Get permission string array
+  List<String> get permissionStrings {
+    final userPermission = int.parse(permissions, radix: 2);
+    return CasePermission.values
+        .where((permission) =>
+            (userPermission & permission.value) == permission.value)
+        .map((permission) => permission.toString().split('.').last)
+        .toList();
+  }
 }
