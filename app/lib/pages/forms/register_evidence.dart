@@ -72,12 +72,22 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
       _isFetchingLocation = true;
     });
 
-    _position = await di<LocationService>()
-        .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
+    try {
+      _position = await di<LocationService>()
+          .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
 
-    setState(() {
-      _isFetchingLocation = false;
-    });
+      if (mounted) {
+        setState(() {
+          _isFetchingLocation = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isFetchingLocation = false;
+        });
+      }
+    }
   }
 
   _onSubmit() async {

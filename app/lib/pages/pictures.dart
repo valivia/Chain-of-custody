@@ -17,7 +17,7 @@ import 'package:coc/controllers/case.dart';
 import 'package:coc/controllers/media_evidence.dart';
 import 'package:coc/main.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
-import 'package:coc/pages/image_gallery.dart';
+import 'package:coc/pages/lists/full_media_evidence.dart';
 import 'package:coc/pages/scanner.dart';
 import 'package:coc/service/api_service.dart';
 import 'package:coc/service/location.dart';
@@ -76,7 +76,7 @@ class PictureTakingPageState extends State<PictureTakingPage> {
 
       // Get current coordinates
       Position position = await LocationService()
-          .getCurrentLocation(desiredAccuracy: LocationAccuracy.best);
+          .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
 
       final LatLng coordinates = LatLng(position.latitude, position.longitude);
 
@@ -154,9 +154,12 @@ class PictureTakingPageState extends State<PictureTakingPage> {
         ],
       ),
       body: Center(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 1,
-          child: CameraPreview(_cameraController!),
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: AspectRatio(
+            aspectRatio: _cameraController!.value.aspectRatio,
+            child: CameraPreview(_cameraController!),
+          ),
         ),
       ),
       bottomNavigationBar: Container(
@@ -172,7 +175,9 @@ class PictureTakingPageState extends State<PictureTakingPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ImageGalleryPage()),
+                    builder: (context) => MediaEvidencePage(
+                        mediaEvidence: widget.caseItem.mediaEvidence),
+                  ),
                 );
               },
             ),
@@ -219,10 +224,11 @@ class PictureTakingPageState extends State<PictureTakingPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => QRScannerPage(
-                            onScan: navigateToEvidenceCreate(widget.caseItem),
-                            title: 'Scan QR Code',
-                          )),
+                    builder: (context) => QRScannerPage(
+                      onScan: navigateToEvidenceCreate(widget.caseItem),
+                      title: 'Scan QR Code',
+                    ),
+                  ),
                 );
               },
             ),
