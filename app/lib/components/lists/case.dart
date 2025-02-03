@@ -18,7 +18,6 @@ class LimCaseList extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-
     TextTheme aTextTheme = Theme.of(context).textTheme;
 
     final isLoading =
@@ -68,7 +67,10 @@ class LimCaseList extends WatchingWidget {
                     children: [
                       const Icon(Icons.arrow_forward),
                       const SizedBox(width: 10),
-                      Text('View ${caseList.length - itemCount} more cases'),
+                      Text(
+                        'View ${caseList.length - itemCount} more cases', 
+                        style: aTextTheme.bodyMedium,
+                        ),
                     ],
                   ),
                 ),

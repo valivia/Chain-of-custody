@@ -2,9 +2,7 @@
 import 'dart:convert';
 
 // Flutter imports:
-import 'package:coc/Themes/theme.dart';
-import 'package:coc/service/settings.dart';
-import 'package:coc/components/lists/case.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +11,9 @@ import 'package:localstorage/localstorage.dart';
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
+import 'package:coc/Themes/theme.dart';
 import 'package:coc/components/button.dart';
-
+import 'package:coc/components/lists/case.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/controllers/user.dart';
 import 'package:coc/pages/case_detail.dart';
@@ -28,6 +27,8 @@ import 'package:coc/pages/transfer_evidence.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 import 'package:coc/service/location.dart';
+import 'package:coc/service/settings.dart';
+
 
 final navigatorKey = GlobalKey<NavigatorState>();
 

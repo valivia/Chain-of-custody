@@ -63,7 +63,10 @@ class LimMediaEvidenceList extends StatelessWidget {
                 children: [
                   const Icon(Icons.arrow_forward),
                   const SizedBox(width: 10),
-                  Text('View All', style: aTextTheme.bodyMedium,),
+                  Text(
+                    'View All', 
+                    style: aTextTheme.bodyMedium,
+                  ),
                   const Spacer(),
                   Text(
                     "${mediaEvidence.length.toString()} total",
