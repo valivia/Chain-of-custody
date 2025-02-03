@@ -9,16 +9,16 @@ class KeyValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Row(
       children: <Widget>[
         Text(
           "$keyText: ",
-          style: const TextStyle(
-            fontWeight: FontWeight.w700,
-          ),
+          style: aTextTheme.displaySmall,
         ),
         Text(
           value,
+          style: aTextTheme.displaySmall,
         ),
       ],
     );
