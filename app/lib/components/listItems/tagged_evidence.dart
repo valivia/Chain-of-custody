@@ -32,7 +32,7 @@ class TaggedEvidenceListItem extends StatelessWidget {
         children: [
           Icon(
             taggedEvidenceItem.containerType.icon,
-            color: Colors.white,
+            color: taggedEvidenceItem.offline ? Colors.orange : Colors.white,
           ),
           const SizedBox(width: 8),
           Column(
