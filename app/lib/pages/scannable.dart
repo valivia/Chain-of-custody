@@ -46,7 +46,7 @@ class ScannablePage extends StatelessWidget {
             // Go back button
             if (description != null && description!.isNotEmpty) ...[
               const SizedBox(height: 20),
-              Text(description!),
+              Text(description!, style: aTextTheme.displaySmall,),
             ],
             const SizedBox(height: 20),
             Row(
