@@ -86,15 +86,30 @@ class DataService extends ChangeNotifier {
       for (var existingCase in _cases) {
         for (var evidence in existingCase.taggedEvidence) {
           if (evidence.offline == true) {
-            evidence.offline = false;
-            var apiCase = apiCases.firstWhere(
-              (apiCase) => apiCase.id == existingCase.id
-            );
-            if (apiCase != null) {
-              apiCase.taggedEvidence.add(evidence);
-            } else {
-              apiCases.add(existingCase);
+            Case? apiCase;
+
+            // Find API case
+            try {
+              apiCase = apiCases.firstWhere(
+                (apiCase) => apiCase.id == existingCase.id,
+              );
+            } catch (e) {
+              apiCase = null;
             }
+
+            // If API case is not found, skip
+            if (apiCase == null) continue;
+
+            final foundApiEvidence = apiCase.taggedEvidence.indexWhere(
+              (e) => e.id == evidence.id,
+            );
+
+            if (foundApiEvidence != -1) {
+              continue;
+            }
+
+            log("Adding evidence to API case: ${apiCase.title} ${evidence.itemType}");
+            apiCase.taggedEvidence.add(evidence);
           }
         }
       }
