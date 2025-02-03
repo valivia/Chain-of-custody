@@ -40,18 +40,20 @@ class LimTransferHistoryView extends StatelessWidget {
               previousLog: previousLog,
             );
           },
-          separatorBuilder: (context, index) => const Icon(
+          separatorBuilder: (context, index) =>  Icon(
             Icons.arrow_drop_up_rounded,
             size: 40.0,
+            color: aTextTheme.bodyMedium?.color,
           ),
         ),
         // view all
         if (transfers.length > itemCount)
           Column(
             children: [
-              const Icon(
+              Icon(
                 Icons.arrow_drop_up_rounded,
                 size: 40.0,
+                color: aTextTheme.displayLarge?.color,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -70,7 +72,10 @@ class LimTransferHistoryView extends StatelessWidget {
                   },
                   child: Row(
                     children: [
-                      const Icon(Icons.arrow_forward),
+                      Icon(
+                        Icons.arrow_forward,
+                        color: aTextTheme.bodyMedium?.color,  
+                      ),
                       const SizedBox(width: 10),
                       Text(
                         'View All', 
