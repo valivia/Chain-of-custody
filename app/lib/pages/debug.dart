@@ -18,9 +18,7 @@ class DebugPage extends StatelessWidget {
   Widget build(BuildContext context) {
     TextTheme bTextTheme = Theme.of(context).textTheme;
     return Scaffold(
-      //backgroundColor: const Color.fromRGBO(45, 45, 45, 1),
       appBar: AppBar(
-        //backgroundColor: const Color.fromRGBO(23, 23, 23, 1),
         leading: const Icon(Icons.home, color: Colors.white),
         centerTitle: true,
         title: Text('Debug',style: bTextTheme.headlineMedium,),
@@ -33,14 +31,20 @@ class DebugPage extends StatelessWidget {
               children: [
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
-                  child: const Text('Sync with API'),
+                  child: Text(
+                    'Sync with API',
+                    style: bTextTheme.labelLarge,
+                    ),
                   onPressed: () {
                     di<DataService>().syncWithApi();
                   },
                 ),
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
-                  child: const Text('View Images'),
+                  child: Text(
+                    'View Images', 
+                    style: bTextTheme.labelLarge,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -51,7 +55,10 @@ class DebugPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
-                  child: const Text('Login page'),
+                  child: Text(
+                    'Login page', 
+                    style: bTextTheme.labelLarge,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -79,18 +86,24 @@ class DebugPage extends StatelessWidget {
                             ),
                           ),
                           actions: [
-                            TextButton(
+                            ElevatedButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: const Text('OK'),
+                              child: Text(
+                                'OK',
+                                style: bTextTheme.labelLarge,
+                              ),
                             ),
                           ],
                         );
                       },
                     );
                   },
-                  child: const Text('Get All Data from Hive'),
+                  child:  Text(
+                    'Get All Data from Hive',
+                    style: bTextTheme.labelLarge,
+                  ),
                 ),
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
@@ -98,7 +111,10 @@ class DebugPage extends StatelessWidget {
                     await LocalStore.clearApiCache();
                     print('Hive cache cleared');
                   },
-                  child: const Text('Clear Cache'),
+                  child: Text(
+                    'Clear Cache',
+                    style: bTextTheme.labelLarge,
+                  ),
                 ),
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
@@ -116,9 +132,12 @@ class DebugPage extends StatelessWidget {
                                 return Row(
                                   children: [
                                     Expanded(
-                                      child: Text(status['status'] != 'Success'
-                                          ? '${status['id']}     ${status['type']}     ${status['status']}'
-                                          : '${status['id']}     ${status['type']}'),
+                                      child: Text(
+                                        status['status'] != 'Success'
+                                            ? '${status['id']}     ${status['type']}     ${status['status']}'
+                                            : '${status['id']}     ${status['type']}',
+                                        style: bTextTheme.bodyMedium,
+                                      ),
                                     ),
                                     Icon(
                                       status['status'] == 'Success'
@@ -138,14 +157,20 @@ class DebugPage extends StatelessWidget {
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: const Text('OK'),
+                              child: Text(
+                                'OK',
+                                style: bTextTheme.labelLarge,
+                              ),
                             ),
                           ],
                         );
                       },
                     );
                   },
-                  child: const Text('Send All Saved Data'),
+                  child: Text(
+                    'Send All Saved Data',
+                    style: bTextTheme.labelLarge,
+                  ),
                 ),
               ],
             ),
