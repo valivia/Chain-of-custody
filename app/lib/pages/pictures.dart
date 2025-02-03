@@ -167,13 +167,14 @@ class PictureTakingPageState extends State<PictureTakingPage> {
         ),
       ),
       bottomNavigationBar: Container(
+        color: Theme.of(context).colorScheme.primary,
         height: 120.0, // Set a fixed height for the bottom navigation bar
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              icon: const Icon(Icons.photo_library),
+              icon:  Icon(Icons.photo_library, color: aTextTheme.bodyMedium?.color,),
               iconSize: 30.0, // Set the icon size
               onPressed: () {
                 Navigator.push(
@@ -185,7 +186,7 @@ class PictureTakingPageState extends State<PictureTakingPage> {
                 );
               },
             ),
-            GestureDetector(
+            GestureDetector( // button to take
               onTap: takePicture,
               child: Container(
                 width: 80.0,
@@ -204,8 +205,7 @@ class PictureTakingPageState extends State<PictureTakingPage> {
                     height: 75.0,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Theme.of(context)
-                          .scaffoldBackgroundColor, // Match the background color
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     child: Center(
                       child: Container(
@@ -222,7 +222,7 @@ class PictureTakingPageState extends State<PictureTakingPage> {
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.qr_code_scanner),
+              icon: Icon(Icons.qr_code_scanner, color: aTextTheme.bodyMedium?.color),
               iconSize: 30.0, // Set the icon size
               onPressed: () {
                 Navigator.push(

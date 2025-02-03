@@ -53,7 +53,7 @@ class LimTransferHistoryView extends StatelessWidget {
               Icon(
                 Icons.arrow_drop_up_rounded,
                 size: 40.0,
-                color: aTextTheme.displayLarge?.color,
+                color: aTextTheme.bodyMedium?.color,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
