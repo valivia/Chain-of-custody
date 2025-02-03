@@ -83,6 +83,22 @@ class DataService extends ChangeNotifier {
     try {
       final apiCases = await Case.fetchCases();
 
+      for (var existingCase in _cases) {
+        for (var evidence in existingCase.taggedEvidence) {
+          if (evidence.offline == true) {
+            evidence.offline = false;
+            var apiCase = apiCases.firstWhere(
+              (apiCase) => apiCase.id == existingCase.id
+            );
+            if (apiCase != null) {
+              apiCase.taggedEvidence.add(evidence);
+            } else {
+              apiCases.add(existingCase);
+            }
+          }
+        }
+      }
+
       _cases = apiCases;
 
       saveToLocalStorage();
