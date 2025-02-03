@@ -1,11 +1,5 @@
-// Login
-// Logout
-// Togle light/darkmode?
-// Offlinemode
-
 // Flutter imports:
-// import 'package:coc/Themes/theme.dart';
-import 'package:coc/Themes/theme_manager.dart';
+import 'package:coc/service/settings.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:

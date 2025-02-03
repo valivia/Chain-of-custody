@@ -3,7 +3,7 @@ import 'dart:convert';
 
 // Flutter imports:
 import 'package:coc/Themes/theme.dart';
-import 'package:coc/Themes/theme_manager.dart';
+import 'package:coc/service/settings.dart';
 import 'package:coc/components/lists/case.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +46,7 @@ void main() async {
     dependsOn: [Authentication],
   );
 
-  di.registerSingleton<SettingManager>(SettingManager());
+  di.registerSingleton<SettingManager>(SettingManager.initialize());
 
   await di.allReady();
 
