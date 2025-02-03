@@ -47,30 +47,32 @@ class EvidenceDetailView extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             EvidenceDetails(evidence: evidence),
-            const SizedBox(height: 20),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      'Transfers',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            if (evidence.transfers.isNotEmpty) ...[
+              const SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[800],
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Transfers',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  LimTransferHistoryView(
-                      transfers: evidence.transfers, itemCount: 2),
-                ],
+                    const SizedBox(height: 10),
+                    LimTransferHistoryView(
+                        transfers: evidence.transfers, itemCount: 2),
+                  ],
+                ),
               ),
-            ),
+            ],
           ],
         ),
       ),
