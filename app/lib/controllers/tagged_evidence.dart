@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 // Flutter imports:
+import 'package:coc/service/authentication.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -14,6 +15,7 @@ import 'package:coc/controllers/case.dart';
 import 'package:coc/service/api_service.dart';
 import 'package:coc/service/data.dart';
 import 'package:coc/utility/helpers.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class TaggedEvidence {
   String id;
@@ -35,6 +37,7 @@ class TaggedEvidence {
   // Api Only
   DateTime? createdAt;
   DateTime? updatedAt;
+  bool offline;
 
   TaggedEvidence({
     required this.id,
@@ -49,6 +52,7 @@ class TaggedEvidence {
     required this.originCoordinates,
     required this.originLocationDescription,
     required this.auditLog,
+    this.offline = false,
   });
 
   List<audit_log.AuditLog> get transfers {
@@ -62,7 +66,6 @@ class TaggedEvidence {
   factory TaggedEvidence.fromJson(Map<String, dynamic> json) {
     final createdAt = json['createdAt'] as String?;
     final updatedAt = json['updatedAt'] as String?;
-
     return TaggedEvidence(
       id: json['id'] as String,
       userId: json['userId'] as String,
@@ -82,6 +85,7 @@ class TaggedEvidence {
               .map((log) => audit_log.AuditLog.fromJson(log))
               .toList()
           : [],
+      offline: json['offline'] as bool? ?? false,
     );
   }
 
@@ -99,6 +103,7 @@ class TaggedEvidence {
       'originCoordinates': coordinatesToString(originCoordinates),
       'originLocationDescription': originLocationDescription,
       'auditLog': auditLog.map((log) => log.toJson()).toList(),
+      'offline': offline,
     };
   }
 
@@ -111,22 +116,41 @@ class TaggedEvidence {
     required LatLng originCoordinates,
     required String originLocationDescription,
   }) async {
-    final body = {
-      'id': id,
-      'caseId': caseItem.id,
-      'containerType': containerType.name,
-      'itemType': itemType,
-      'description': description,
-      'originCoordinates': coordinatesToString(originCoordinates),
-      'originLocationDescription': originLocationDescription,
-    };
+    late TaggedEvidence evidence;
+    final isConnected = await InternetConnectionChecker().hasConnection;
 
-    final response = await ApiService.post('/evidence/tag', body);
-    final data = ApiService.parseResponse(response);
+    if (!isConnected) {
+      evidence = TaggedEvidence(
+        id: id,
+        userId: di<Authentication>().user.id,
+        caseId: caseItem.id,
+        madeOn: DateTime.now(),
+        containerType: containerType,
+        itemType: itemType,
+        description: description,
+        originCoordinates: originCoordinates,
+        originLocationDescription: originLocationDescription,
+        auditLog: [],
+        offline: true,
+      );
+    } else {
+      final body = {
+        'id': id,
+        'caseId': caseItem.id,
+        'containerType': containerType.name,
+        'itemType': itemType,
+        'description': description,
+        'originCoordinates': coordinatesToString(originCoordinates),
+        'originLocationDescription': originLocationDescription,
+      };
 
-    final evidence = TaggedEvidence.fromJson(data);
+      final response = await ApiService.post('/evidence/tag', body);
+      final data = ApiService.parseResponse(response);
+      evidence = TaggedEvidence.fromJson(data);
+    }
 
     caseItem.taggedEvidence.add(evidence);
+    di<DataService>().upsertCase(caseItem);
 
     return evidence;
   }

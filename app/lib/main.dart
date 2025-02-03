@@ -4,6 +4,7 @@ import 'dart:convert';
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:localstorage/localstorage.dart';
@@ -55,6 +56,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     // Color definition
     const Color primaryColor = Color.fromRGBO(23, 23, 23, 1);
     const Color secondaryColor = Color.fromRGBO(35, 35, 35, 1);

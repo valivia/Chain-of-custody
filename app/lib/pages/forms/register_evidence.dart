@@ -92,9 +92,6 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
 
   _onSubmit() async {
     if (_formKey.currentState!.validate()) {
-      bool isConnected = await LocalStore.hasInternetConnection();
-
-      if (isConnected) {
         try {
           await TaggedEvidence.fromForm(
             id: _idController.text,
@@ -125,16 +122,6 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
             widget.caseItem,
           );
         }
-      } else {
-        // Save evidence locally
-        // requestData['body']['madeOn'] = DateTime.now().toIso8601String();
-        // await LocalStore.saveApiResponse(evidenceKey, requestData);
-        showSuccessDialog(
-          navigatorKey.currentContext!,
-          'Evidence saved locally',
-          widget.caseItem,
-        );
-      }
     }
   }
 
