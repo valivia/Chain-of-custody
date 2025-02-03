@@ -1,5 +1,4 @@
 // Flutter imports:
-import 'package:coc/pages/scan_any_tag.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
@@ -8,6 +7,7 @@ import 'package:coc/components/success_animation.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/pages/case_detail.dart';
 import 'package:coc/pages/forms/register_evidence.dart';
+import 'package:coc/pages/scan_any_tag.dart';
 
 void showSuccessDialog(BuildContext context, String message, Case caseItem) {
   showDialog(

@@ -1,5 +1,8 @@
+// Dart imports:
 import 'dart:async';
 import 'dart:developer';
+
+// Package imports:
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {

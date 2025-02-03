@@ -1,10 +1,17 @@
+// Dart imports:
 import 'dart:developer';
 import 'dart:io';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:path_provider/path_provider.dart';
+
+// Project imports:
 import 'package:coc/components/local_store.dart';
 import 'package:coc/controllers/case.dart';
 import 'package:coc/controllers/media_evidence.dart';
@@ -168,7 +175,8 @@ class PictureTakingPageState extends State<PictureTakingPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MediaEvidencePage(mediaEvidence: widget.caseItem.mediaEvidence),
+                    builder: (context) => MediaEvidencePage(
+                        mediaEvidence: widget.caseItem.mediaEvidence),
                   ),
                 );
               },
