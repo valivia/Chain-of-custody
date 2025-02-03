@@ -46,26 +46,30 @@ class ScannablePage extends StatelessWidget {
             // Go back button
             if (description != null && description!.isNotEmpty) ...[
               const SizedBox(height: 20),
-              Text(description!, style: aTextTheme.displaySmall,),
+              Text(description!, textAlign: TextAlign.center, style: aTextTheme.displaySmall,),
             ],
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               spacing: 10,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Go back", style: aTextTheme.bodyLarge,),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("Go back", style: aTextTheme.bodyLarge,),
+                  ),
                 ),
-                ElevatedButton(
-                  onPressed: onDone != null
-                      ? () => onDone!(context)
-                      : () {
-                          Navigator.pop(context);
-                        },
-                  child: Text("Done", style: aTextTheme.bodyLarge,),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: onDone != null
+                        ? () => onDone!(context)
+                        : () {
+                            Navigator.pop(context);
+                          },
+                    child: Text("Done", style: aTextTheme.bodyLarge,),
+                  ),
                 ),
               ],
             ),

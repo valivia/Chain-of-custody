@@ -50,27 +50,31 @@ class EvidenceDetailView extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             EvidenceDetails(evidence: evidence),
-            const SizedBox(height: 20),
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text('Transfers', style: aTextTheme.displayLarge,
+            if (evidence.transfers.isNotEmpty) ...[
+              const SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Transfers',
+                        style: aTextTheme.displayLarge,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  LimTransferHistoryView(
-                      transfers: evidence.transfers, itemCount: 2),
-                ],
+                    const SizedBox(height: 10),
+                    LimTransferHistoryView(
+                        transfers: evidence.transfers, itemCount: 2),
+                  ],
+                ),
               ),
-            ),
+            ],
           ],
         ),
       ),

@@ -72,19 +72,26 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
       _isFetchingLocation = true;
     });
 
-    _position = await di<LocationService>()
-        .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
+    try {
+      _position = await di<LocationService>()
+          .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
 
-    setState(() {
-      _isFetchingLocation = false;
-    });
+      if (mounted) {
+        setState(() {
+          _isFetchingLocation = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isFetchingLocation = false;
+        });
+      }
+    }
   }
 
   _onSubmit() async {
     if (_formKey.currentState!.validate()) {
-      bool isConnected = await LocalStore.hasInternetConnection();
-
-      if (isConnected) {
         try {
           await TaggedEvidence.fromForm(
             id: _idController.text,
@@ -115,16 +122,6 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
             widget.caseItem,
           );
         }
-      } else {
-        // Save evidence locally
-        // requestData['body']['madeOn'] = DateTime.now().toIso8601String();
-        // await LocalStore.saveApiResponse(evidenceKey, requestData);
-        showSuccessDialog(
-          navigatorKey.currentContext!,
-          'Evidence saved locally',
-          widget.caseItem,
-        );
-      }
     }
   }
 

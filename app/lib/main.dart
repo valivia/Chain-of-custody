@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:localstorage/localstorage.dart';
@@ -66,6 +67,9 @@ class App extends WatchingStatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     final themeMode = watchPropertyValue((SettingManager a) => a.theme);
 
     return MaterialApp(
