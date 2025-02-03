@@ -3,13 +3,12 @@ import 'dart:developer';
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
-  // Singleton pattern to provide a single instance
-  static final LocationService _instance = LocationService._internal();
-  factory LocationService() => _instance;
-  LocationService._internal();
-
   Position? _currentPosition;
   Timer? _locationUpdateTimer;
+
+  LocationService() {
+    startPeriodicLocationUpdates(LocationAccuracy.bestForNavigation);
+  }
 
   /// Requests location permissions and checks if location services are enabled.
   Future<bool> _handlePermissions() async {
@@ -70,7 +69,8 @@ class LocationService {
   void _startPeriodicLocationUpdates(LocationAccuracy desiredAccuracy) {
     _locationUpdateTimer?.cancel(); // Cancel any existing timer
 
-    _locationUpdateTimer = Timer.periodic(const Duration(seconds: 30), (timer) async {
+    _locationUpdateTimer =
+        Timer.periodic(const Duration(seconds: 60), (timer) async {
       try {
         Position position = await Geolocator.getCurrentPosition(
           locationSettings: LocationSettings(

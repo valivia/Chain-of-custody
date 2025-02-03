@@ -31,7 +31,6 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  LocationService().startPeriodicLocationUpdates(LocationAccuracy.low);
 
   await LocalStore.init();
   await initLocalStorage();
