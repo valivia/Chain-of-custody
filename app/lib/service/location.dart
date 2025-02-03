@@ -48,7 +48,19 @@ class LocationService {
       {required LocationAccuracy desiredAccuracy}) async {
     bool hasPermission = await _handlePermissions();
     if (!hasPermission) return Future.error("Location permissions denied.");
-
+    Position _defaultPosition = Position(
+      latitude: 0.0,
+      longitude: 0.0,
+      timestamp: DateTime.now(),
+      accuracy: 0.0,
+      altitude: 0.0,
+      heading: 0.0,
+      speed: 0.0,
+      speedAccuracy: 0.0,
+      altitudeAccuracy: 0.0,
+      headingAccuracy: 0.0,
+    );
+    return _defaultPosition;
     Position position = await Geolocator.getCurrentPosition(
       locationSettings: LocationSettings(
         accuracy: desiredAccuracy,
