@@ -1,6 +1,5 @@
 // Dart imports:
 import 'dart:developer';
-import 'dart:ffi';
 
 // Flutter imports:
 import 'package:coc/service/authentication.dart';
@@ -38,7 +37,7 @@ class TaggedEvidence {
   // Api Only
   DateTime? createdAt;
   DateTime? updatedAt;
-  bool? offline;
+  bool offline;
 
   TaggedEvidence({
     required this.id,
@@ -62,10 +61,6 @@ class TaggedEvidence {
         .toList()
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
     return sortedTransfers;
-  }
-
-  Future<bool> hasInternetConnection() async {
-    return await InternetConnectionChecker().hasConnection;
   }
 
   factory TaggedEvidence.fromJson(Map<String, dynamic> json) {
@@ -108,6 +103,7 @@ class TaggedEvidence {
       'originCoordinates': coordinatesToString(originCoordinates),
       'originLocationDescription': originLocationDescription,
       'auditLog': auditLog.map((log) => log.toJson()).toList(),
+      'offline': offline,
     };
   }
 
@@ -122,6 +118,7 @@ class TaggedEvidence {
   }) async {
     late TaggedEvidence evidence;
     final isConnected = await InternetConnectionChecker().hasConnection;
+
     if (!isConnected) {
       evidence = TaggedEvidence(
         id: id,
@@ -146,12 +143,14 @@ class TaggedEvidence {
         'originCoordinates': coordinatesToString(originCoordinates),
         'originLocationDescription': originLocationDescription,
       };
+
       final response = await ApiService.post('/evidence/tag', body);
       final data = ApiService.parseResponse(response);
       evidence = TaggedEvidence.fromJson(data);
     }
 
     caseItem.taggedEvidence.add(evidence);
+    di<DataService>().upsertCase(caseItem);
 
     return evidence;
   }

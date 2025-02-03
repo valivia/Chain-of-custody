@@ -103,6 +103,10 @@ class DataService extends ChangeNotifier {
       _cases[index] = c;
     }
 
+    if (currentCase?.id == c.id) {
+      _currentCase = c;
+    }
+
     saveToLocalStorage();
     notifyListeners();
   }
