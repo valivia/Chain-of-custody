@@ -14,7 +14,9 @@ class KeyValue extends StatelessWidget {
       children: <Widget>[
         Text(
           "$keyText: ",
-          style: aTextTheme.displaySmall,
+          style: aTextTheme.displaySmall?.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
         ),
         Text(
           value,

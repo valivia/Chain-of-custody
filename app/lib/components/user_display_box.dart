@@ -19,10 +19,11 @@ class UserDisplayBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentCase = di<DataService>().currentCase;
+    TextTheme aTextTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(caseUser.fullName, textAlign: TextAlign.center),
+        title: Text(caseUser.fullName, textAlign: TextAlign.center, style: aTextTheme.headlineMedium,),
         centerTitle: true,
       ),
       body: Padding(
@@ -32,7 +33,7 @@ class UserDisplayBox extends StatelessWidget {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.grey[800],
+                color: Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(8.0),
               ),
               padding: const EdgeInsets.all(16),
@@ -41,7 +42,7 @@ class UserDisplayBox extends StatelessWidget {
                 children: [
                   Text(
                     'Case user Information',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: aTextTheme.displayLarge
                   ),
                   const SizedBox(height: 10),
                   KeyValue(keyText: "First name", value: caseUser.firstName),
@@ -59,7 +60,7 @@ class UserDisplayBox extends StatelessWidget {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.grey[800],
+                color: Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(8.0),
               ),
               padding: const EdgeInsets.all(16),
@@ -68,8 +69,9 @@ class UserDisplayBox extends StatelessWidget {
                 children: [
                   Text(
                     'Permissions',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: aTextTheme.displayLarge,
                   ),
+                  const SizedBox(height: 10),
                   Wrap(
                     children: [
                       ...caseUser.permissionStrings
