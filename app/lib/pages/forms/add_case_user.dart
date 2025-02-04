@@ -64,7 +64,7 @@ class RegisterCasePageState extends State<RegisterCaseUser> {
     try {
       await CaseUser.fromForm(
         userId: user!.id,
-        permissions: allPermissions().toRadixString(2),
+        permissions: [CasePermission.view, CasePermission.addEvidence],
         caseItem: widget.caseItem,
       );
     } on ApiException catch (error) {
@@ -91,7 +91,9 @@ class RegisterCasePageState extends State<RegisterCaseUser> {
                 // remove till back on case page
                 Navigator.popUntil(context, ModalRoute.withName('/case'));
               },
-              child: const Text('OK',),
+              child: const Text(
+                'OK',
+              ),
             ),
           ],
         );
@@ -106,13 +108,15 @@ class RegisterCasePageState extends State<RegisterCaseUser> {
 
   @override
   Widget build(BuildContext context) {
-
     TextTheme aTextTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Register Case User", style: aTextTheme.headlineLarge,),
+        title: Text(
+          "Register Case User",
+          style: aTextTheme.headlineLarge,
+        ),
         // backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         elevation: 10,
         shape: const RoundedRectangleBorder(
@@ -157,7 +161,10 @@ class RegisterCasePageState extends State<RegisterCaseUser> {
                       onPressed: () async {
                         await submit();
                       },
-                      child: Text('Submit', style: aTextTheme.bodyLarge,),
+                      child: Text(
+                        'Submit',
+                        style: aTextTheme.bodyLarge,
+                      ),
                     ),
                   ),
                 ],
