@@ -39,7 +39,10 @@ class QRScannerPageState extends State<QRScannerPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(widget.title, style: aTextTheme.headlineMedium,),
+        title: Text(
+          widget.title,
+          style: aTextTheme.headlineMedium,
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

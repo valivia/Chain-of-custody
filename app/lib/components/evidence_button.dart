@@ -29,8 +29,14 @@ Widget evidenceButton(BuildContext context, TaggedEvidence taggedEvidenceItem) {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("ID: ${taggedEvidenceItem.id}", style: aTextTheme.bodyLarge,),
-              Text("Description: ${taggedEvidenceItem.description.toString()}", style: aTextTheme.bodyMedium,),
+              Text(
+                "ID: ${taggedEvidenceItem.id}",
+                style: aTextTheme.bodyLarge,
+              ),
+              Text(
+                "Description: ${taggedEvidenceItem.description.toString()}",
+                style: aTextTheme.bodyMedium,
+              ),
             ],
           ),
           const Spacer(),

@@ -1,8 +1,8 @@
 // Flutter imports:
-import 'package:coc/components/user_display_box.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
+import 'package:coc/components/user_display_box.dart';
 import 'package:coc/controllers/case_user.dart';
 
 class CaseUserListItem extends StatelessWidget {

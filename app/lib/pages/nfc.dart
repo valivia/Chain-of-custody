@@ -87,7 +87,8 @@ class NfcScanPageState extends State<NfcScanPage> {
                   ],
                 );
               } else {
-                return Text('Error: ${value['error']}', style: aTextTheme.displaySmall);
+                return Text('Error: ${value['error']}',
+                    style: aTextTheme.displaySmall);
               }
             },
           ),

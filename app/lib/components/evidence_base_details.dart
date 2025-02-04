@@ -55,7 +55,10 @@ class EvidenceDetails extends StatelessWidget {
               style: aTextTheme.displayMedium,
             ),
             const SizedBox(height: 5),
-            Text(evidence.description!, style: aTextTheme.displaySmall,),
+            Text(
+              evidence.description!,
+              style: aTextTheme.displaySmall,
+            ),
           ],
 
           // Location
@@ -65,7 +68,10 @@ class EvidenceDetails extends StatelessWidget {
             style: aTextTheme.displayMedium,
           ),
           const SizedBox(height: 5),
-          Text(evidence.originLocationDescription, style: aTextTheme.displaySmall,),
+          Text(
+            evidence.originLocationDescription,
+            style: aTextTheme.displaySmall,
+          ),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 class TSnackbarTheme {
@@ -12,9 +13,7 @@ class TSnackbarTheme {
       ),
     ),
   );
-  
 
-  
   static const darkSnackBarTheme = SnackBarThemeData(
     backgroundColor: Color(0xFF466F7B),
     contentTextStyle: TextStyle(color: Color(0xFFE7E7E7)),
@@ -24,10 +23,4 @@ class TSnackbarTheme {
       ),
     ),
   );
-  // snackBarTheme: const SnackBarThemeData(
-      //     backgroundColor: Color.fromRGBO(23, 23, 23, 1),
-      //     contentTextStyle: TextStyle(color: Colors.white),
-      //     shape: RoundedRectangleBorder(
-      //       borderRadius: BorderRadius.vertical(
-      //         top: Radius.circular(16),
 }

@@ -62,7 +62,6 @@ class LoginPageState extends State<LoginPage> {
 
       // reload page
       navigatorKey.currentState!.pushReplacementNamed("/");
-      
     } catch (error) {
       log(" --- Login failed: $error --- ");
       final snackBar = SnackBar(content: Text("Login Failed: \n$error"));
@@ -80,9 +79,11 @@ class LoginPageState extends State<LoginPage> {
     TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text("Login", style: aTextTheme.headlineMedium,)
-      ),
+          centerTitle: true,
+          title: Text(
+            "Login",
+            style: aTextTheme.headlineMedium,
+          )),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -150,7 +151,10 @@ class LoginPageState extends State<LoginPage> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: _isButtonDisabled ? null : submit,
-                        child: Text('Login', style: aTextTheme.bodyLarge,),
+                        child: Text(
+                          'Login',
+                          style: aTextTheme.bodyLarge,
+                        ),
                       ),
                     ),
                   ],

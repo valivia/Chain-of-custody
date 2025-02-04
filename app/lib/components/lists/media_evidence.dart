@@ -23,7 +23,6 @@ class LimMediaEvidenceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     TextTheme aTextTheme = Theme.of(context).textTheme;
 
     final url = Uri.parse("${EnvironmentConfig.apiUrl}/media/evidence/");
@@ -64,7 +63,7 @@ class LimMediaEvidenceList extends StatelessWidget {
                   const Icon(Icons.arrow_forward),
                   const SizedBox(width: 10),
                   Text(
-                    'View All', 
+                    'View All',
                     style: aTextTheme.bodyMedium,
                   ),
                   const Spacer(),

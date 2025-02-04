@@ -49,7 +49,10 @@ class CaseDetails extends StatelessWidget {
             style: aTextTheme.displayMedium,
           ),
           const SizedBox(height: 5),
-          Text(caseItem.description, style: aTextTheme.displaySmall,),
+          Text(
+            caseItem.description,
+            style: aTextTheme.displaySmall,
+          ),
         ],
       ),
     );

@@ -39,7 +39,10 @@ class TaggedEvidenceListItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(taggedEvidenceItem.itemType, style: aTextTheme.bodyMedium,),
+              Text(
+                taggedEvidenceItem.itemType,
+                style: aTextTheme.bodyMedium,
+              ),
             ],
           ),
           const Spacer(),

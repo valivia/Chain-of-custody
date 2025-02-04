@@ -71,11 +71,20 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
         builder: (BuildContext context) {
           TextTheme aTextTheme = Theme.of(context).textTheme;
           return AlertDialog(
-            title: Text("Successful", style: aTextTheme.headlineMedium,),
-            content: Text("Transfer submitted successfully", style: aTextTheme.bodyLarge,),
+            title: Text(
+              "Successful",
+              style: aTextTheme.headlineMedium,
+            ),
+            content: Text(
+              "Transfer submitted successfully",
+              style: aTextTheme.bodyLarge,
+            ),
             actions: <Widget>[
               ElevatedButton(
-                child: Text('Home', style: aTextTheme.bodyLarge,),
+                child: Text(
+                  'Home',
+                  style: aTextTheme.bodyLarge,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(
@@ -96,11 +105,20 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
           // Not found
           if (error.code == 404) {
             return AlertDialog(
-              title: Text('Not found', style: aTextTheme.headlineMedium,),
-              content: Text('This evidence has not been registered yet.', style: aTextTheme.bodyLarge,),
+              title: Text(
+                'Not found',
+                style: aTextTheme.headlineMedium,
+              ),
+              content: Text(
+                'This evidence has not been registered yet.',
+                style: aTextTheme.bodyLarge,
+              ),
               actions: <Widget>[
                 ElevatedButton(
-                  child: Text('OK', style: aTextTheme.bodyLarge,),
+                  child: Text(
+                    'OK',
+                    style: aTextTheme.bodyLarge,
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -111,11 +129,20 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
             // Unknown error
           } else {
             return AlertDialog(
-              title: Text('Failed', style: aTextTheme.headlineMedium,),
-              content: Text(error.message, style: aTextTheme.bodyLarge,),
+              title: Text(
+                'Failed',
+                style: aTextTheme.headlineMedium,
+              ),
+              content: Text(
+                error.message,
+                style: aTextTheme.bodyLarge,
+              ),
               actions: <Widget>[
                 ElevatedButton(
-                  child: Text('OK', style: aTextTheme.bodyLarge,),
+                  child: Text(
+                    'OK',
+                    style: aTextTheme.bodyLarge,
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.push(

@@ -1,5 +1,4 @@
 // Flutter imports:
-import 'package:coc/service/settings.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -8,6 +7,7 @@ import 'package:watch_it/watch_it.dart';
 // Project imports:
 import 'package:coc/pages/login.dart';
 import 'package:coc/service/authentication.dart';
+import 'package:coc/service/settings.dart';
 
 class SettingsPage extends WatchingWidget {
   const SettingsPage({super.key});
@@ -21,7 +21,10 @@ class SettingsPage extends WatchingWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Settings', style: aTextTheme.headlineLarge,),
+        title: Text(
+          'Settings',
+          style: aTextTheme.headlineLarge,
+        ),
       ),
       body: ListView(
         children: <Widget>[
@@ -45,7 +48,10 @@ class SettingsPage extends WatchingWidget {
             },
           ),
           SwitchListTile(
-            title: Text('Offline mode', style: aTextTheme.bodySmall,),
+            title: Text(
+              'Offline mode',
+              style: aTextTheme.displaySmall,
+            ),
             value: false, // TODO: Replace with actual value
             onChanged: (bool value) {
               // TODO: Handle offline mode change
@@ -53,7 +59,10 @@ class SettingsPage extends WatchingWidget {
           ),
           ListTile(
             leading: const Icon(Icons.logout),
-            title: Text('Logout', style: aTextTheme.bodySmall,),
+            title: Text(
+              'Logout',
+              style: aTextTheme.displaySmall,
+            ),
             onTap: () {
               di<Authentication>().logout();
               Navigator.pushAndRemoveUntil(

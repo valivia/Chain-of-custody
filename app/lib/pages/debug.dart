@@ -21,7 +21,10 @@ class DebugPage extends StatelessWidget {
       appBar: AppBar(
         leading: const Icon(Icons.home, color: Colors.white),
         centerTitle: true,
-        title: Text('Debug',style: bTextTheme.headlineMedium,),
+        title: Text(
+          'Debug',
+          style: bTextTheme.headlineMedium,
+        ),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -34,7 +37,7 @@ class DebugPage extends StatelessWidget {
                   child: Text(
                     'Sync with API',
                     style: bTextTheme.labelLarge,
-                    ),
+                  ),
                   onPressed: () {
                     di<DataService>().syncWithApi();
                   },
@@ -42,7 +45,7 @@ class DebugPage extends StatelessWidget {
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
                   child: Text(
-                    'View Images', 
+                    'View Images',
                     style: bTextTheme.labelLarge,
                   ),
                   onPressed: () {
@@ -56,7 +59,7 @@ class DebugPage extends StatelessWidget {
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
                   child: Text(
-                    'Login page', 
+                    'Login page',
                     style: bTextTheme.labelLarge,
                   ),
                   onPressed: () {
@@ -100,7 +103,7 @@ class DebugPage extends StatelessWidget {
                       },
                     );
                   },
-                  child:  Text(
+                  child: Text(
                     'Get All Data from Hive',
                     style: bTextTheme.labelLarge,
                   ),

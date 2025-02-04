@@ -20,7 +20,8 @@ class EvidenceDetailView extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          evidence.itemType, style: aTextTheme.headlineMedium,
+          evidence.itemType,
+          style: aTextTheme.headlineMedium,
         ),
       ),
       body: SingleChildScrollView(

@@ -1,12 +1,14 @@
 // Flutter imports:
-import 'package:coc/components/key_value.dart';
-import 'package:coc/components/tag.dart';
-import 'package:coc/service/data.dart';
 import 'package:flutter/material.dart';
 
-// Project imports:
-import 'package:coc/controllers/case_user.dart';
+// Package imports:
 import 'package:watch_it/watch_it.dart';
+
+// Project imports:
+import 'package:coc/components/key_value.dart';
+import 'package:coc/components/tag.dart';
+import 'package:coc/controllers/case_user.dart';
+import 'package:coc/service/data.dart';
 
 class UserDisplayBox extends StatelessWidget {
   final CaseUser caseUser;
@@ -23,7 +25,11 @@ class UserDisplayBox extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(caseUser.fullName, textAlign: TextAlign.center, style: aTextTheme.headlineMedium,),
+        title: Text(
+          caseUser.fullName,
+          textAlign: TextAlign.center,
+          style: aTextTheme.headlineMedium,
+        ),
         centerTitle: true,
       ),
       body: Padding(
@@ -40,10 +46,7 @@ class UserDisplayBox extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Case user Information',
-                    style: aTextTheme.displayLarge
-                  ),
+                  Text('Case user Information', style: aTextTheme.displayLarge),
                   const SizedBox(height: 10),
                   KeyValue(keyText: "First name", value: caseUser.firstName),
                   const SizedBox(height: 5),

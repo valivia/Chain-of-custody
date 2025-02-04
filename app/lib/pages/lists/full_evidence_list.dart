@@ -17,7 +17,10 @@ class EvidenceListView extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Evidence List', style: aTextTheme.headlineMedium,),
+            Text(
+              'Evidence List',
+              style: aTextTheme.headlineMedium,
+            ),
             Text(
               'Case ID: ${taggedEvidence.first.caseId}',
               style: aTextTheme.bodySmall,

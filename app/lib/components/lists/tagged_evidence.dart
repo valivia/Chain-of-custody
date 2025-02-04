@@ -60,8 +60,8 @@ class LimTaggedEvidenceList extends StatelessWidget {
                   const Icon(Icons.arrow_forward),
                   const SizedBox(width: 10),
                   Text(
-                    'View All', 
-                    style: aTextTheme.bodyMedium, 
+                    'View All',
+                    style: aTextTheme.bodyMedium,
                   ),
                   const Spacer(),
                   Text(

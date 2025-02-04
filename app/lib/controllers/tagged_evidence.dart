@@ -2,10 +2,10 @@
 import 'dart:developer';
 
 // Flutter imports:
-import 'package:coc/service/authentication.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:watch_it/watch_it.dart';
 
@@ -13,9 +13,9 @@ import 'package:watch_it/watch_it.dart';
 import 'package:coc/controllers/audit_log.dart' as audit_log;
 import 'package:coc/controllers/case.dart';
 import 'package:coc/service/api_service.dart';
+import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 import 'package:coc/utility/helpers.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class TaggedEvidence {
   String id;

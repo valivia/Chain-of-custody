@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 // Flutter imports:
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,6 +28,11 @@ import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 import 'package:coc/service/location.dart';
 import 'package:coc/service/settings.dart';
+
+// Flutter imports:
+
+
+
 
 final navigatorKey = GlobalKey<NavigatorState>();
 

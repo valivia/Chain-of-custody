@@ -60,7 +60,7 @@ class TransferHistoryListItem extends StatelessWidget {
                 children: [
                   if (previousCaseUser != null) ...[
                     Text(
-                      previousCaseUser.firstName, 
+                      previousCaseUser.firstName,
                       style: aTextTheme.bodyMedium,
                     ),
                     const SizedBox(width: 4),
@@ -72,17 +72,17 @@ class TransferHistoryListItem extends StatelessWidget {
                     const SizedBox(width: 4),
                   ],
                   Text(
-                    currentCaseUser?.firstName ?? "Unknown", 
+                    currentCaseUser?.firstName ?? "Unknown",
                     style: aTextTheme.bodyMedium,
-                    ),
+                  ),
                 ],
               ),
               Text(
                 formatTimestamp(log.createdAt),
                 style: TextStyle(
-                  fontSize: 12, 
+                  fontSize: 12,
                   color: aTextTheme.bodyMedium?.color,
-                  ),
+                ),
               ),
             ],
           ),

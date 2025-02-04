@@ -17,7 +17,6 @@ class MediaEvidencePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     TextTheme aTextTheme = Theme.of(context).textTheme;
 
     final url = Uri.parse("${EnvironmentConfig.apiUrl}/media/evidence/");
@@ -28,7 +27,10 @@ class MediaEvidencePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Media Evidence', style: aTextTheme.headlineMedium,),
+        title: Text(
+          'Media Evidence',
+          style: aTextTheme.headlineMedium,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(

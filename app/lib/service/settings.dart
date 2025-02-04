@@ -1,7 +1,11 @@
+// Dart imports:
 import 'dart:convert';
 import 'dart:developer';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:localstorage/localstorage.dart';
 
 class SettingManager with ChangeNotifier {

@@ -24,7 +24,10 @@ class ScannablePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(title, style: aTextTheme.headlineMedium,),
+        title: Text(
+          title,
+          style: aTextTheme.headlineMedium,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -46,7 +49,11 @@ class ScannablePage extends StatelessWidget {
             // Go back button
             if (description != null && description!.isNotEmpty) ...[
               const SizedBox(height: 20),
-              Text(description!, textAlign: TextAlign.center, style: aTextTheme.displaySmall,),
+              Text(
+                description!,
+                textAlign: TextAlign.center,
+                style: aTextTheme.displaySmall,
+              ),
             ],
             const SizedBox(height: 20),
             Row(
@@ -58,7 +65,10 @@ class ScannablePage extends StatelessWidget {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("Go back", style: aTextTheme.bodyLarge,),
+                    child: Text(
+                      "Go back",
+                      style: aTextTheme.bodyLarge,
+                    ),
                   ),
                 ),
                 Expanded(
@@ -68,7 +78,10 @@ class ScannablePage extends StatelessWidget {
                         : () {
                             Navigator.pop(context);
                           },
-                    child: Text("Done", style: aTextTheme.bodyLarge,),
+                    child: Text(
+                      "Done",
+                      style: aTextTheme.bodyLarge,
+                    ),
                   ),
                 ),
               ],

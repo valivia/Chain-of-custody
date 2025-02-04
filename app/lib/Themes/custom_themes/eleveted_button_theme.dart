@@ -1,8 +1,8 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 class TElevetedButtonTheme {
   TElevetedButtonTheme._();
-
 
   static final lightElevatedButtonTheme = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -15,7 +15,6 @@ class TElevetedButtonTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       ),
-      
     ),
   );
 

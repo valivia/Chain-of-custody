@@ -40,7 +40,7 @@ class LimTransferHistoryView extends StatelessWidget {
               previousLog: previousLog,
             );
           },
-          separatorBuilder: (context, index) =>  Icon(
+          separatorBuilder: (context, index) => Icon(
             Icons.arrow_drop_up_rounded,
             size: 40.0,
             color: aTextTheme.bodyMedium?.color,
@@ -74,13 +74,13 @@ class LimTransferHistoryView extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.arrow_forward,
-                        color: aTextTheme.bodyMedium?.color,  
+                        color: aTextTheme.bodyMedium?.color,
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        'View All', 
+                        'View All',
                         style: aTextTheme.bodyMedium,
-                        ),
+                      ),
                       const Spacer(),
                       Text(
                         "${transfers.length} total",

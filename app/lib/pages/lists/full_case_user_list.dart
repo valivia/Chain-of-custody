@@ -14,8 +14,10 @@ class CaseUserListView extends StatelessWidget {
     TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Handlers", 
-        style: aTextTheme.headlineMedium,),
+        title: Text(
+          "Handlers",
+          style: aTextTheme.headlineMedium,
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

@@ -1,5 +1,7 @@
 // Flutter imports:
 // import 'package:coc/controllers/case.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -23,7 +25,9 @@ import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 
 class CaseDetailView extends WatchingWidget {
-  const CaseDetailView({super.key,});
+  const CaseDetailView({
+    super.key,
+  });
 
   static Future<bool> hasInternetConnection() async {
     return await InternetConnectionChecker().hasConnection;
@@ -53,7 +57,10 @@ class CaseDetailView extends WatchingWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Case: ${caseItem.title}", style: aTextTheme.headlineMedium,), 
+        title: Text(
+          "Case: ${caseItem.title}",
+          style: aTextTheme.headlineMedium,
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -144,7 +151,12 @@ class CaseDetailView extends WatchingWidget {
                         if (caseUser != null &&
                             caseUser.hasPermission(CasePermission.manage))
                           IconButton(
-                            icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondaryContainer,),
+                            icon: Icon(
+                              Icons.add,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                            ),
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -186,7 +198,12 @@ class CaseDetailView extends WatchingWidget {
                         ),
                         const Spacer(),
                         IconButton(
-                          icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondaryContainer,),
+                          icon: Icon(
+                            Icons.add,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                          ),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -231,7 +248,12 @@ class CaseDetailView extends WatchingWidget {
                         ),
                         const Spacer(),
                         IconButton(
-                          icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondaryContainer,),
+                          icon: Icon(
+                            Icons.add,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                          ),
                           onPressed: () {
                             Navigator.push(
                               context,

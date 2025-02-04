@@ -68,9 +68,9 @@ class LimCaseList extends WatchingWidget {
                       const Icon(Icons.arrow_forward),
                       const SizedBox(width: 10),
                       Text(
-                        'View ${caseList.length - itemCount} more cases', 
+                        'View ${caseList.length - itemCount} more cases',
                         style: aTextTheme.bodyMedium,
-                        ),
+                      ),
                     ],
                   ),
                 ),

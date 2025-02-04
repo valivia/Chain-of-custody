@@ -80,7 +80,10 @@ class RegisterCasePageState extends State<RegisterCase> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Register Case", style: aTextTheme.headlineMedium,),
+        title: Text(
+          "Register Case",
+          style: aTextTheme.headlineMedium,
+        ),
         elevation: 10,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -129,7 +132,10 @@ class RegisterCasePageState extends State<RegisterCase> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text('Back', style: aTextTheme.bodyLarge,),
+                        child: Text(
+                          'Back',
+                          style: aTextTheme.bodyLarge,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -145,15 +151,23 @@ class RegisterCasePageState extends State<RegisterCase> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('Unauthorized', style: aTextTheme.headlineMedium,),
+                                    title: Text(
+                                      'Unauthorized',
+                                      style: aTextTheme.headlineMedium,
+                                    ),
                                     content: Text(
-                                        'You are not authorized to perform this action, check if your logged in.', style: aTextTheme.bodyLarge,),
+                                      'You are not authorized to perform this action, check if your logged in.',
+                                      style: aTextTheme.bodyLarge,
+                                    ),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: Text('OK', style: aTextTheme.bodyLarge,),
+                                        child: Text(
+                                          'OK',
+                                          style: aTextTheme.bodyLarge,
+                                        ),
                                       ),
                                     ],
                                   );
@@ -164,9 +178,14 @@ class RegisterCasePageState extends State<RegisterCase> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('Success', style: aTextTheme.headlineMedium,),
+                                    title: Text(
+                                      'Success',
+                                      style: aTextTheme.headlineMedium,
+                                    ),
                                     content: Text(
-                                        'Case registered successfully!', style: aTextTheme.bodyMedium,),
+                                      'Case registered successfully!',
+                                      style: aTextTheme.bodyMedium,
+                                    ),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
@@ -178,7 +197,10 @@ class RegisterCasePageState extends State<RegisterCase> {
                                             (Route<dynamic> route) => false,
                                           );
                                         },
-                                        child: Text('Home', style: aTextTheme.bodyLarge,),
+                                        child: Text(
+                                          'Home',
+                                          style: aTextTheme.bodyLarge,
+                                        ),
                                       ),
                                     ],
                                   );
@@ -189,15 +211,23 @@ class RegisterCasePageState extends State<RegisterCase> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('Error', style: aTextTheme.headlineMedium,),
+                                    title: Text(
+                                      'Error',
+                                      style: aTextTheme.headlineMedium,
+                                    ),
                                     content: Text(
-                                        'Failed to register case: ${response.body}', style: aTextTheme.bodyMedium,),
+                                      'Failed to register case: ${response.body}',
+                                      style: aTextTheme.bodyMedium,
+                                    ),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: Text('OK', style: aTextTheme.bodyLarge,),
+                                        child: Text(
+                                          'OK',
+                                          style: aTextTheme.bodyLarge,
+                                        ),
                                       ),
                                     ],
                                   );
@@ -206,7 +236,10 @@ class RegisterCasePageState extends State<RegisterCase> {
                             }
                           }
                         },
-                        child: Text('Submit', style: aTextTheme.bodyLarge,),
+                        child: Text(
+                          'Submit',
+                          style: aTextTheme.bodyLarge,
+                        ),
                       ),
                     ),
                   ],

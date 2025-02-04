@@ -11,8 +11,11 @@ class MediaPreview extends StatelessWidget {
     TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text('Image Preview', style: aTextTheme.headlineMedium,)),
+          centerTitle: true,
+          title: Text(
+            'Image Preview',
+            style: aTextTheme.headlineMedium,
+          )),
       body: Center(
         child: Image.network(imageUrl),
       ),

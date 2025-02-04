@@ -18,7 +18,10 @@ class CaseListView extends StatelessWidget {
     TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cases", style: aTextTheme.headlineMedium,),
+        title: Text(
+          "Cases",
+          style: aTextTheme.headlineMedium,
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

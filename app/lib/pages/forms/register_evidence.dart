@@ -92,36 +92,35 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
 
   _onSubmit() async {
     if (_formKey.currentState!.validate()) {
-        try {
-          await TaggedEvidence.fromForm(
-            id: _idController.text,
-            caseItem: widget.caseItem,
-            containerType: ContainerType.values.byName(_selectedContainerType),
-            itemType: _itemTypeController.text,
-            description: _descriptionController.text,
-            originCoordinates: LatLng(_position.latitude, _position.longitude),
-            originLocationDescription:
-                _originLocationDescriptionController.text,
-          );
+      try {
+        await TaggedEvidence.fromForm(
+          id: _idController.text,
+          caseItem: widget.caseItem,
+          containerType: ContainerType.values.byName(_selectedContainerType),
+          itemType: _itemTypeController.text,
+          description: _descriptionController.text,
+          originCoordinates: LatLng(_position.latitude, _position.longitude),
+          originLocationDescription: _originLocationDescriptionController.text,
+        );
 
-          showSuccessDialog(
-            navigatorKey.currentContext!,
-            'Evidence submitted successfully',
-            widget.caseItem,
-          );
-        } on ApiException catch (e) {
-          showFailureDialog(
-            navigatorKey.currentContext!,
-            'Failed to submit evidence data:\n${e.message.toString()}',
-            widget.caseItem,
-          );
-        } catch (e) {
-          showFailureDialog(
-            navigatorKey.currentContext!,
-            'An error occurred:\n$e',
-            widget.caseItem,
-          );
-        }
+        showSuccessDialog(
+          navigatorKey.currentContext!,
+          'Evidence submitted successfully',
+          widget.caseItem,
+        );
+      } on ApiException catch (e) {
+        showFailureDialog(
+          navigatorKey.currentContext!,
+          'Failed to submit evidence data:\n${e.message.toString()}',
+          widget.caseItem,
+        );
+      } catch (e) {
+        showFailureDialog(
+          navigatorKey.currentContext!,
+          'An error occurred:\n$e',
+          widget.caseItem,
+        );
+      }
     }
   }
 
@@ -140,7 +139,10 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Register Evidence', style: aTextTheme.headlineLarge,),
+        title: Text(
+          'Register Evidence',
+          style: aTextTheme.headlineLarge,
+        ),
         backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         elevation: 10,
         shape: const RoundedRectangleBorder(
@@ -235,14 +237,20 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text('Back', style: aTextTheme.bodyLarge,),
+                        child: Text(
+                          'Back',
+                          style: aTextTheme.bodyLarge,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 20),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: _onSubmit,
-                        child: Text('Submit', style: aTextTheme.bodyLarge,),
+                        child: Text(
+                          'Submit',
+                          style: aTextTheme.bodyLarge,
+                        ),
                       ),
                     ),
                   ],

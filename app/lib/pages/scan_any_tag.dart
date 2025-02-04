@@ -21,7 +21,10 @@ class ScanAnyTagPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(title, style: aTextTheme.headlineMedium,),
+        title: Text(
+          title,
+          style: aTextTheme.headlineMedium,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -64,7 +67,10 @@ class ScanAnyTagPage extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Scan QR Code', style: aTextTheme.bodyLarge,),
+              child: Text(
+                'Scan QR Code',
+                style: aTextTheme.bodyLarge,
+              ),
             ),
           ],
         ),

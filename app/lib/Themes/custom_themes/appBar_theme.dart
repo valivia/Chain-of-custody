@@ -1,6 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-class TAppBarThema{
+class TAppBarThema {
   TAppBarThema._();
 
   static const lightAppBarTheme = AppBarTheme(
@@ -9,7 +10,7 @@ class TAppBarThema{
         bottom: Radius.circular(16),
       ),
     ),
-    backgroundColor: Color(0xFF416671),      
+    backgroundColor: Color(0xFF416671),
   );
 
   static const darkAppBarTheme = AppBarTheme(
@@ -18,6 +19,6 @@ class TAppBarThema{
         bottom: Radius.circular(16),
       ),
     ),
-    backgroundColor: Color(0xFF466F7B),      
+    backgroundColor: Color(0xFF466F7B),
   );
 }

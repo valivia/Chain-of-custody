@@ -21,7 +21,6 @@ class LimCaseUserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     TextTheme aTextTheme = Theme.of(context).textTheme;
 
     return Column(
@@ -57,7 +56,10 @@ class LimCaseUserList extends StatelessWidget {
               children: [
                 const Icon(Icons.arrow_forward),
                 const SizedBox(width: 10),
-                Text('View All', style: aTextTheme.bodyMedium,),
+                Text(
+                  'View All',
+                  style: aTextTheme.bodyMedium,
+                ),
                 const Spacer(),
                 Text(
                   "${caseUsers.length.toString()} total",
