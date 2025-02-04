@@ -72,19 +72,26 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
       _isFetchingLocation = true;
     });
 
-    _position = await di<LocationService>()
-        .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
+    try {
+      _position = await di<LocationService>()
+          .getCurrentLocation(desiredAccuracy: LocationAccuracy.lowest);
 
-    setState(() {
-      _isFetchingLocation = false;
-    });
+      if (mounted) {
+        setState(() {
+          _isFetchingLocation = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isFetchingLocation = false;
+        });
+      }
+    }
   }
 
   _onSubmit() async {
     if (_formKey.currentState!.validate()) {
-      bool isConnected = await LocalStore.hasInternetConnection();
-
-      if (isConnected) {
         try {
           await TaggedEvidence.fromForm(
             id: _idController.text,
@@ -115,16 +122,6 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
             widget.caseItem,
           );
         }
-      } else {
-        // Save evidence locally
-        // requestData['body']['madeOn'] = DateTime.now().toIso8601String();
-        // await LocalStore.saveApiResponse(evidenceKey, requestData);
-        showSuccessDialog(
-          navigatorKey.currentContext!,
-          'Evidence saved locally',
-          widget.caseItem,
-        );
-      }
     }
   }
 
@@ -139,9 +136,11 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register Evidence'),
+        centerTitle: true,
+        title: Text('Register Evidence', style: aTextTheme.headlineLarge,),
         backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         elevation: 10,
         shape: const RoundedRectangleBorder(
@@ -236,14 +235,14 @@ class RegisterEvidencePageState extends State<RegisterEvidencePage> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('Back'),
+                        child: Text('Back', style: aTextTheme.bodyLarge,),
                       ),
                     ),
                     const SizedBox(width: 20),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: _onSubmit,
-                        child: const Text('Submit'),
+                        child: Text('Submit', style: aTextTheme.bodyLarge,),
                       ),
                     ),
                   ],

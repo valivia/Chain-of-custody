@@ -26,6 +26,7 @@ class TransferHistoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     final currentCaseUser = di<DataService>().currentCase?.getUser(log.userId);
     final previousCaseUser = previousLog?.userId != null
         ? di<DataService>().currentCase?.getUser(previousLog!.userId)
@@ -57,21 +58,31 @@ class TransferHistoryListItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(currentCaseUser?.firstName ?? "Unknown"),
                   if (previousCaseUser != null) ...[
-                    const SizedBox(width: 4),
-                    const Icon(
-                      Icons.arrow_left,
-                      color: Colors.white,
+                    Text(
+                      previousCaseUser.firstName, 
+                      style: aTextTheme.bodyMedium,
                     ),
                     const SizedBox(width: 4),
-                    Text(previousCaseUser.firstName),
+                    Icon(
+                      Icons.arrow_forward_sharp,
+                      color: aTextTheme.bodyMedium?.color,
+                      size: 12,
+                    ),
+                    const SizedBox(width: 4),
                   ],
+                  Text(
+                    currentCaseUser?.firstName ?? "Unknown", 
+                    style: aTextTheme.bodyMedium,
+                    ),
                 ],
               ),
               Text(
                 formatTimestamp(log.createdAt),
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(
+                  fontSize: 12, 
+                  color: aTextTheme.bodyMedium?.color,
+                  ),
               ),
             ],
           ),

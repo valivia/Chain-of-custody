@@ -6,8 +6,13 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRScannerPage extends StatefulWidget {
   final Function(BuildContext, String) onScan;
+  final String title;
 
-  const QRScannerPage({super.key, required this.onScan});
+  const QRScannerPage({
+    super.key,
+    required this.onScan,
+    this.title = "Scan QR Code",
+  });
 
   @override
   QRScannerPageState createState() => QRScannerPageState();
@@ -30,9 +35,11 @@ class QRScannerPageState extends State<QRScannerPage> {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('QR Scanner'),
+        centerTitle: true,
+        title: Text(widget.title, style: aTextTheme.headlineMedium,),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

@@ -15,6 +15,7 @@ class TaggedEvidenceListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(10),
@@ -32,13 +33,13 @@ class TaggedEvidenceListItem extends StatelessWidget {
         children: [
           Icon(
             taggedEvidenceItem.containerType.icon,
-            color: Colors.white,
+            color: taggedEvidenceItem.offline ? Colors.orange : Colors.white,
           ),
           const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(taggedEvidenceItem.itemType),
+              Text(taggedEvidenceItem.itemType, style: aTextTheme.bodyMedium,),
             ],
           ),
           const Spacer(),

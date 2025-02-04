@@ -15,9 +15,10 @@ class CaseListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cases"),
+        title: Text("Cases", style: aTextTheme.headlineMedium,),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

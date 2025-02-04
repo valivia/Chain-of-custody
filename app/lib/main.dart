@@ -1,23 +1,35 @@
+// Dart imports:
+import 'dart:convert';
+
 // Flutter imports:
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:localstorage/localstorage.dart';
 import 'package:watch_it/watch_it.dart';
 
 // Project imports:
+import 'package:coc/Themes/theme.dart';
 import 'package:coc/components/button.dart';
 import 'package:coc/components/lists/case.dart';
 import 'package:coc/components/local_store.dart';
+import 'package:coc/controllers/user.dart';
+import 'package:coc/pages/case_detail.dart';
 import 'package:coc/pages/debug.dart';
 import 'package:coc/pages/forms/register_case.dart';
+import 'package:coc/pages/login.dart';
 import 'package:coc/pages/scan_any_tag.dart';
+import 'package:coc/pages/scannable.dart';
 import 'package:coc/pages/settings.dart';
 import 'package:coc/pages/transfer_evidence.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 import 'package:coc/service/location.dart';
+import 'package:coc/service/settings.dart';
+
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -27,109 +39,80 @@ void main() async {
   await LocalStore.init();
   await initLocalStorage();
 
-  di.registerSingleton<Authentication>(await Authentication.create());
+  di.registerSingletonAsync<Authentication>(Authentication.create);
 
   di.registerSingleton<LocationService>(LocationService());
 
-  di.registerSingleton<DataService>(await DataService.initialize());
+  di.registerSingletonAsync<DataService>(
+    DataService.initialize,
+    dependsOn: [Authentication],
+  );
+
+  di.registerSingleton<SettingManager>(SettingManager.initialize());
+
+  await di.allReady();
+
+  di<DataService>().syncWithApi();
 
   runApp(const App());
 }
 
-class App extends StatelessWidget {
+class App extends WatchingStatefulWidget {
   const App({super.key});
 
   @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
   Widget build(BuildContext context) {
-    // Color definition
-    const Color primaryColor = Color.fromRGBO(23, 23, 23, 1);
-    const Color secondaryColor = Color.fromRGBO(35, 35, 35, 1);
-    const Color tertiaryColor = Color.fromRGBO(45, 45, 45, 1);
-    const Color textColor = Color.fromRGBO(255, 255, 255, 1);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    final themeMode = watchPropertyValue((SettingManager a) => a.theme);
 
     return MaterialApp(
       title: 'Flutter Demo',
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: const ColorScheme(
-          brightness: Brightness.dark,
-
-          error: Colors.red,
-          onError: Colors.white,
-
-          surface: tertiaryColor,
-          onSurface: textColor,
-          // primary,
-          primary: primaryColor,
-          onPrimary: textColor,
-          primaryContainer: tertiaryColor,
-          onPrimaryContainer: textColor,
-          // secondary
-          secondary: secondaryColor,
-          onSecondary: textColor,
-          secondaryContainer: secondaryColor,
-          onSecondaryContainer: textColor,
-          // tertiary
-          tertiary: tertiaryColor,
-          onTertiary: textColor,
-          tertiaryContainer: primaryColor,
-          onTertiaryContainer: textColor,
-        ),
-        appBarTheme: const AppBarTheme(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(16),
-            ),
-          ),
-          backgroundColor: primaryColor,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromRGBO(23, 23, 23, 1),
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-            elevation: 6,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-            ),
-          ),
-        ),
-        snackBarTheme: const SnackBarThemeData(
-          backgroundColor: Color.fromRGBO(23, 23, 23, 1),
-          contentTextStyle: TextStyle(color: Colors.white),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(16),
-            ),
-          ),
-        ),
-      ),
-      home: const HomePage(),
+      theme: TAppTheme.lightTheme,
+      darkTheme: TAppTheme.darkTheme,
+      themeMode: themeMode,
+      initialRoute: "/",
+      routes: {
+        "/": (context) => const HomePage(),
+        "/case": (context) => const CaseDetailView(),
+        "/settings": (context) => const SettingsPage(),
+      },
     );
   }
 }
 
-// TODO:
-// auth check
-// Get token  -> if no token
-//            -> check connection
-// -> if no connection continue
-//            -> login page
-//          -> else -> continue
-
-class HomePage extends StatelessWidget {
+class HomePage extends WatchingWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
+    final isLoggedIn = watchPropertyValue((Authentication a) => a.isLoggedIn);
+
+    if (!isLoggedIn) {
+      return const LoginPage();
+    }
+
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(45, 45, 45, 1),
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(23, 23, 23, 1),
-        leading: const Icon(Icons.home, color: Colors.white),
-        title: const Text('Home'),
+        leading: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.home,
+            )),
+        centerTitle: true,
+        title: Text(
+          'Home',
+          style: aTextTheme.headlineLarge,
+        ),
         actions: [
           IconButton(
               onPressed: () {
@@ -138,13 +121,15 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const SettingsPage()),
                 );
               },
-              icon: const Icon(Icons.settings)),
+              icon: const Icon(Icons.settings,)),
         ],
       ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Column(
+            //mainAxisSize: MainAxisSize.max,
+            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               // Create Case Button
               const SizedBox(height: 20),
@@ -166,7 +151,26 @@ class HomePage extends StatelessWidget {
               Button(
                 title: 'Join case',
                 icon: Icons.photo_camera,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ScannablePage(
+                        data: jsonEncode(
+                          UserScannable.fromUser(di<Authentication>().user)
+                              .toJson(),
+                        ),
+                        title: "Join Case",
+                        description:
+                            "Let the manager of the case scan this QR code to join the case",
+                        onDone: (context) {
+                          Navigator.pop(context);
+                          di<DataService>().syncWithApi();
+                        },
+                      ),
+                    ),
+                  );
+                },
               ),
 
               // Transfer Evidence Button
@@ -178,10 +182,10 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>  ScanAnyTagPage(
+                      builder: (context) => ScanAnyTagPage(
                         onScan: navigateToEvidenceTransfer(),
                         title: "Transfer Evidence",
-                        ),
+                      ),
                     ),
                   );
                 },
@@ -191,13 +195,15 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 20),
               if (kDebugMode)
                 ElevatedButton(
-                  child: const Text('Debug page'),
+                  child: Text(
+                    'Debug page',
+                    style: aTextTheme.bodyMedium,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const DebugPage(),
-                      ),
+                          builder: (context) => const DebugPage()),
                     );
                   },
                 ),

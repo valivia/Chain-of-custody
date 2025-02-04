@@ -13,6 +13,7 @@ class EvidenceDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     final createdAt = evidence.createdAt != null
         ? formatTimestamp(evidence.createdAt!)
         : 'N/A';
@@ -22,7 +23,7 @@ class EvidenceDetails extends StatelessWidget {
     // View
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[800],
+        color: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(8.0),
       ),
       padding: const EdgeInsets.all(16),
@@ -30,9 +31,9 @@ class EvidenceDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Case details',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: aTextTheme.displayLarge,
           ),
           const SizedBox(height: 5),
           KeyValue(keyText: "Container", value: evidence.containerType.name),
@@ -49,22 +50,22 @@ class EvidenceDetails extends StatelessWidget {
           if (evidence.description != null &&
               evidence.description!.isNotEmpty) ...[
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'Description',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: aTextTheme.displayMedium,
             ),
             const SizedBox(height: 5),
-            Text(evidence.description!),
+            Text(evidence.description!, style: aTextTheme.displaySmall,),
           ],
 
           // Location
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Location Description',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: aTextTheme.displayMedium,
           ),
           const SizedBox(height: 5),
-          Text(evidence.originLocationDescription),
+          Text(evidence.originLocationDescription, style: aTextTheme.displaySmall,),
         ],
       ),
     );

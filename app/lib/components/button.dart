@@ -15,6 +15,7 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size.fromHeight(1),
@@ -23,8 +24,8 @@ class Button extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title),
-          Icon(icon, color: Theme.of(context).iconTheme.color),
+          Text(title, style: aTextTheme.bodyLarge,),
+          Icon(icon),
         ],
       ),
     );

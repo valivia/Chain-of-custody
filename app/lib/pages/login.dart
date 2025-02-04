@@ -55,13 +55,14 @@ class LoginPageState extends State<LoginPage> {
     }
 
     try {
-      bool loginResponse = await di<Authentication>().login(
+      await di<Authentication>().login(
         _emailInputController.text,
         _passwordInputController.text,
       );
-      if (loginResponse) {
-        Navigator.pop(navigatorKey.currentContext!);
-      }
+
+      // reload page
+      navigatorKey.currentState!.pushReplacementNamed("/");
+      
     } catch (error) {
       log(" --- Login failed: $error --- ");
       final snackBar = SnackBar(content: Text("Login Failed: \n$error"));
@@ -76,8 +77,12 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Login", style: aTextTheme.headlineMedium,)
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -90,6 +95,7 @@ class LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _emailInputController,
+                  style: aTextTheme.displaySmall,
                   decoration: const InputDecoration(
                     labelText: "email",
                     hintText: "Enter your email",
@@ -109,6 +115,7 @@ class LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordInputController,
+                  style: aTextTheme.displaySmall,
                   decoration: InputDecoration(
                       labelText: "password",
                       hintText: "Enter your password",
@@ -118,7 +125,7 @@ class LoginPageState extends State<LoginPage> {
                           _passwordInvisible
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Theme.of(context).primaryColorDark,
+                          color: Theme.of(context).colorScheme.tertiary,
                         ),
                         onPressed: () {
                           setState(() {
@@ -139,18 +146,12 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        di<Authentication>().logout();
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Logout"),
-                    ),
-                    ElevatedButton(
-                      onPressed: _isButtonDisabled ? null : submit,
-                      child: const Text('Login'),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _isButtonDisabled ? null : submit,
+                        child: Text('Login', style: aTextTheme.bodyLarge,),
+                      ),
                     ),
                   ],
                 ),

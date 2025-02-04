@@ -19,6 +19,8 @@ class DataService extends ChangeNotifier {
   List<Case> _cases = [];
   UnmodifiableListView<Case> get cases => UnmodifiableListView(_cases);
 
+  bool isLoading = false;
+
   // Current case
   Case? _currentCase;
   Case? get currentCase => _currentCase;
@@ -40,7 +42,6 @@ class DataService extends ChangeNotifier {
   static Future<DataService> initialize() async {
     final instance = DataService();
     instance.loadFromLocalStorage();
-    await instance.syncWithApi();
     return instance;
   }
 
@@ -74,15 +75,53 @@ class DataService extends ChangeNotifier {
   Future<void> syncWithApi() async {
     if (!di.get<Authentication>().isLoggedIn) return;
 
+    log("Syncing with API");
+
+    isLoading = true;
+    notifyListeners();
+
     try {
       final apiCases = await Case.fetchCases();
+
+      for (var existingCase in _cases) {
+        for (var evidence in existingCase.taggedEvidence) {
+          if (evidence.offline == true) {
+            Case? apiCase;
+
+            // Find API case
+            try {
+              apiCase = apiCases.firstWhere(
+                (apiCase) => apiCase.id == existingCase.id,
+              );
+            } catch (e) {
+              apiCase = null;
+            }
+
+            // If API case is not found, skip
+            if (apiCase == null) continue;
+
+            final foundApiEvidence = apiCase.taggedEvidence.indexWhere(
+              (e) => e.id == evidence.id,
+            );
+
+            if (foundApiEvidence != -1) {
+              continue;
+            }
+
+            log("Adding evidence to API case: ${apiCase.title} ${evidence.itemType}");
+            apiCase.taggedEvidence.add(evidence);
+          }
+        }
+      }
 
       _cases = apiCases;
 
       saveToLocalStorage();
-      notifyListeners();
     } catch (e) {
       log(e.toString());
+    } finally {
+      isLoading = false;
+      notifyListeners();
     }
   }
 
@@ -93,6 +132,10 @@ class DataService extends ChangeNotifier {
       _cases.add(c);
     } else {
       _cases[index] = c;
+    }
+
+    if (currentCase?.id == c.id) {
+      _currentCase = c;
     }
 
     saveToLocalStorage();

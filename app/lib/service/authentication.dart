@@ -2,6 +2,9 @@
 import 'dart:convert';
 import 'dart:developer';
 
+// Flutter imports:
+import 'package:flutter/material.dart';
+
 // Package imports:
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +16,7 @@ import 'package:coc/controllers/user.dart';
 import 'package:coc/service/data.dart';
 import 'package:coc/service/enviroment.dart';
 
-class Authentication {
+class Authentication extends ChangeNotifier {
   String? _token;
   User? _user;
 
@@ -37,6 +40,8 @@ class Authentication {
     }
 
     _token = token;
+
+    notifyListeners();
   }
 
   Future<void> _getTokenFromStorage() async {

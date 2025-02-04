@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:coc/components/user_display_box.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
@@ -14,17 +15,27 @@ class CaseUserListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(8),
       ),
-      //TODO: Add user to case functions
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => UserDisplayBox(caseUser: caseUser),
+          ),
+        );
+      },
       child: Row(
         children: [
-          const Icon(Icons.person),
+          const Icon(
+            Icons.person,
+            color: Colors.white,
+          ),
           const SizedBox(width: 10),
-          Text("${caseUser.firstName} ${caseUser.lastName}"),
+          Text(caseUser.fullName, style: aTextTheme.bodyMedium,),
         ],
       ),
     );

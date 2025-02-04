@@ -23,6 +23,9 @@ class LimMediaEvidenceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    TextTheme aTextTheme = Theme.of(context).textTheme;
+
     final url = Uri.parse("${EnvironmentConfig.apiUrl}/media/evidence/");
     final headers = {
       'Authorization': di<Authentication>().bearerToken,
@@ -60,11 +63,14 @@ class LimMediaEvidenceList extends StatelessWidget {
                 children: [
                   const Icon(Icons.arrow_forward),
                   const SizedBox(width: 10),
-                  const Text('View All'),
+                  Text(
+                    'View All', 
+                    style: aTextTheme.bodyMedium,
+                  ),
                   const Spacer(),
                   Text(
                     "${mediaEvidence.length.toString()} total",
-                    style: const TextStyle(fontSize: 12),
+                    style: aTextTheme.bodyMedium,
                   ),
                   const SizedBox(width: 10),
                 ],

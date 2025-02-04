@@ -1,9 +1,5 @@
-// Login
-// Logout
-// Togle light/darkmode?
-// Offlinemode
-
 // Flutter imports:
+import 'package:coc/service/settings.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -13,14 +9,19 @@ import 'package:watch_it/watch_it.dart';
 import 'package:coc/pages/login.dart';
 import 'package:coc/service/authentication.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends WatchingWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = watchPropertyValue((SettingManager a) => a.theme);
+
+    TextTheme aTextTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        centerTitle: true,
+        title: Text('Settings', style: aTextTheme.headlineLarge,),
       ),
       body: ListView(
         children: <Widget>[
@@ -37,16 +38,17 @@ class SettingsPage extends StatelessWidget {
           ),
           SwitchListTile(
             title: const Text('Toggle light/dark mode'),
-            value: false, // Replace with actual value
-            onChanged: (bool value) {
-              // Handle theme change
+            value: themeMode == ThemeMode.dark,
+            onChanged: (bool mode) {
+              di<SettingManager>()
+                  .setTheme(mode ? ThemeMode.dark : ThemeMode.light);
             },
           ),
           SwitchListTile(
             title: const Text('Offline mode'),
-            value: false, // Replace with actual value
+            value: false, // TODO: Replace with actual value
             onChanged: (bool value) {
-              // Handle offline mode change
+              // TODO: Handle offline mode change
             },
           ),
           ListTile(
@@ -54,10 +56,10 @@ class SettingsPage extends StatelessWidget {
             title: const Text('Logout'),
             onTap: () {
               di<Authentication>().logout();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginPage()),
-              );
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  (Route<dynamic> route) => false);
             },
           ),
         ],

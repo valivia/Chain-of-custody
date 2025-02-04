@@ -9,10 +9,6 @@ import 'package:coc/components/lists/case.dart';
 import 'package:coc/components/local_store.dart';
 import 'package:coc/pages/image_gallery.dart';
 import 'package:coc/pages/login.dart';
-import 'package:coc/pages/nfc.dart';
-import 'package:coc/pages/scan_any_tag.dart';
-import 'package:coc/pages/scanner.dart';
-import 'package:coc/pages/transfer_evidence.dart';
 import 'package:coc/service/data.dart';
 
 class DebugPage extends StatelessWidget {
@@ -20,12 +16,12 @@ class DebugPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme bTextTheme = Theme.of(context).textTheme;
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(45, 45, 45, 1),
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(23, 23, 23, 1),
         leading: const Icon(Icons.home, color: Colors.white),
-        title: const Text('Debug'),
+        centerTitle: true,
+        title: Text('Debug',style: bTextTheme.headlineMedium,),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -35,65 +31,39 @@ class DebugPage extends StatelessWidget {
               children: [
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
-                  child: const Text('Sync with API'),
+                  child: Text(
+                    'Sync with API',
+                    style: bTextTheme.labelLarge,
+                    ),
                   onPressed: () {
                     di<DataService>().syncWithApi();
                   },
                 ),
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
-                  child: const Text('View Images'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ImageGalleryPage()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20), // Add spacing between buttons
-                ElevatedButton(
-                  child: const Text('Scan NFC Tag'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => NfcScanPage(onScan: navigateToEvidenceTransfer())),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20), // Add spacing between buttons
-                ElevatedButton(
-                  child: const Text('Scan QR Code'),
+                  child: Text(
+                    'View Images', 
+                    style: bTextTheme.labelLarge,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>  QRScannerPage(onScan: navigateToEvidenceTransfer()),
-                      ),
+                          builder: (context) => ImageGalleryPage()),
                     );
                   },
                 ),
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
-                  child: const Text('Scan QR/NFC Tag'),
+                  child: Text(
+                    'Login page', 
+                    style: bTextTheme.labelLarge,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ScanAnyTagPage(
-                          onScan: navigateToEvidenceTransfer(), 
-                          title: "Transfer Evidence",
-                          ),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20), // Add spacing between buttons
-                ElevatedButton(
-                  child: const Text('Login page'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const LoginPage()),
+                          builder: (context) => const LoginPage()),
                     );
                   },
                 ),
@@ -116,18 +86,24 @@ class DebugPage extends StatelessWidget {
                             ),
                           ),
                           actions: [
-                            TextButton(
+                            ElevatedButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: const Text('OK'),
+                              child: Text(
+                                'OK',
+                                style: bTextTheme.labelLarge,
+                              ),
                             ),
                           ],
                         );
                       },
                     );
                   },
-                  child: const Text('Get All Data from Hive'),
+                  child:  Text(
+                    'Get All Data from Hive',
+                    style: bTextTheme.labelLarge,
+                  ),
                 ),
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
@@ -135,12 +111,16 @@ class DebugPage extends StatelessWidget {
                     await LocalStore.clearApiCache();
                     print('Hive cache cleared');
                   },
-                  child: const Text('Clear Cache'),
+                  child: Text(
+                    'Clear Cache',
+                    style: bTextTheme.labelLarge,
+                  ),
                 ),
                 const SizedBox(height: 20), // Add spacing between buttons
                 ElevatedButton(
                   onPressed: () async {
-                    List<Map<String, String>> statusList = await LocalStore.sendAllSavedRequests();
+                    List<Map<String, String>> statusList =
+                        await LocalStore.sendAllSavedRequests();
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -152,13 +132,20 @@ class DebugPage extends StatelessWidget {
                                 return Row(
                                   children: [
                                     Expanded(
-                                      child: Text(status['status'] != 'Success'
-                                          ? '${status['id']}     ${status['type']}     ${status['status']}'
-                                          : '${status['id']}     ${status['type']}'),
+                                      child: Text(
+                                        status['status'] != 'Success'
+                                            ? '${status['id']}     ${status['type']}     ${status['status']}'
+                                            : '${status['id']}     ${status['type']}',
+                                        style: bTextTheme.bodyMedium,
+                                      ),
                                     ),
                                     Icon(
-                                      status['status'] == 'Success' ? Icons.check_circle : Icons.close,
-                                      color: status['status'] == 'Success' ? Colors.green : Colors.red,
+                                      status['status'] == 'Success'
+                                          ? Icons.check_circle
+                                          : Icons.close,
+                                      color: status['status'] == 'Success'
+                                          ? Colors.green
+                                          : Colors.red,
                                     ),
                                   ],
                                 );
@@ -170,14 +157,20 @@ class DebugPage extends StatelessWidget {
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: const Text('OK'),
+                              child: Text(
+                                'OK',
+                                style: bTextTheme.labelLarge,
+                              ),
                             ),
                           ],
                         );
                       },
                     );
                   },
-                  child: const Text('Send All Saved Data'),
+                  child: Text(
+                    'Send All Saved Data',
+                    style: bTextTheme.labelLarge,
+                  ),
                 ),
               ],
             ),
