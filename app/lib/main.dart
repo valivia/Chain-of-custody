@@ -30,7 +30,6 @@ import 'package:coc/service/data.dart';
 import 'package:coc/service/location.dart';
 import 'package:coc/service/settings.dart';
 
-
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
@@ -121,7 +120,9 @@ class HomePage extends WatchingWidget {
                   MaterialPageRoute(builder: (context) => const SettingsPage()),
                 );
               },
-              icon: const Icon(Icons.settings,)),
+              icon: const Icon(
+                Icons.settings,
+              )),
         ],
       ),
       body: Center(
@@ -214,6 +215,12 @@ class HomePage extends WatchingWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          di<DataService>().syncWithApi();
+        },
+        child: const Icon(Icons.refresh),
       ),
     );
   }

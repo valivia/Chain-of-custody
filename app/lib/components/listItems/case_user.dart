@@ -30,12 +30,17 @@ class CaseUserListItem extends StatelessWidget {
       },
       child: Row(
         children: [
-          const Icon(
-            Icons.person,
+          Icon(
+            caseUser.hasPermission(CasePermission.manage)
+                ? Icons.person
+                : Icons.person_outlined,
             color: Colors.white,
           ),
           const SizedBox(width: 10),
-          Text(caseUser.fullName, style: aTextTheme.bodyMedium,),
+          Text(
+            caseUser.fullName,
+            style: aTextTheme.bodyMedium,
+          ),
         ],
       ),
     );

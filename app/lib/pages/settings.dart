@@ -45,7 +45,7 @@ class SettingsPage extends WatchingWidget {
             },
           ),
           SwitchListTile(
-            title: const Text('Offline mode'),
+            title: Text('Offline mode', style: aTextTheme.bodySmall,),
             value: false, // TODO: Replace with actual value
             onChanged: (bool value) {
               // TODO: Handle offline mode change
@@ -53,7 +53,7 @@ class SettingsPage extends WatchingWidget {
           ),
           ListTile(
             leading: const Icon(Icons.logout),
-            title: const Text('Logout'),
+            title: Text('Logout', style: aTextTheme.bodySmall,),
             onTap: () {
               di<Authentication>().logout();
               Navigator.pushAndRemoveUntil(
