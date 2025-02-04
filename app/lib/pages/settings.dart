@@ -1,21 +1,22 @@
-// Flutter imports:
 import 'package:flutter/material.dart';
-
-// Package imports:
 import 'package:watch_it/watch_it.dart';
-
-// Project imports:
 import 'package:coc/pages/login.dart';
 import 'package:coc/service/authentication.dart';
 import 'package:coc/service/settings.dart';
 
-class SettingsPage extends WatchingWidget {
+class SettingsPage extends WatchingStatefulWidget {
   const SettingsPage({super.key});
+
+  @override
+  SettingsPageState createState() => SettingsPageState();
+}
+
+class SettingsPageState extends State<SettingsPage> {
+  bool isOffline = false; // TODO: Replace with actual value
 
   @override
   Widget build(BuildContext context) {
     final themeMode = watchPropertyValue((SettingManager a) => a.theme);
-
     TextTheme aTextTheme = Theme.of(context).textTheme;
 
     return Scaffold(
@@ -31,8 +32,7 @@ class SettingsPage extends WatchingWidget {
           // Name
           ListTile(
             leading: const Icon(Icons.person),
-            title: Text(
-                "${di<Authentication>().user.firstName} ${di<Authentication>().user.lastName}"),
+            title: Text(di<Authentication>().user.fullName),
           ),
           // Email
           ListTile(
@@ -52,9 +52,11 @@ class SettingsPage extends WatchingWidget {
               'Offline mode',
               style: aTextTheme.displaySmall,
             ),
-            value: false, // TODO: Replace with actual value
+            value: isOffline,
             onChanged: (bool value) {
-              // TODO: Handle offline mode change
+              setState(() {
+                isOffline = value;
+              });
             },
           ),
           ListTile(
