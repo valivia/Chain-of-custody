@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Case {
-  id String @id @default(cuid())
+  id String @id @default(nanoid(16))
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -31,7 +31,7 @@ enum CaseStatus {
 }
 
 model CaseUser {
-  id String @id @default(cuid())
+  id String @id @default(nanoid(16))
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -48,7 +48,7 @@ model CaseUser {
 }
 
 model MediaEvidence {
-  id String @id @default(cuid())
+  id String @id @default(nanoid(16))
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -65,7 +65,7 @@ model MediaEvidence {
 }
 
 model TaggedEvidence {
-  id String @id @default(cuid())
+  id String @id @default(nanoid(16))
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -87,7 +87,7 @@ model TaggedEvidence {
 }
 
 model User {
-  id String @id @default(cuid())
+  id String @id @default(nanoid(16))
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -106,7 +106,7 @@ model User {
 }
 
 model AuditLog {
-  id String @id @default(cuid())
+  id String @id @default(nanoid(16))
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
