@@ -76,10 +76,11 @@ class RegisterCasePageState extends State<RegisterCase> {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Register Case"),
-        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+        centerTitle: true,
+        title: Text("Register Case", style: aTextTheme.headlineMedium,),
         elevation: 10,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -98,6 +99,7 @@ class RegisterCasePageState extends State<RegisterCase> {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _titleController,
+                  style: aTextTheme.displaySmall,
                   decoration: const InputDecoration(labelText: "Title"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -109,6 +111,7 @@ class RegisterCasePageState extends State<RegisterCase> {
                 const SizedBox(height: 8.0),
                 TextFormField(
                   controller: _descriptionController,
+                  style: aTextTheme.displaySmall,
                   decoration: const InputDecoration(labelText: "Description"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -126,7 +129,7 @@ class RegisterCasePageState extends State<RegisterCase> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('Back'),
+                        child: Text('Back', style: aTextTheme.bodyLarge,),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -142,15 +145,15 @@ class RegisterCasePageState extends State<RegisterCase> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: const Text('Unauthorized'),
-                                    content: const Text(
-                                        'You are not authorized to perform this action, check if your logged in.'),
+                                    title: Text('Unauthorized', style: aTextTheme.headlineMedium,),
+                                    content: Text(
+                                        'You are not authorized to perform this action, check if your logged in.', style: aTextTheme.bodyLarge,),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: const Text('OK'),
+                                        child: Text('OK', style: aTextTheme.bodyLarge,),
                                       ),
                                     ],
                                   );
@@ -161,9 +164,9 @@ class RegisterCasePageState extends State<RegisterCase> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: const Text('Success'),
-                                    content: const Text(
-                                        'Case registered successfully!'),
+                                    title: Text('Success', style: aTextTheme.headlineMedium,),
+                                    content: Text(
+                                        'Case registered successfully!', style: aTextTheme.bodyMedium,),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
@@ -175,7 +178,7 @@ class RegisterCasePageState extends State<RegisterCase> {
                                             (Route<dynamic> route) => false,
                                           );
                                         },
-                                        child: const Text('Home'),
+                                        child: Text('Home', style: aTextTheme.bodyLarge,),
                                       ),
                                     ],
                                   );
@@ -186,15 +189,15 @@ class RegisterCasePageState extends State<RegisterCase> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: const Text('Error'),
+                                    title: Text('Error', style: aTextTheme.headlineMedium,),
                                     content: Text(
-                                        'Failed to register case: ${response.body}'),
+                                        'Failed to register case: ${response.body}', style: aTextTheme.bodyMedium,),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: const Text('OK'),
+                                        child: Text('OK', style: aTextTheme.bodyLarge,),
                                       ),
                                     ],
                                   );
@@ -203,7 +206,7 @@ class RegisterCasePageState extends State<RegisterCase> {
                             }
                           }
                         },
-                        child: const Text('Submit'),
+                        child: Text('Submit', style: aTextTheme.bodyLarge,),
                       ),
                     ),
                   ],

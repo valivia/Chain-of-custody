@@ -9,6 +9,8 @@ import 'package:watch_it/watch_it.dart';
 // Project imports:
 import 'package:coc/service/data.dart';
 import 'package:coc/utility/helpers.dart';
+// import 'package:coc/service/edit_formats.dart';
+// import 'package:coc/controllers/case.dart';
 
 class MapPointer extends StatelessWidget {
   final LatLng location;
@@ -19,13 +21,15 @@ class MapPointer extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterMap(
       options: MapOptions(
-          initialCenter: location,
-          initialZoom: 15.0,
-          interactionOptions: const InteractionOptions(
-            flags: InteractiveFlag.all,
-          ),
-          cameraConstraint: CameraConstraint.containCenter(
-              bounds: LatLngBounds(location, location))),
+        initialCenter: location,
+        initialZoom: 15.0,
+        interactionOptions: const InteractionOptions(
+          flags: InteractiveFlag.all,
+        ),
+        cameraConstraint: CameraConstraint.containCenter(
+          bounds: LatLngBounds(location, location),
+        ),
+      ),
       children: [
         TileLayer(
           urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -62,13 +66,14 @@ class MapPointerBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: IconButton(
-              icon: const Icon(Icons.close, color: Colors.white),
+              icon: Icon(Icons.close, color: aTextTheme.displayLarge?.color),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -78,7 +83,10 @@ class MapPointerBottomSheet extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         automaticallyImplyLeading: false,
-        title: Text(title),
+        title: Text(
+          title,
+          style: aTextTheme.displayLarge,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -91,30 +99,37 @@ class MapPointerBottomSheet extends StatelessWidget {
             const SizedBox(height: 16),
             Row(
               children: [
-                const Icon(Icons.person, color: Colors.white),
+                Icon(Icons.person, color: aTextTheme.displayLarge?.color),
                 const SizedBox(width: 8),
                 Text(
                   di<DataService>().currentCase?.getUser(userId)?.fullName ??
                       'Unknown',
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: aTextTheme.displaySmall?.fontSize,
+                    color: aTextTheme.displaySmall?.color,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
             Row(
               children: [
-                const Icon(Icons.access_time_outlined, color: Colors.white),
+                Icon(Icons.access_time_outlined,
+                    color: aTextTheme.displayLarge?.color),
                 const SizedBox(width: 8),
-                Text(formatTimestamp(createdAt)),
+                Text(
+                  formatTimestamp(createdAt),
+                  style: aTextTheme.displaySmall,
+                ),
               ],
             ),
             Row(
               children: [
-                const Icon(Icons.location_on, color: Colors.white),
+                Icon(Icons.location_on, color: aTextTheme.displayLarge?.color),
                 const SizedBox(width: 8),
                 Text(
                   '${location.latitude}, ${location.longitude}',
-                  style: const TextStyle(fontSize: 16),
+                  style: aTextTheme.displaySmall,
                 ),
               ],
             ),
@@ -124,7 +139,7 @@ class MapPointerBottomSheet extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text('Close'),
+                child: Text('Close', style: aTextTheme.bodyLarge),
               ),
             ),
             const SizedBox(height: 8),

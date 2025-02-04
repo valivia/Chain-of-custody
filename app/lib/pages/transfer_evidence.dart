@@ -69,12 +69,13 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
       showDialog(
         context: navigatorKey.currentContext!,
         builder: (BuildContext context) {
+          TextTheme aTextTheme = Theme.of(context).textTheme;
           return AlertDialog(
-            title: const Text("Successful"),
-            content: const Text("Transfer submitted successfully"),
+            title: Text("Successful", style: aTextTheme.headlineMedium,),
+            content: Text("Transfer submitted successfully", style: aTextTheme.bodyLarge,),
             actions: <Widget>[
               ElevatedButton(
-                child: const Text('Home'),
+                child: Text('Home', style: aTextTheme.bodyLarge,),
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(
@@ -91,14 +92,15 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
       showDialog(
         context: navigatorKey.currentContext!,
         builder: (BuildContext context) {
+          TextTheme aTextTheme = Theme.of(context).textTheme;
           // Not found
           if (error.code == 404) {
             return AlertDialog(
-              title: const Text('Not found'),
-              content: const Text('This evidence has not been registered yet.'),
+              title: Text('Not found', style: aTextTheme.headlineMedium,),
+              content: Text('This evidence has not been registered yet.', style: aTextTheme.bodyLarge,),
               actions: <Widget>[
                 ElevatedButton(
-                  child: const Text('OK'),
+                  child: Text('OK', style: aTextTheme.bodyLarge,),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -109,11 +111,11 @@ class TransferEvidencePageState extends State<TransferEvidencePage> {
             // Unknown error
           } else {
             return AlertDialog(
-              title: const Text('Failed'),
-              content: Text(error.message),
+              title: Text('Failed', style: aTextTheme.headlineMedium,),
+              content: Text(error.message, style: aTextTheme.bodyLarge,),
               actions: <Widget>[
                 ElevatedButton(
-                  child: const Text('OK'),
+                  child: Text('OK', style: aTextTheme.bodyLarge,),
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.push(

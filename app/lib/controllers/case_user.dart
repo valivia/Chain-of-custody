@@ -76,12 +76,14 @@ class CaseUser {
 
   static Future<CaseUser> fromForm({
     required String userId,
-    required String permissions,
+    required List<CasePermission> permissions,
     required Case caseItem,
   }) async {
     final body = {
       'userId': userId,
-      'permissions': permissions,
+      'permissions': permissions.fold<int>(0, (int previousValue, element) {
+        return previousValue | element.value;
+      }).toRadixString(2),
     };
 
     final response = await ApiService.post('/case/${caseItem.id}/user', body);

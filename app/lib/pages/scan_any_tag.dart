@@ -17,9 +17,11 @@ class ScanAnyTagPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        centerTitle: true,
+        title: Text(title, style: aTextTheme.headlineMedium,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -29,17 +31,19 @@ class ScanAnyTagPage extends StatelessWidget {
           children: [
             Text(
               'Scan NFC tag to read the tag\'s ID',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: aTextTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10),
             Text(
               'Hold the tag close to the device\'s NFC scanner',
+              style: aTextTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10),
             Text(
               'Or tap the button below to use QR scanner to scan the tag\'s ID instead.',
+              style: aTextTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
@@ -60,7 +64,7 @@ class ScanAnyTagPage extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text('Scan QR Code'),
+              child: Text('Scan QR Code', style: aTextTheme.bodyLarge,),
             ),
           ],
         ),

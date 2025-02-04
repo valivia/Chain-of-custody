@@ -17,6 +17,9 @@ class MediaEvidencePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    TextTheme aTextTheme = Theme.of(context).textTheme;
+
     final url = Uri.parse("${EnvironmentConfig.apiUrl}/media/evidence/");
     final headers = {
       'Authorization': di<Authentication>().bearerToken,
@@ -24,7 +27,8 @@ class MediaEvidencePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Media Evidence'),
+        centerTitle: true,
+        title: Text('Media Evidence', style: aTextTheme.headlineMedium,),
       ),
       body: SingleChildScrollView(
         child: Padding(

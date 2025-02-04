@@ -21,6 +21,9 @@ class LimCaseUserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    TextTheme aTextTheme = Theme.of(context).textTheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -54,11 +57,11 @@ class LimCaseUserList extends StatelessWidget {
               children: [
                 const Icon(Icons.arrow_forward),
                 const SizedBox(width: 10),
-                const Text('View All'),
+                Text('View All', style: aTextTheme.bodyMedium,),
                 const Spacer(),
                 Text(
                   "${caseUsers.length.toString()} total",
-                  style: const TextStyle(fontSize: 12),
+                  style: aTextTheme.bodyMedium,
                 ),
                 const SizedBox(width: 10),
               ],

@@ -18,6 +18,8 @@ class LimCaseList extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
+
     final isLoading =
         watchPropertyValue((DataService dataService) => dataService.isLoading);
 
@@ -27,18 +29,15 @@ class LimCaseList extends WatchingWidget {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Colors.grey[800],
+        color: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Cases',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+            style: aTextTheme.displayLarge,
           ),
           const SizedBox(height: 10),
           Column(
@@ -68,7 +67,10 @@ class LimCaseList extends WatchingWidget {
                     children: [
                       const Icon(Icons.arrow_forward),
                       const SizedBox(width: 10),
-                      Text('View ${caseList.length - itemCount} more cases'),
+                      Text(
+                        'View ${caseList.length - itemCount} more cases', 
+                        style: aTextTheme.bodyMedium,
+                        ),
                     ],
                   ),
                 ),

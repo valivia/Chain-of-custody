@@ -1,4 +1,5 @@
 // Flutter imports:
+// import 'package:coc/controllers/case.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -22,7 +23,7 @@ import 'package:coc/service/authentication.dart';
 import 'package:coc/service/data.dart';
 
 class CaseDetailView extends WatchingWidget {
-  const CaseDetailView({super.key});
+  const CaseDetailView({super.key,});
 
   static Future<bool> hasInternetConnection() async {
     return await InternetConnectionChecker().hasConnection;
@@ -30,6 +31,7 @@ class CaseDetailView extends WatchingWidget {
 
   @override
   build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     final caseItem = watchIt<DataService>().currentCase;
 
     if (caseItem == null) {
@@ -51,7 +53,7 @@ class CaseDetailView extends WatchingWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Case: ${caseItem.title}", textAlign: TextAlign.center),
+        title: Text("Case: ${caseItem.title}", style: aTextTheme.headlineMedium,), 
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -122,7 +124,7 @@ class CaseDetailView extends WatchingWidget {
               const SizedBox(height: 10),
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[800],
+                  color: Theme.of(context).colorScheme.secondary,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 padding: const EdgeInsets.all(8.0),
@@ -131,21 +133,18 @@ class CaseDetailView extends WatchingWidget {
                   children: [
                     Row(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             'Handlers',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: aTextTheme.displayLarge,
                           ),
                         ),
                         const Spacer(),
                         if (caseUser != null &&
                             caseUser.hasPermission(CasePermission.manage))
                           IconButton(
-                            icon: const Icon(Icons.add),
+                            icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondaryContainer,),
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -169,7 +168,7 @@ class CaseDetailView extends WatchingWidget {
               const SizedBox(height: 10),
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[800],
+                  color: Theme.of(context).colorScheme.secondary,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 padding: const EdgeInsets.all(8.0),
@@ -178,19 +177,16 @@ class CaseDetailView extends WatchingWidget {
                   children: [
                     Row(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             'Evidence',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: aTextTheme.displayLarge,
                           ),
                         ),
                         const Spacer(),
                         IconButton(
-                          icon: const Icon(Icons.add),
+                          icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondaryContainer,),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -217,7 +213,7 @@ class CaseDetailView extends WatchingWidget {
               const SizedBox(height: 10),
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[800],
+                  color: Theme.of(context).colorScheme.secondary,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
@@ -226,19 +222,16 @@ class CaseDetailView extends WatchingWidget {
                   children: [
                     Row(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             'Media Evidence',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: aTextTheme.displayLarge,
                           ),
                         ),
                         const Spacer(),
                         IconButton(
-                          icon: const Icon(Icons.add),
+                          icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondaryContainer,),
                           onPressed: () {
                             Navigator.push(
                               context,

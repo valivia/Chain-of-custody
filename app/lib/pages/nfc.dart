@@ -70,6 +70,7 @@ class NfcScanPageState extends State<NfcScanPage> {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme aTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       // appBar: AppBar(title: const Text('Scan NFC Tag')),
       body: SafeArea(
@@ -78,15 +79,15 @@ class NfcScanPageState extends State<NfcScanPage> {
             valueListenable: result,
             builder: (context, value, _) {
               if (value.isEmpty) {
-                return const Row(
+                return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Waiting for scan '),
-                    ThreeDotsWaitIndicator(),
+                    Text('Waiting for scan ', style: aTextTheme.displaySmall),
+                    const ThreeDotsWaitIndicator(),
                   ],
                 );
               } else {
-                return Text('Error: ${value['error']}');
+                return Text('Error: ${value['error']}', style: aTextTheme.displaySmall);
               }
             },
           ),
