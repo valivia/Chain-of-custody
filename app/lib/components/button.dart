@@ -24,8 +24,14 @@ class Button extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: aTextTheme.bodyLarge,),
-          Icon(icon),
+          Text(
+            title,
+            style: aTextTheme.bodyLarge,
+          ),
+          Icon(
+            icon,
+            color: Colors.white,
+          ),
         ],
       ),
     );
