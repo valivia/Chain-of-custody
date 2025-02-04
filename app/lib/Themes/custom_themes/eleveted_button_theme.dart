@@ -10,12 +10,12 @@ class TElevetedButtonTheme {
       foregroundColor: const Color(0xFF282C2F),
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       elevation: 6,
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.center,
       //minimumSize: const Size.fromWidth(double.infinity),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       ),
-      iconColor: const Color(0xFFE7E7E7),
+      
     ),
   );
 
@@ -25,10 +25,10 @@ class TElevetedButtonTheme {
       foregroundColor: const Color(0xFFE7E7E7),
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       elevation: 6,
+      alignment: Alignment.center,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       ),
-      iconColor: const Color(0xFFE7E7E7),
     ),
   );
 }
