@@ -153,11 +153,11 @@ class RegisterCasePageState extends State<RegisterCase> {
                                   return AlertDialog(
                                     title: Text(
                                       'Unauthorized',
-                                      style: aTextTheme.headlineMedium,
+                                      style: aTextTheme.displayLarge,
                                     ),
                                     content: Text(
                                       'You are not authorized to perform this action, check if your logged in.',
-                                      style: aTextTheme.bodyLarge,
+                                      style: aTextTheme.displayMedium,
                                     ),
                                     actions: <Widget>[
                                       TextButton(
@@ -180,14 +180,14 @@ class RegisterCasePageState extends State<RegisterCase> {
                                   return AlertDialog(
                                     title: Text(
                                       'Success',
-                                      style: aTextTheme.headlineMedium,
+                                      style: aTextTheme.displayLarge,
                                     ),
                                     content: Text(
                                       'Case registered successfully!',
-                                      style: aTextTheme.bodyMedium,
+                                      style: aTextTheme.displayMedium,
                                     ),
                                     actions: <Widget>[
-                                      TextButton(
+                                      ElevatedButton(
                                         onPressed: () {
                                           Navigator.of(context)
                                               .pushAndRemoveUntil(
@@ -197,10 +197,8 @@ class RegisterCasePageState extends State<RegisterCase> {
                                             (Route<dynamic> route) => false,
                                           );
                                         },
-                                        child: Text(
-                                          'Home',
-                                          style: aTextTheme.bodyLarge,
-                                        ),
+                                        child: Text('Home',
+                                            style: aTextTheme.bodyLarge),
                                       ),
                                     ],
                                   );
@@ -213,14 +211,14 @@ class RegisterCasePageState extends State<RegisterCase> {
                                   return AlertDialog(
                                     title: Text(
                                       'Error',
-                                      style: aTextTheme.headlineMedium,
+                                      style: aTextTheme.displayLarge,
                                     ),
                                     content: Text(
                                       'Failed to register case: ${response.body}',
-                                      style: aTextTheme.bodyMedium,
+                                      style: aTextTheme.displayMedium,
                                     ),
                                     actions: <Widget>[
-                                      TextButton(
+                                      ElevatedButton(
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
