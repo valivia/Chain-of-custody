@@ -59,6 +59,10 @@ class LoginPageState extends State<LoginPage> {
         _emailInputController.text,
         _passwordInputController.text,
       );
+
+      // reload page
+      navigatorKey.currentState!.pushReplacementNamed("/");
+      
     } catch (error) {
       log(" --- Login failed: $error --- ");
       final snackBar = SnackBar(content: Text("Login Failed: \n$error"));
